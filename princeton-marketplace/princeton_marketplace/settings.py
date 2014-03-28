@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'market',
+    'south',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -67,6 +68,7 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
             'USER': 'root',
         }
     }
+
 else:
     # Running in development, but want to access the Google Cloud SQL instance
     # in production.
@@ -77,7 +79,9 @@ else:
             'NAME': 'market',
             'USER': 'root',
         }
-}
+    }
+
+    SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.mysql'}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
