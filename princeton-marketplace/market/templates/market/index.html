@@ -1,0 +1,63 @@
+{% if user.is_authenticated %}
+    {% if posting_list %}
+        <h3>Postings from user categories</h3>
+        <ul>
+        {% for category, postinglist in posting_list.iteritems %}
+            <li><h4>{{category}}</h4>
+                <ul>
+                    {%for posting in postinglist %}
+                        <li><a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No categorical posts are available.</p>
+    {% endif %}
+    {% if my_author_list %}
+        <h3>My Current Posts</h3>
+        <ul>
+        {% for posting in my_author_list %}
+            <li><a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts from me.</p>
+    {% endif %}
+    {% if my_respond_list %}
+        <h3>Posts I've Responded To</h3>
+        <ul>
+        {% for posting in my_respond_list %}
+            <li><a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No posts responded to.</p>
+    {% endif %}
+{% else %}
+    {% if posting_list %}
+    <h3>Postings from all categories</h3>
+        <ul>
+        {% for category, postinglist in posting_list.iteritems %}
+            <li><h4>{{category}}</h4>
+                <ul>
+                    {%for posting in postinglist %}
+                        <li><a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No categorical posts are available.</p>
+    {% endif %}
+{% endif %}
+
+
+<a href = "register/">Register Here!</a><BR>
+<a href = "login/">Login Here!</a><BR>
+{% if user.is_authenticated %}
+<a href = "create_posting/">Create a New Posting</a><BR>
+<a href = "logout/">Logout Here!</a>
+{% endif %}

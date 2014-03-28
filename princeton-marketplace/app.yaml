@@ -1,0 +1,17 @@
+application: princeton-marketplace
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+libraries:
+- name: django
+  version: 1.5
+- name: MySQLdb
+  version: "latest"
+
+env_variables:
+    DJANGO_SETTINGS_MODULE: 'princeton_marketplace.settings'
+
+builtins:
+- django_wsgi: on

@@ -1,0 +1,13 @@
+<h1>{{ posting.title }}</h1>
+<ul>
+    <li>Author: {% if user.is_authenticated %}<a href ="{% url 'market:user_detail' posting.author.id %}">{% endif %}{{posting.author.username}}</a></li>
+    {% if not posting.is_open %}
+    <li>Responder: {{posting.responder.username}}</li>
+    {% endif %}
+    <li>Date Posted: {{posting.date_posted}}</li>
+    <li>Date of Expiration: {{posting.date_expires}}</li>
+    <li>Category: {{posting.category.name}}</li>
+    <li>Description: {{posting.description}}</li>
+    <li>Method of Payment: {{posting.method_of_pay}}</li>
+    <li>Price: {{posting.price}}</li>
+</ul>
