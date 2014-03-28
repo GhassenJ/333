@@ -108,3 +108,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 CAS_SERVER_URL = 'http://princeton.edu/cas/'
+CAS_REDIRECT_URL = 'market/index.html'
