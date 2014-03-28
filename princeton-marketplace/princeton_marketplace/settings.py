@@ -21,8 +21,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'h_haz1=^4rm+q**nbrz+$px*vf5jsun9u*#@g@40cel(_4(z4j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-TEMPLATE_DEBUG = False
+DEBUG = True
+TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ["www.princeton-marketplace.appspot.com"]
 
