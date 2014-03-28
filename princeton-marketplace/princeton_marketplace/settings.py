@@ -45,16 +45,16 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_cas.middleware.CASMiddleware',
+ #   'django_cas.middleware.CASMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'google.appengine.ext.ndb.django_middleware.NdbDjangoMiddleware',
 )
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'django_cas.backends.CASBackend',
-)
+#AUTHENTICATION_BACKENDS = (
+#    'django.contrib.auth.backends.ModelBackend',
+#    'django_cas.backends.CASBackend',
+#)
 
 ROOT_URLCONF = 'princeton_marketplace.urls'
 
@@ -107,5 +107,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-CAS_SERVER_URL = 'http://princeton.edu/cas/'
-CAS_REDIRECT_URL = 'market:index'
+#CAS_SERVER_URL = 'http://princeton.edu/cas/'
+#CAS_REDIRECT_URL = 'market:index'
