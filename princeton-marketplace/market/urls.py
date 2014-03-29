@@ -26,5 +26,6 @@ urlpatterns = patterns('',
     url(r'^hashtag_buying_posts/(?P<hashtag_id>\d+)/$', views.hashtag_buying_posts, name='hashtag_buying_posts'),
     url(r'^posting_detail/(?P<posting_id>\d+)/$', views.posting_detail, name='posting_detail'),
     url(r'^user_detail/(?P<user_id>\d+)/$', views.user_detail, name='user_detail'),
+    url(r'^get_reviews/(?P<user_id>\d+)/$', views.get_reviews, name='get_reviews'),
 )
 
