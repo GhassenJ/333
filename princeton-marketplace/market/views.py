@@ -340,6 +340,9 @@ def all_hashtags(request):
     return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 def category_buying_posts(request, category_id):
+    """
+    This view gets all buying posts under the category identified by category_id
+    """
     try:
         category = Category.objects.get(pk=category_id)
     except Category.DoesNotExist:
@@ -370,6 +373,9 @@ def category_buying_posts(request, category_id):
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 def category_selling_posts(request, category_id):
+    """
+    This view gets all selling posts under the category identified by category_id
+    """
     try:
         category = Category.objects.get(pk=category_id)
     except Category.DoesNotExist:
@@ -400,6 +406,9 @@ def category_selling_posts(request, category_id):
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 def hashtag_buying_posts(request, hashtag_id):
+    """
+    This view gets all buying posts under the hashtag identified by hashtag_id
+    """
     try:
         hashtag = Hashtag.objects.get(pk=hashtag_id)
     except Hashtag.DoesNotExist:
@@ -430,6 +439,9 @@ def hashtag_buying_posts(request, hashtag_id):
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 def hashtag_selling_posts(request, hashtag_id):
+    """
+    This view gets all selling posts under the hashtag identified by hashtag_id
+    """
     try:
         hashtag = Hashtag.objects.get(pk=hashtag_id)
     except Hashtag.DoesNotExist:
@@ -461,15 +473,13 @@ def hashtag_selling_posts(request, hashtag_id):
 
 def get_reviews(request, user_id):
     """
-    This view gets the reviews for the user
+    This view gets the reviews for the user whose id is user_id
     """
     try:
         user = User.objects.get(pk=user_id)
     except User.DoesNotExist:
         raise Http404
     else: 
-
-    #If the user is authenticated, then display categories
         review_list = user.review_reviewee.all().order_by('date_posted') #List of posts I've authored that are closed
         response_list = []
         for review in review_list:
@@ -482,7 +492,7 @@ def get_reviews(request, user_id):
 
 def posting_detail(request, posting_id):
     """
-    This view shows the details of a posting
+    This view gets the details of a posting whose id is posting_id
     """
     try:
         posting = Posting.objects.get(pk=posting_id)
@@ -514,7 +524,7 @@ def posting_detail(request, posting_id):
 
 def user_detail(request, user_id):
     """
-    This view shows the details of a user.
+    This view gets the details of a user whose id is user_id.
     """
     try:
         user = User.objects.get(pk=user_id)
