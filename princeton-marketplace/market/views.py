@@ -481,13 +481,65 @@ def posting_detail(request, posting_id):
     """
     This view shows the details of a posting
     """
-    posting = get_object_or_404(Posting, pk=posting_id)
-    return render(request, 'market/posting_detail.html', {'posting': posting})
+    try:
+        posting = Posting.objects.get(pk=posting_id)
+    except Posting.DoesNotExist:
+        raise Http404
+    else: 
+        postdata = {}
+        postdata['title'] = posting.title
+        postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+        if (posting.responder is not None):
+            postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
+        else:
+            postdata['responder'] = {}
+        postdata['date_posted'] = posting.date_posted.__str__()
+        postdata['date_expires'] = posting.date_expires.__str__()
+        postdata['method_of_payment'] = posting.method_of_pay
+        postdata['price'] = posting.price
+        postdata['description'] = posting.description
+        postdata['selling'] = posting.is_selling
+        postdata['open'] = posting.is_open
+        postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+        postdata['id'] = posting.id
+        hashtags = []
+        for hashtag in posting.hashtags.all():
+            hashtags.append({"name": hashtag.name, "id": hashtag.id})
+        postdata['hashtags'] = hashtags
+        return HttpResponse(json.dumps(postdata), content_type="application/json")
 
-@login_required
+
 def user_detail(request, user_id):
     """
-    This view shows the details of a user. Only works for signed-in users.
+    This view shows the details of a user.
     """
-    user = get_object_or_404(User, pk=user_id)
-    return render(request, 'market/user_detail.html', {'user': user})
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        raise Http404
+    else: 
+        userprofile = user.userprofile
+        userdata = {}
+        userdata["username"] = user.username
+        userdata["firstname"] = user.first_name
+        userdata["lastname"] = user.last_name
+        userdata["email"] = user.email
+        userdata["phone"] = userprofile.phone_no
+        userdata["year"] = userprofile.class_year
+        userdata["rating"] = userprofile.rating
+        userdata["transactions"] = userprofile.transactions
+        categories = []
+        for category in userprofile.categories.all():
+            categories.append({"name": category.name, "id": category.id})
+        userdata["categories"] = categories
+        hashtags = []
+        for hashtag in userprofile.hashtags.all():
+            hashtags.append({"name": hashtag.name, "id": hashtag.id})
+        userdata["hashtags"] = hashtags
+        reviews = []
+        for review in user.review_reviewee.all():
+            reviews.append({"title": review.title, "rating": review.rating, "id": review.id})
+        userdata["reviews"] = reviews
+        userdata["id"] = user.id
+        return HttpResponse(json.dumps(userdata), content_type="application/json")
+
