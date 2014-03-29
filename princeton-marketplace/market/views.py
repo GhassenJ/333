@@ -9,9 +9,11 @@ from market.forms import *
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
 import json
 
+######################################################################################
+### HOMEPAGE (TEMPORARY)
+######################################################################################
 def display_postings(request):
     """
     This view displays either all postings (for a non-authenticated user), or
@@ -74,6 +76,16 @@ def display_postings(request):
 #         form = PostingForm()
 
 #     return render_to_response('market/create_posting.html', {'form': form}, context)
+
+
+
+
+
+
+
+######################################################################################
+### USER ACCOUNT MANAGEMENT FUNCTIONS (TEMPORARY)
+######################################################################################
 
 def register(request):
     """
@@ -147,6 +159,10 @@ def user_logout(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('market:index', args=''))
+
+######################################################################################
+### PERSONALIZED POST (GET) VIEWS
+######################################################################################
 
 @login_required
 def my_open_posts(request):
@@ -247,6 +263,11 @@ def my_responded_posts(request):
             response_list.append(postdata)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
+
+######################################################################################
+### GENERIC POST (GET) VIEWS
+######################################################################################
+
 def all_buying_posts(request):
     """
     This view returns JSON data for all postings for buying
@@ -309,6 +330,10 @@ def all_selling_posts(request):
         response_list.append(postdata)
     return HttpResponse(json.dumps(response_list), content_type="application/json")
 
+######################################################################################
+### GETTING VIEWS FOR CATEGORIES AND HASHTAGS
+######################################################################################
+
 def all_categories(request):
     """
     This view returns JSON data for all categories
@@ -338,6 +363,10 @@ def all_hashtags(request):
         postdata['id'] = hashtag.id
         response_list.append(postdata)
     return HttpResponse(json.dumps(response_list), content_type="application/json")
+
+######################################################################################
+### POST-GETTING VIEWS FOR CATEGORIES AND HASHTAGS
+######################################################################################
 
 def category_buying_posts(request, category_id):
     """
@@ -471,6 +500,10 @@ def hashtag_selling_posts(request, hashtag_id):
             response_list.append(postdata)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
+######################################################################################
+### GETTER FOR A USER'S REVIEWS
+######################################################################################
+
 def get_reviews(request, user_id):
     """
     This view gets the reviews for the user whose id is user_id
@@ -489,6 +522,10 @@ def get_reviews(request, user_id):
             postdata['id'] = review.id
             response_list.append(postdata)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
+
+######################################################################################
+### DETAIL FETCHING VIEWS FOR POSTINGS, USERS, AND REVIEWS
+######################################################################################
 
 def posting_detail(request, posting_id):
     """
