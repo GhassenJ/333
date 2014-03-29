@@ -159,7 +159,7 @@ def my_open_posts(request):
 
     #If the user is authenticated, then display categories
     if user.is_authenticated():
-        my_author_list = user.author.all().order_by('date_posted') #List of posts I've authored
+        my_author_list = user.author.all().filter(is_open=True).order_by('date_posted') #List of posts I've authored
         response_list = []
         for posting in my_author_list:
             postdata = {}
