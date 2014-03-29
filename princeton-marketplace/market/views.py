@@ -223,6 +223,7 @@ def my_closed_posts(request):
             postdata['is_selling'] = posting.is_selling
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
+            postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -257,6 +258,7 @@ def my_responded_posts(request):
             postdata['is_selling'] = posting.is_selling
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
+            postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -293,6 +295,7 @@ def all_buying_posts(request):
         postdata['description'] = posting.description
         postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
         postdata['id'] = posting.id
+        postdata['image'] = posting.picture
         hashtags = []
         for hashtag in posting.hashtags.all():
             hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -324,6 +327,7 @@ def all_selling_posts(request):
         postdata['description'] = posting.description
         postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
         postdata['id'] = posting.id
+        postdata['image'] = posting.picture
         hashtags = []
         for hashtag in posting.hashtags.all():
             hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -395,6 +399,7 @@ def category_buying_posts(request, category_id):
             postdata['description'] = posting.description
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
+            postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -428,6 +433,7 @@ def category_selling_posts(request, category_id):
             postdata['description'] = posting.description
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
+            postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -461,6 +467,7 @@ def hashtag_buying_posts(request, hashtag_id):
             postdata['description'] = posting.description
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
+            postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -494,6 +501,7 @@ def hashtag_selling_posts(request, hashtag_id):
             postdata['description'] = posting.description
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
+            postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -582,6 +590,7 @@ def posting_detail(request, posting_id):
         postdata['open'] = posting.is_open
         postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
         postdata['id'] = posting.id
+        postdata['image'] = posting.picture
         hashtags = []
         for hashtag in posting.hashtags.all():
             hashtags.append({"name": hashtag.name, "id": hashtag.id})
