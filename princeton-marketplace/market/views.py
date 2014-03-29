@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
@@ -197,7 +197,7 @@ def my_responded_posts(request):
             postdata = {}
             postdata['title'] = posting.title
             postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
-            postdata['responder'] = {"username":posting.responder.all()[0].username, "id":posting.responder.all()[0].id}
+            postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
             postdata['date_posted'] = posting.date_posted.__str__()
             postdata['date_expires'] = posting.date_expires.__str__()
             postdata['method_of_payment'] = posting.method_of_pay
@@ -212,6 +212,127 @@ def my_responded_posts(request):
             postdata['hashtags'] = hashtags
             response_list.append(postdata)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
+
+def category_buying_posts(request, category_id):
+    try:
+        category = Category.objects.get(pk=category_id)
+    except Category.DoesNotExist:
+        raise Http404
+    else:
+        response_list=[]
+        category_post_list = category.posting_set.all().filter(is_selling=False).order_by('date_posted')
+        for posting in category_post_list:
+            postdata = {}
+            postdata['title'] = posting.title
+            postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+            if (posting.responder is not None):
+                postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
+            else:
+                postdata['responder'] = {}
+            postdata['date_posted'] = posting.date_posted.__str__()
+            postdata['date_expires'] = posting.date_expires.__str__()
+            postdata['method_of_payment'] = posting.method_of_pay
+            postdata['price'] = posting.price
+            postdata['description'] = posting.description
+            postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+            postdata['id'] = posting.id
+            hashtags = []
+            for hashtag in posting.hashtags.all():
+                hashtags.append({"name": hashtag.name, "id": hashtag.id})
+            postdata['hashtags'] = hashtags
+            response_list.append(postdata)
+        return HttpResponse(json.dumps(response_list), content_type="application/json")
+
+def category_selling_posts(request, category_id):
+    try:
+        category = Category.objects.get(pk=category_id)
+    except Category.DoesNotExist:
+        raise Http404
+    else:
+        response_list=[]
+        category_post_list = category.posting_set.all().filter(is_selling=True).order_by('date_posted')
+        for posting in category_post_list:
+            postdata = {}
+            postdata['title'] = posting.title
+            postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+            if (posting.responder is not None):
+                postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
+            else:
+                postdata['responder'] = {}
+            postdata['date_posted'] = posting.date_posted.__str__()
+            postdata['date_expires'] = posting.date_expires.__str__()
+            postdata['method_of_payment'] = posting.method_of_pay
+            postdata['price'] = posting.price
+            postdata['description'] = posting.description
+            postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+            postdata['id'] = posting.id
+            hashtags = []
+            for hashtag in posting.hashtags.all():
+                hashtags.append({"name": hashtag.name, "id": hashtag.id})
+            postdata['hashtags'] = hashtags
+            response_list.append(postdata)
+        return HttpResponse(json.dumps(response_list), content_type="application/json")
+
+def hashtag_buying_posts(request, hashtag_id):
+    try:
+        hashtag = Hashtag.objects.get(pk=hashtag_id)
+    except Hashtag.DoesNotExist:
+        raise Http404
+    else:
+        response_list=[]
+        hashtag_post_list = hashtag.posting_set.all().filter(is_selling=False).order_by('date_posted')
+        for posting in hashtag_post_list:
+            postdata = {}
+            postdata['title'] = posting.title
+            postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+            if (posting.responder is not None):
+                postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
+            else:
+                postdata['responder'] = {}
+            postdata['date_posted'] = posting.date_posted.__str__()
+            postdata['date_expires'] = posting.date_expires.__str__()
+            postdata['method_of_payment'] = posting.method_of_pay
+            postdata['price'] = posting.price
+            postdata['description'] = posting.description
+            postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+            postdata['id'] = posting.id
+            hashtags = []
+            for hashtag in posting.hashtags.all():
+                hashtags.append({"name": hashtag.name, "id": hashtag.id})
+            postdata['hashtags'] = hashtags
+            response_list.append(postdata)
+        return HttpResponse(json.dumps(response_list), content_type="application/json")
+
+def hashtag_selling_posts(request, hashtag_id):
+    try:
+        hashtag = Hashtag.objects.get(pk=hashtag_id)
+    except Hashtag.DoesNotExist:
+        raise Http404
+    else:
+        response_list=[]
+        hashtag_post_list = hashtag.posting_set.all().filter(is_selling=True).order_by('date_posted')
+        for posting in hashtag_post_list:
+            postdata = {}
+            postdata['title'] = posting.title
+            postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+            if (posting.responder is not None):
+                postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
+            else:
+                postdata['responder'] = {}
+            postdata['date_posted'] = posting.date_posted.__str__()
+            postdata['date_expires'] = posting.date_expires.__str__()
+            postdata['method_of_payment'] = posting.method_of_pay
+            postdata['price'] = posting.price
+            postdata['description'] = posting.description
+            postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+            postdata['id'] = posting.id
+            hashtags = []
+            for hashtag in posting.hashtags.all():
+                hashtags.append({"name": hashtag.name, "id": hashtag.id})
+            postdata['hashtags'] = hashtags
+            response_list.append(postdata)
+        return HttpResponse(json.dumps(response_list), content_type="application/json")
+
 def posting_detail(request, posting_id):
     """
     This view shows the details of a posting
