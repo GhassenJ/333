@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+SETTINGS_DIR = os.path.dirname(__file__)
+PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
+PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 
 
 # Quick-start development settings - unsuitable for production
@@ -107,5 +110,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+#STATIC_ROOT = 'static'
+STATIC_PATH = os.path.join(PROJECT_PATH,'static')
+STATICFILES_DIRS = (
+    STATIC_PATH,
+    )
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 #CAS_SERVER_URL = 'http://princeton.edu/cas/'
 #CAS_REDIRECT_URL = 'market:index'
