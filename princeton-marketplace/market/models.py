@@ -60,5 +60,7 @@ class Posting(models.Model):
 
     category = models.ForeignKey(Category) # Link to relevant category
     hashtags = models.ManyToManyField(Hashtag, blank=True, null=True)
+
+    picture = models.ImageField(upload_to='post_images', blank=True)
     def __unicode__(self):
         return self.title
