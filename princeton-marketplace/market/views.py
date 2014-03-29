@@ -189,6 +189,7 @@ def my_open_posts(request):
             postdata['is_selling'] = posting.is_selling
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
+            postdata['image'] = posting.picture.url
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
