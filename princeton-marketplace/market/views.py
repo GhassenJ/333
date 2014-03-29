@@ -47,35 +47,35 @@ def display_postings(request):
         context = {'posting_list': posting_list}
         return render(request, 'market/index.html', context)
 
-# @login_required
-# def create_posting(request):
-#     """
-#     This view allows an authed user to create a new posting.
-#     """
-#     context = RequestContext(request)
+@login_required
+def create_posting(request):
+    """
+    This view allows an authed user to create a new posting.
+    """
+    context = RequestContext(request)
 
-#     # If we're doing a POST, read in form data and save it
-#     if request.method == 'POST':
-#         form = PostingForm(data=request.POST)
+    # If we're doing a POST, read in form data and save it
+    if request.method == 'POST':
+        form = PostingForm(data=request.POST)
 
-#         if form.is_valid():
-#             posting = form.save(commit=False)
-#             print request.user.username
-#             posting.author = request.user
-#             posting.is_open = True
-#             #posting.responder = None
-#             posting.date_posted = timezone.now()
-#             posting.save()
-#             form.save_m2m()
-#             return HttpResponseRedirect(reverse('market:index', args=''))
-#         else:
-#             print form.errors
+        if form.is_valid():
+            posting = form.save(commit=False)
+            print request.user.username
+            posting.author = request.user
+            posting.is_open = True
+            #posting.responder = None
+            posting.date_posted = timezone.now()
+            posting.save()
+            form.save_m2m()
+            return HttpResponseRedirect(reverse('market:index', args=''))
+        else:
+            print form.errors
 
-#     # Otherwise, post the empty form for the user to fill in.
-#     else:
-#         form = PostingForm()
+    # Otherwise, post the empty form for the user to fill in.
+    else:
+        form = PostingForm()
 
-#     return render_to_response('market/create_posting.html', {'form': form}, context)
+    return render_to_response('market/create_posting.html', {'form': form}, context)
 
 
 
@@ -189,7 +189,10 @@ def my_open_posts(request):
             postdata['is_selling'] = posting.is_selling
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
-            postdata['image'] = posting.picture.url
+            if posting.picture:
+                postdata['image'] = posting.picture.url
+            else:
+                postdata['image'] = ""
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})

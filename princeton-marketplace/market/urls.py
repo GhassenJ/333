@@ -4,7 +4,7 @@ from market import views
 
 urlpatterns = patterns('',
     url(r'^$', views.display_postings, name='index'),
-    #url(r'^create_posting/$', views.create_posting, name='create_posting'),
+    url(r'^create_posting/$', views.create_posting, name='create_posting'),
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
