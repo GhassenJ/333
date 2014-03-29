@@ -544,7 +544,7 @@ def review_detail(request, review_id):
         reviewee = {}
         postdata['title'] = review.title
         postdata['description'] = review.description
-        postdata['date'] = review.date_posted
+        postdata['date'] = review.date_posted.__str__()
         postdata['rating'] = review.rating
         reviewer['username'] = review.author.username
         reviewer['id'] = review.author.id
