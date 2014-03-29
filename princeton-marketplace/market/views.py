@@ -324,6 +324,20 @@ def all_categories(request):
         response_list.append(postdata)
     return HttpResponse(json.dumps(response_list), content_type="application/json")
 
+def all_hashtags(request):
+    """
+    This view returns JSON data for all hashtags
+    """
+    # Get all categories
+    hashtags = Hashtag.objects.all().order_by('name')
+    response_list = []
+    for hashtag in hashtags:
+        postdata = {}
+        postdata['name'] = hashtag.name
+        postdata['frequency'] = hashtag.frequency
+        postdata['id'] = hashtag.id
+        response_list.append(postdata)
+    return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 def category_buying_posts(request, category_id):
     try:
@@ -442,6 +456,24 @@ def hashtag_selling_posts(request, hashtag_id):
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
             postdata['hashtags'] = hashtags
+            response_list.append(postdata)
+        return HttpResponse(json.dumps(response_list), content_type="application/json")
+
+def get_reviews(request, user_id):
+    """
+    This view gets the reviews for the user
+    """
+    user = User.objects.get(pk=user_id)
+
+    #If the user is authenticated, then display categories
+    if user.is_authenticated():
+        review_list = user.review_reviewee.all().order_by('date_posted') #List of posts I've authored that are closed
+        response_list = []
+        for review in review_list:
+            postdata = {}
+            postdata['title'] = review.title
+            postdata['rating'] = review.rating
+            postdata['id'] = review.id
             response_list.append(postdata)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
