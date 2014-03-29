@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
@@ -9,6 +9,8 @@ from market.forms import *
 from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
+import json
 
 def display_postings(request):
     """
@@ -43,35 +45,35 @@ def display_postings(request):
         context = {'posting_list': posting_list}
         return render(request, 'market/index.html', context)
 
-@login_required
-def create_posting(request):
-    """
-    This view allows an authed user to create a new posting.
-    """
-    context = RequestContext(request)
+# @login_required
+# def create_posting(request):
+#     """
+#     This view allows an authed user to create a new posting.
+#     """
+#     context = RequestContext(request)
 
-    # If we're doing a POST, read in form data and save it
-    if request.method == 'POST':
-        form = PostingForm(data=request.POST)
+#     # If we're doing a POST, read in form data and save it
+#     if request.method == 'POST':
+#         form = PostingForm(data=request.POST)
 
-        if form.is_valid():
-            posting = form.save(commit=False)
-            print request.user.username
-            posting.author = request.user
-            posting.is_open = True
-            #posting.responder = None
-            posting.date_posted = timezone.now()
-            posting.save()
-            form.save_m2m()
-            return HttpResponseRedirect(reverse('market:index', args=''))
-        else:
-            print form.errors
+#         if form.is_valid():
+#             posting = form.save(commit=False)
+#             print request.user.username
+#             posting.author = request.user
+#             posting.is_open = True
+#             #posting.responder = None
+#             posting.date_posted = timezone.now()
+#             posting.save()
+#             form.save_m2m()
+#             return HttpResponseRedirect(reverse('market:index', args=''))
+#         else:
+#             print form.errors
 
-    # Otherwise, post the empty form for the user to fill in.
-    else:
-        form = PostingForm()
+#     # Otherwise, post the empty form for the user to fill in.
+#     else:
+#         form = PostingForm()
 
-    return render_to_response('market/create_posting.html', {'form': form}, context)
+#     return render_to_response('market/create_posting.html', {'form': form}, context)
 
 def register(request):
     """
@@ -145,6 +147,38 @@ def user_logout(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('market:index', args=''))
+
+@login_required
+def my_open_posts(request):
+    """
+    This view returns JSON data for all postings created by the current user
+    that are open. Ordered by date.
+    """
+    # Get the currently-signed-in user
+    user = request.user
+
+    #If the user is authenticated, then display categories
+    if user.is_authenticated():
+        my_author_list = user.author.all().order_by('date_posted') #List of posts I've authored
+        response_list = []
+        for posting in my_author_list:
+            postdata = {}
+            postdata['title'] = posting.title
+            postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+            postdata['date_posted'] = posting.date_posted.__str__()
+            postdata['date_expires'] = posting.date_expires.__str__()
+            postdata['method_of_payment'] = posting.method_of_pay
+            postdata['price'] = posting.price
+            postdata['description'] = posting.description
+            postdata['is_selling'] = posting.is_selling
+            postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+            postdata['id'] = posting.id
+            hashtags = []
+            for hashtag in posting.hashtags.all():
+                hashtags.append({"name": hashtag.name, "id": hashtag.id})
+            postdata['hashtags'] = hashtags
+            response_list.append(postdata)
+        return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 def posting_detail(request, posting_id):
     """
