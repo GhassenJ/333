@@ -527,6 +527,35 @@ def get_reviews(request, user_id):
 ### DETAIL FETCHING VIEWS FOR POSTINGS, USERS, AND REVIEWS
 ######################################################################################
 
+def review_detail(request, review_id):
+    """
+    This view gets the reviews for the user
+    """
+    try:
+        review = Review.objects.get(pk=review_id)
+    except Review.DoesNotExist:
+        raise Http404
+    else: 
+
+    #If the user is authenticated, then display categories
+        response_list = []
+        postdata = {}
+        reviewer = {}
+        reviewee = {}
+        postdata['title'] = review.title
+        postdata['description'] = review.description
+        postdata['date'] = review.date_posted
+        postdata['rating'] = review.rating
+        reviewer['username'] = review.author.username
+        reviewer['id'] = review.author.id
+        reviewee['username'] = review.reviewee.username
+        reviewee['id'] = review.reviewee.id
+        postdata['reviewer'] = reviewer
+        postdata['reviewee'] = reviewee
+        postdata['id'] = review.id
+        response_list.append(postdata)
+        return HttpResponse(json.dumps(response_list), content_type="application/json")
+
 def posting_detail(request, posting_id):
     """
     This view gets the details of a posting whose id is posting_id
