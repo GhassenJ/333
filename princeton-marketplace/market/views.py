@@ -180,6 +180,38 @@ def my_open_posts(request):
             response_list.append(postdata)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
+@login_required
+def my_responded_posts(request):
+    """
+    This view returns JSON data for all postings that the logged user 
+    has responded to.
+    """
+    # Get the currently-signed-in user
+    user = request.user
+
+    #If the user is authenticated, then display categories
+    if user.is_authenticated():
+        my_responded_list = user.responder.all().order_by('date_posted') #List of posts I've authored
+        response_list = []
+        for posting in my_responded_list:
+            postdata = {}
+            postdata['title'] = posting.title
+            postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+            postdata['responder'] = {"username":posting.responder.all()[0].username, "id":posting.responder.all()[0].id}
+            postdata['date_posted'] = posting.date_posted.__str__()
+            postdata['date_expires'] = posting.date_expires.__str__()
+            postdata['method_of_payment'] = posting.method_of_pay
+            postdata['price'] = posting.price
+            postdata['description'] = posting.description
+            postdata['is_selling'] = posting.is_selling
+            postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+            postdata['id'] = posting.id
+            hashtags = []
+            for hashtag in posting.hashtags.all():
+                hashtags.append({"name": hashtag.name, "id": hashtag.id})
+            postdata['hashtags'] = hashtags
+            response_list.append(postdata)
+        return HttpResponse(json.dumps(response_list), content_type="application/json")
 def posting_detail(request, posting_id):
     """
     This view shows the details of a posting

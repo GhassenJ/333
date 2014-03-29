@@ -45,7 +45,7 @@ class Posting(models.Model):
     title = models.CharField(max_length = 200)
     
     author = models.ForeignKey(User, related_name='author') # Link to user author
-    responder = models.ManyToManyField(User, related_name='responder', blank=True, null=True) # Link to user responders
+    responder = models.ForeignKey(User, related_name='responder', blank=True, null=True) # Link to user responder
     
     date_posted = models.DateTimeField('Date Posted', default = timezone.now())
     date_expires = models.DateTimeField('Expiration Date', default = timezone.now())

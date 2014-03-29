@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 #    url(r'^logout/$', 'django_cas.views.logout', name='logout'),
 
     url(r'^my_open_posts/$', views.my_open_posts, name='my_open_posts'),
+    ulr(r'^my_responded_posts/$', view.my_responded_posts, name='my_responded_posts'),
     url(r'^posting/(?P<posting_id>\d+)/$', views.posting_detail, name='posting_detail'),
     url(r'^user/(?P<user_id>\d+)/$', views.user_detail, name='user_detail'),
 )
