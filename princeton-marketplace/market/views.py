@@ -463,10 +463,13 @@ def get_reviews(request, user_id):
     """
     This view gets the reviews for the user
     """
-    user = User.objects.get(pk=user_id)
+    try:
+        user = User.objects.get(pk=user_id)
+    except User.DoesNotExist:
+        raise Http404
+    else: 
 
     #If the user is authenticated, then display categories
-    if user.is_authenticated():
         review_list = user.review_reviewee.all().order_by('date_posted') #List of posts I've authored that are closed
         response_list = []
         for review in review_list:
