@@ -10,4 +10,8 @@
     <li>Description: {{posting.description}}</li>
     <li>Method of Payment: {{posting.method_of_pay}}</li>
     <li>Price: {{posting.price}}</li>
+
+    {% if user.is_authenticated and user == posting.author %}
+    <li><a href ="{% url 'market:delete_posting' posting.id %}">Delete</a></li>
+    {% endif %}
 </ul>

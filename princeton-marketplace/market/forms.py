@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 # Form for creating a new posting
 class PostingForm(forms.ModelForm):
-    is_selling = forms.BooleanField(label='Buying?', required = False, initial=False)
+    is_selling = forms.BooleanField(label='Selling?', required = False, initial=False)
     class Meta:
         model = Posting
         fields = ('title', 'is_selling', 'category', 'date_expires', 'price', 'method_of_pay', 'description', 'picture')
@@ -27,3 +27,13 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('phone_no', 'class_year', 'categories')
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+class UserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('phone_no', 'class_year', 'categories', 'hashtags')

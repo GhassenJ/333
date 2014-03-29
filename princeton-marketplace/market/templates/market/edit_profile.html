@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <title>Contact</title>
+    <title>Edit Profile</title>
     <script type="text/javascript"
         src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js">
     </script>
@@ -60,11 +60,13 @@
     </style>
 </head>
 <body>
-    <h1>Add A Posting</h1>
-    <form id="ajaxform" action="{% url 'market:create_posting' %}" method="post">
+    <h1>Edit Profile</h1>
+    <form id="ajaxform" action="{% url 'market:edit_profile' %}" method="post">
         {% csrf_token %}
-        {{ form.non_field_errors }}
-        {{ form.as_p }}
+        {{ user_form.non_field_errors }}
+        {{ user_form.as_p }}
+        {{ user_profile_form.non_field_errors }}
+        {{ user_profile_form.as_p }}
         <div id="loading" style="display:none;">
             <span id="load_text">loading...</span>
         </div>
@@ -74,7 +76,7 @@
         <div id="form_ajax_error" style="display:none;">
             <span>Can not submit data due to errors.</span>
         </div>
-        <p id="sendwrapper"><input type="submit" value="Create Posting" id="sendbutton"/></p>
+        <p id="sendwrapper"><input type="submit" value="Submit" id="sendbutton"/></p>
     </form>
 </body>
 </html>

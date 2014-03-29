@@ -27,5 +27,8 @@ urlpatterns = patterns('',
     url(r'^user_detail/(?P<user_id>\d+)/$', views.user_detail, name='user_detail'),
     url(r'^get_reviews/(?P<user_id>\d+)/$', views.get_reviews, name='get_reviews'),
     url(r'^review_detail/(?P<review_id>\d+)/$', views.review_detail, name='review_detail'),
+
+    url(r'^delete_posting/(?P<posting_id>\d+)/$', views.delete_posting, name='delete_posting'),
+    url(r'^edit_profile/$', views.edit_profile, name='edit_profile'),
 )
 

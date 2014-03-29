@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, HttpResponse, Http404, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.utils import timezone
@@ -52,7 +52,6 @@ def create_posting(request):
     """
     This view allows an authed user to create a new posting.
     """
-    context = RequestContext(request)
 
     # If we're doing a POST, read in form data and save it
     if request.method == 'POST':
@@ -60,26 +59,98 @@ def create_posting(request):
 
         if form.is_valid():
             posting = form.save(commit=False)
-            print request.user.username
             posting.author = request.user
             posting.is_open = True
-            #posting.responder = None
             posting.date_posted = timezone.now()
             posting.save()
             form.save_m2m()
-            return HttpResponseRedirect(reverse('market:index', args=''))
+            if request.is_ajax():
+                return HttpResponse('OK')
+            else:
+                return HttpResponseRedirect(reverse('market:index', args=''))
         else:
-            print form.errors
+            if request.is_ajax():
+                errors_dict = {}
+                if form.errors:
+                    for error in form.errors:
+                        e = form.errors[error]
+                        errors_dict[error] = unicode(e)
+                return HttResponseBadRequest(json.dumps(errors_dict))
+            else:
+                print form.errors
 
     # Otherwise, post the empty form for the user to fill in.
     else:
         form = PostingForm()
 
-    return render_to_response('market/create_posting.html', {'form': form}, context)
+    return render(request, 'market/create_posting.html', {'form': form})
+    #return render_to_response('market/create_posting.html', {'form': form}, context)
+
+@login_required
+def delete_posting(request, posting_id):
+    try:
+        posting = Posting.objects.get(pk=posting_id)
+    except Posting.DoesNotExist:
+        raise Http404
+    else:
+        user = request.user
+        if request.method == 'POST':
+            if user == posting.author:
+                posting.delete()
+                if request.is_ajax():
+                    return HttpReponse('OK')
+                else:
+                    return HttpResponseRedirect(reverse('market:index', args=''))
+            else:
+                raise Http404
+        return HttpResponseRedirect(reverse('market:index', args='')) 
+
+@login_required
+def edit_profile(request):
+    """
+    """
+    # If we're doing a POST, read in form data and save it
+    if request.method == 'POST':
+        user_form = UserEditForm(data=request.POST)
+        user_profile_form = UserProfileEditForm(data=request.POST)
 
 
+        if user_form.is_valid() and user_profile_form.is_valid():
+            user_form = UserEditForm(request.POST, instance=request.user)
+            user = user_form.save()
+            user.save()
 
+            user_profile_form = UserProfileEditForm(request.POST, instance=request.user.userprofile)
+            profile = user_profile_form.save(commit=False)
+            profile.save()
+            user_profile_form.save_m2m()
 
+            if request.is_ajax():
+                return HttpResponse('OK')
+            else:
+                return HttpResponseRedirect(reverse('market:index', args=''))
+        else:
+            if request.is_ajax():
+                errors_dict = {}
+                if user_form.errors:
+                    for error in user_form.errors:
+                        e = user_form.errors[error]
+                        errors_dict[error] = unicode(e)
+                if user_profile_form.errors:
+                    for error in user_profile_form.errors:
+                        e = user_profile_form.errors[error]
+                        errors_dict[error] = unicode(e)
+                return HttResponseBadRequest(json.dumps(errors_dict))
+            else:
+                print user_form.errors, user_profile_form.errors
+
+    # Otherwise, post the empty form for the user to fill in.
+    else:
+        user_form = UserEditForm(instance=request.user)
+        user_profile_form = UserProfileEditForm(instance=request.user.userprofile)
+
+    return render(request, 'market/edit_profile.html',  {'user_form': user_form, 'user_profile_form': user_profile_form})
+    #return render_to_response('market/create_posting.html', {'form': form}, context)
 
 
 
