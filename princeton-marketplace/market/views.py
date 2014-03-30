@@ -171,6 +171,34 @@ def respond_to_posting(request, posting_id):
         # Redirect to homepage
         return HttpResponseRedirect(reverse('market:index', args='')) 
 
+
+@login_required
+def remove_responder(request, posting_id):
+    """
+    This method allows a user to respond to a posting (specified by posting_id)
+    """
+
+    #Ensure that the posting exists
+    try:
+        posting = Posting.objects.get(pk=posting_id)
+    except Posting.DoesNotExist:
+        raise Http404
+    else:
+        user = request.user
+        if request.method == 'POST':
+            if request.user == posting.author:
+                posting.is_open = True;
+                posting.responder = "";
+                posting.save()
+                if request.is_ajax():
+                    return HttpReponse('OK')
+                else:
+                    return HttpResponseRedirect(reverse('market:index', args=''))
+
+        # Redirect to homepage
+        return HttpResponseRedirect(reverse('market:index', args='')) 
+
+
 @login_required
 def edit_profile(request):
     """
