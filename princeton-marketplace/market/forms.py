@@ -45,4 +45,9 @@ class UserProfileEditForm(forms.ModelForm):
         model = UserProfile
         fields = ('phone_no', 'class_year', 'categories', 'hashtags')
 
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ('title', 'description', 'date_posted', 'rating', 'author', 'reviewee')
+
 

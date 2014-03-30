@@ -95,6 +95,66 @@ def create_posting(request):
     return render(request, 'market/create_posting.html', {'form': form})
 
 @login_required
+def write_review(request, user_id):
+    """
+    This view allows an authed user to create a new posting.
+    """
+
+    try:
+        reviewee = User.objects.get(pk=user_id)
+    except Posting.DoesNotExist:
+        raise Http404
+    else:
+
+    # If we're doing a POST, read in form data and save it
+    if request.method == 'POST':
+        review = ReviewForm(data=request.POST)
+
+        # Process a valid form:
+        if review.is_valid():
+            # Save information from the PostingForm
+            tempreview = review.save(commit=False)
+
+            # Save additional information (author, is_open, date_posted)
+            tempreview.title = request.title
+            tempreview.description = request.description
+            tempreview.date = timezone.now()
+            tempreview.rating = request.rating
+            reviewer['username'] = request.user.username
+            reviewer['id'] = request.user.id
+            revieweeinfo['username'] = reviewee.username
+            revieweeinfo['id'] = reviewee.id
+            tempreview.reviewer = reviewer
+            tempreview.reviewee = revieweeinfo
+
+            # Save the M2M fields (hashtag and category)
+            tempreview.save()
+            review.save_m2m()
+
+
+            if request.is_ajax():
+                return HttpResponse('OK')
+            else:
+                return HttpResponseRedirect(reverse('market:index', args=''))
+        # Return Errors
+        else:
+            if request.is_ajax():
+                errors_dict = {}
+                if review.errors:
+                    for error in review.errors:
+                        e = review.errors[error]
+                        errors_dict[error] = unicode(e)
+                return HttpResponseBadRequest(json.dumps(errors_dict))
+            else:
+                print review.errors
+
+    # Otherwise, post the empty form for the user to fill in.
+    else:
+        form = PostingForm()
+
+    return render(request, 'market/write_review.html', {'review': review, 'user_id': user_id})
+
+@login_required
 def delete_posting(request, posting_id):
     """
     This method allows a user to delete a posting (specified by posting_id)
