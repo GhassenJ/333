@@ -136,8 +136,8 @@ def close_posting(request, posting_id):
         if posting.responder is None:
             raise Http404
         if request.method == 'POST':
-            user.transactions = user.transactions + 1
-            posting.responder.transactions = user.transactions + 1
+            user.userprofile.transactions = user.userprofile.transactions + 1
+            posting.responder.userprofile.transactions = posting.responder.userprofile.transactions + 1
             posting.delete()
             if request.is_ajax():
                 return HttpResponse('OK')
