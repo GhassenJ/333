@@ -57,17 +57,26 @@ def create_posting(request):
     if request.method == 'POST':
         form = PostingForm(data=request.POST)
 
+        # Process a valid form:
         if form.is_valid():
+            # Save information from the PostingForm
             posting = form.save(commit=False)
+
+            # Save additional information (author, is_open, date_posted)
             posting.author = request.user
             posting.is_open = True
             posting.date_posted = timezone.now()
+
+            # Save the M2M fields (hashtag and category)
             posting.save()
             form.save_m2m()
+
+
             if request.is_ajax():
                 return HttpResponse('OK')
             else:
                 return HttpResponseRedirect(reverse('market:index', args=''))
+        # Return Errors
         else:
             if request.is_ajax():
                 errors_dict = {}
@@ -84,17 +93,22 @@ def create_posting(request):
         form = PostingForm()
 
     return render(request, 'market/create_posting.html', {'form': form})
-    #return render_to_response('market/create_posting.html', {'form': form}, context)
 
 @login_required
 def delete_posting(request, posting_id):
+    """
+    This method allows a user to delete a posting (specified by posting_id)
+    """
+    # Ensure that the posting exists
     try:
         posting = Posting.objects.get(pk=posting_id)
     except Posting.DoesNotExist:
         raise Http404
     else:
+
         user = request.user
         if request.method == 'POST':
+            # Only delete if the currently-logged user authored the post.
             if user == posting.author:
                 posting.delete()
                 if request.is_ajax():
@@ -103,23 +117,29 @@ def delete_posting(request, posting_id):
                     return HttpResponseRedirect(reverse('market:index', args=''))
             else:
                 raise Http404
+        # Redirect to homepage
         return HttpResponseRedirect(reverse('market:index', args='')) 
 
 @login_required
 def edit_profile(request):
     """
+    Allows a user to edit their profile information
     """
+
     # If we're doing a POST, read in form data and save it
     if request.method == 'POST':
+        # Load the User and UserProfile forms
         user_form = UserEditForm(data=request.POST)
         user_profile_form = UserProfileEditForm(data=request.POST)
 
 
         if user_form.is_valid() and user_profile_form.is_valid():
+            # Save data for the User
             user_form = UserEditForm(request.POST, instance=request.user)
             user = user_form.save()
             user.save()
 
+            # Save data for the UserProfile, being careful with M2M fields
             user_profile_form = UserProfileEditForm(request.POST, instance=request.user.userprofile)
             profile = user_profile_form.save(commit=False)
             profile.save()
@@ -129,6 +149,7 @@ def edit_profile(request):
                 return HttpResponse('OK')
             else:
                 return HttpResponseRedirect(reverse('market:index', args=''))
+        # Return Errors as necessary.
         else:
             if request.is_ajax():
                 errors_dict = {}
