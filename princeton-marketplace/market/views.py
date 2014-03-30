@@ -211,36 +211,42 @@ def edit_posting(request, posting_id):
         raise Http404
     else:
         # If we're doing a POST, read in form data and save it
-        if request.method == 'POST': #########################################
-            posting_form = PostingEditForm(data=request.POST)
+        if request.method == 'POST': 
+            if request.user == posting.author:
+                posting_form = PostingEditForm(data=request.POST)
 
 
-            if posting_form.is_valid():
-                posting_form = PostingEditForm(request.POST, instance=posting)
-                tempposting = posting_form.save(commit=False)
-                tempposting.save()
-                posting_form.save_m2m()
+                if posting_form.is_valid():
+                    posting_form = PostingEditForm(request.POST, instance=posting)
+                    tempposting = posting_form.save(commit=False)
+                    tempposting.save()
+                    posting_form.save_m2m()
 
-                if request.is_ajax():
-                    return HttpResponse('OK')
+                    if request.is_ajax():
+                        return HttpResponse('OK')
+                    else:
+                        return HttpResponseRedirect(reverse('market:index', args=''))
                 else:
-                    return HttpResponseRedirect(reverse('market:index', args=''))
+                    if request.is_ajax():
+                        errors_dict = {}
+                        if posting_form.errors:
+                            for error in posting_form.errors:
+                                e = posting_form.errors[error]
+                                errors_dict[error] = unicode(e)
+                        return HttpResponseBadRequest(json.dumps(errors_dict))
+                    else:
+                        print posting_form.errors
             else:
-                if request.is_ajax():
-                    errors_dict = {}
-                    if posting_form.errors:
-                        for error in posting_form.errors:
-                            e = posting_form.errors[error]
-                            errors_dict[error] = unicode(e)
-                    return HttpResponseBadRequest(json.dumps(errors_dict))
-                else:
-                    print posting_form.errors
+                raise Http404
 
         # Otherwise, post the empty form for the user to fill in.
         else:
-            posting_form = PostingEditForm(instance=posting)
+            if request.user == posting.author:
+                posting_form = PostingEditForm(instance=posting)
+            else:
+                raise Http404
 
-        return render(request, 'market/edit_posting.html',  {'posting_form': posting_form})
+        return render(request, 'market/edit_posting.html',  {'posting_form': posting_form, 'posting_id': posting.id})
 
 
 

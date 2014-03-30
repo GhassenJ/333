@@ -61,7 +61,7 @@
 </head>
 <body>
     <h1>Edit Posting</h1>
-    <form id="ajaxform" action="{% url 'market:edit_posting' %}" method="post">
+    <form id="ajaxform" action="{% url 'market:edit_posting' posting_id %}" method="post">
         {% csrf_token %}
         {{ posting_form.non_field_errors }}
         {{ posting_form.as_p }} 

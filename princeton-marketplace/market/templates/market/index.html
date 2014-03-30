@@ -27,9 +27,12 @@
         <h3>My Current Posts</h3>
         <ul>
         {% for posting in my_author_list %}
-            <li><a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a> <form action="{% url 'market:delete_posting' posting.id %}" method="post"> {% csrf_token %}
-<input type="submit" value="Delete">
-</form></li>
+            <li><a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a> 
+                <form action="{% url 'market:delete_posting' posting.id %}" method="post"> 
+                    {% csrf_token %}
+                    <input type="submit" value="Delete">
+                </form>
+            </li>
         {% endfor %}
         </ul>
     {% else %}
