@@ -71,6 +71,9 @@ def create_posting(request):
             posting.save()
             form.save_m2m()
 
+            # Update the category counts
+            posting.category.num_posts = posting.category.num_posts + 1;
+            posting.category.save()
 
             if request.is_ajax():
                 return HttpResponse('OK')
@@ -170,6 +173,8 @@ def delete_posting(request, posting_id):
         if request.method == 'POST':
             # Only delete if the currently-logged user authored the post.
             if user == posting.author:
+                posting.category.num_posts = posting.category.num_posts - 1;
+                posting.category.save()
                 posting.delete()
                 if request.is_ajax():
                     return HttpReponse('OK')
@@ -197,7 +202,9 @@ def close_posting(request, posting_id):
             raise Http404
         if request.method == 'POST':
             user.userprofile.transactions = user.userprofile.transactions + 1
+            user.userprofile.save()
             posting.responder.userprofile.transactions = posting.responder.userprofile.transactions + 1
+            posting.responder.userprofile.save()
             posting.delete()
             if request.is_ajax():
                 return HttpResponse('OK')
@@ -223,6 +230,8 @@ def respond_to_posting(request, posting_id):
             posting.is_open = False;
             posting.responder = user;
             posting.save()
+            posting.category.num_posts = posting.category.num_posts - 1;
+            posting.category.save()
             if request.is_ajax():
                 return HttpReponse('OK')
             else:
@@ -248,13 +257,16 @@ def remove_responder(request, posting_id):
         if request.method == 'POST':
             if request.user == posting.author:
                 posting.is_open = True;
-                posting.responder = "";
+                posting.responder = None;
                 posting.save()
+                posting.category.num_posts = posting.category.num_posts + 1;
+                posting.category.save()
                 if request.is_ajax():
                     return HttpReponse('OK')
                 else:
                     return HttpResponseRedirect(reverse('market:index', args=''))
-
+            else:
+                raise Http404
         # Redirect to homepage
         return HttpResponseRedirect(reverse('market:index', args='')) 
 
@@ -325,15 +337,20 @@ def edit_posting(request, posting_id):
     else:
         # If we're doing a POST, read in form data and save it
         if request.method == 'POST': 
+
             if request.user == posting.author:
                 posting_form = PostingEditForm(data=request.POST)
 
 
                 if posting_form.is_valid():
+                    posting.category.num_posts = posting.category.num_posts - 1;
+                    posting.category.save()
                     posting_form = PostingEditForm(request.POST, instance=posting)
                     tempposting = posting_form.save(commit=False)
                     tempposting.save()
                     posting_form.save_m2m()
+                    tempposting.category.num_posts = posting.category.num_posts + 1;
+                    tempposting.category.save()
 
                     if request.is_ajax():
                         return HttpResponse('OK')
