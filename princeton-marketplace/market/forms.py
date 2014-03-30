@@ -13,6 +13,7 @@ class PostingForm(forms.ModelForm):
 
 # Form for editing a posting
 class PostingEditForm(forms.ModelForm):
+    is_selling = forms.BooleanField(label='Selling?', required = False, initial=False)
     class Meta:
         model = Posting
         fields = ('title', 'is_selling', 'category', 'date_expires', 'price', 'method_of_pay', 'description', 'picture')

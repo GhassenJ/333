@@ -84,7 +84,7 @@ def create_posting(request):
                     for error in form.errors:
                         e = form.errors[error]
                         errors_dict[error] = unicode(e)
-                return HttResponseBadRequest(json.dumps(errors_dict))
+                return HttpResponseBadRequest(json.dumps(errors_dict))
             else:
                 print form.errors
 
@@ -187,7 +187,7 @@ def edit_profile(request):
                     for error in user_profile_form.errors:
                         e = user_profile_form.errors[error]
                         errors_dict[error] = unicode(e)
-                return HttResponseBadRequest(json.dumps(errors_dict))
+                return HttpResponseBadRequest(json.dumps(errors_dict))
             else:
                 print user_form.errors, user_profile_form.errors
 
@@ -232,7 +232,7 @@ def edit_posting(request, posting_id):
                         for error in posting_form.errors:
                             e = posting_form.errors[error]
                             errors_dict[error] = unicode(e)
-                    return HttResponseBadRequest(json.dumps(errors_dict))
+                    return HttpResponseBadRequest(json.dumps(errors_dict))
                 else:
                     print posting_form.errors
 
