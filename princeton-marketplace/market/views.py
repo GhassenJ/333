@@ -108,54 +108,52 @@ def write_review(request, user_id):
     except Posting.DoesNotExist:
         raise Http404
     else:
+        if request.user == reviewee:
+            raise Http404
+        # If we're doing a POST, read in form data and save it
+        if request.method == 'POST':
+            review = ReviewForm(data=request.POST)
 
-    # If we're doing a POST, read in form data and save it
-    if request.method == 'POST':
-        review = ReviewForm(data=request.POST)
+            # Process a valid form:
+            if review.is_valid():
+                # Save information from the PostingForm
+                tempreview = review.save(commit=False)
 
-        # Process a valid form:
-        if review.is_valid():
-            # Save information from the PostingForm
-            tempreview = review.save(commit=False)
+                # Save additional information (author, is_open, date_posted)
+                tempreview.date = timezone.now()
+                tempreview.author = request.user
+                tempreview.reviewee = reviewee
 
-            # Save additional information (author, is_open, date_posted)
-            tempreview.title = request.title
-            tempreview.description = request.description
-            tempreview.date = timezone.now()
-            tempreview.rating = request.rating
-            reviewer['username'] = request.user.username
-            reviewer['id'] = request.user.id
-            revieweeinfo['username'] = reviewee.username
-            revieweeinfo['id'] = reviewee.id
-            tempreview.reviewer = reviewer
-            tempreview.reviewee = revieweeinfo
+                # Save the M2M fields (hashtag and category)
+                tempreview.save()
 
-            # Save the M2M fields (hashtag and category)
-            tempreview.save()
-            review.save_m2m()
+                newscore = tempreview.rating
+                if (len(reviewee.review_reviewee.all()) > 1):
+                    newscore = int(((len(reviewee.review_reviewee.all())-1)*reviewee.userprofile.rating + tempreview.rating + 0.0) / (len(reviewee.review_reviewee.all())) + 0.5)
+                reviewee.userprofile.rating = newscore
+                reviewee.userprofile.save()
 
-
-            if request.is_ajax():
-                return HttpResponse('OK')
+                if request.is_ajax():
+                    return HttpResponse('OK')
+                else:
+                    return HttpResponseRedirect(reverse('market:index', args=''))
+            # Return Errors
             else:
-                return HttpResponseRedirect(reverse('market:index', args=''))
-        # Return Errors
+                if request.is_ajax():
+                    errors_dict = {}
+                    if review.errors:
+                        for error in review.errors:
+                            e = review.errors[error]
+                            errors_dict[error] = unicode(e)
+                    return HttpResponseBadRequest(json.dumps(errors_dict))
+                else:
+                    print review.errors
+
+        # Otherwise, post the empty form for the user to fill in.
         else:
-            if request.is_ajax():
-                errors_dict = {}
-                if review.errors:
-                    for error in review.errors:
-                        e = review.errors[error]
-                        errors_dict[error] = unicode(e)
-                return HttpResponseBadRequest(json.dumps(errors_dict))
-            else:
-                print review.errors
+            form = ReviewForm()
 
-    # Otherwise, post the empty form for the user to fill in.
-    else:
-        form = PostingForm()
-
-    return render(request, 'market/write_review.html', {'review': review, 'user_id': user_id})
+        return render(request, 'market/write_review.html', {'form': form, 'user_id': user_id})
 
 @login_required
 def delete_posting(request, posting_id):

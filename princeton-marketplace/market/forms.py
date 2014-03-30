@@ -48,6 +48,6 @@ class UserProfileEditForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ('title', 'description', 'date_posted', 'rating', 'author', 'reviewee')
+        fields = ('title', 'description', 'rating')
 
 

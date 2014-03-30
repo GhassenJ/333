@@ -61,7 +61,7 @@
 </head>
 <body>
     <h1>Write A Review</h1>
-    <form id="ajaxform" action="{% url 'market:write_review' posting_id %}" method="post">
+    <form id="ajaxform" action="{% url 'market:write_review' user_id %}" method="post">
         {% csrf_token %}
         {{ form.non_field_errors }}
         {{ form.as_p }}
@@ -74,7 +74,7 @@
         <div id="form_ajax_error" style="display:none;">
             <span>Can not submit data due to errors.</span>
         </div>
-        <p id="sendwrapper"><input type="submit" value="Create Posting" id="sendbutton"/></p>
+        <p id="sendwrapper"><input type="submit" value="Create Review" id="sendbutton"/></p>
     </form>
 </body>
 </html>
