@@ -6,7 +6,15 @@
             <li><h4>{{category}}</h4>
                 <ul>
                     {%for posting in postinglist %}
-                        <li><a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a></li>
+                        <li>
+                            <a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a>
+                            {% if posting.author != user %}
+                            <form action="{% url 'market:respond_to_posting' posting.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" value="Respond and Lock">
+                            </form>
+                            {% endif %}
+                        </li>
                     {% endfor %}
                 </ul>
             </li>

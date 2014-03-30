@@ -26,7 +26,7 @@ def display_postings(request):
     if user.is_authenticated():
         my_author_list = user.author.all().order_by('date_posted') #List of posts I've authored
         my_respond_list = user.responder.all().order_by('date_posted') #List of posts I've responded to
-        full_posting_list = Posting.objects.all().order_by('date_posted') #List of all posts
+        full_posting_list = Posting.objects.all().filter(is_open=True).order_by('date_posted') #List of all posts
         posting_list = {} #List of posts in my subscribed categories
 
         # Build list from subscribed categories
@@ -38,7 +38,7 @@ def display_postings(request):
 
     # Otherwise, display every post.
     else:
-        full_posting_list = Posting.objects.all().order_by('date_posted')
+        full_posting_list = Posting.objects.all().filter(is_open=True).order_by('date_posted')
         posting_list = {}
 
         # Build list from all categories
@@ -117,6 +117,32 @@ def delete_posting(request, posting_id):
                     return HttpResponseRedirect(reverse('market:index', args=''))
             else:
                 raise Http404
+        # Redirect to homepage
+        return HttpResponseRedirect(reverse('market:index', args='')) 
+
+@login_required
+def respond_to_posting(request, posting_id):
+    """
+    This method allows a user to respond to a posting (specified by posting_id)
+    """
+
+    #Ensure that the posting exists
+    try:
+        posting = Posting.objects.get(pk=posting_id)
+    except Posting.DoesNotExist:
+        raise Http404
+    else:
+        user = request.user
+        if request.method == 'POST':
+
+            posting.is_open = False;
+            posting.responder = user;
+            posting.save()
+            if request.is_ajax():
+                return HttpReponse('OK')
+            else:
+                return HttpResponseRedirect(reverse('market:index', args=''))
+
         # Redirect to homepage
         return HttpResponseRedirect(reverse('market:index', args='')) 
 
