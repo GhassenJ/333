@@ -31,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^delete_posting/(?P<posting_id>\d+)/$', views.delete_posting, name='delete_posting'),
     url(r'^edit_profile/$', views.edit_profile, name='edit_profile'),
     url(r'^respond_to_posting/(?P<posting_id>\d+)/$', views.respond_to_posting, name='respond_to_posting'),
+    url(r'^remove_responder/(?P<posting_id>\d+)/$', views.remove_responder, name='remove_responder'),
     url(r'^edit_posting/(?P<posting_id>\d+)/$', views.edit_posting, name='edit_posting'),
 )
 

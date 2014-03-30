@@ -44,3 +44,5 @@ class UserProfileEditForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('phone_no', 'class_year', 'categories', 'hashtags')
+
+
