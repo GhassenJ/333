@@ -121,6 +121,31 @@ def delete_posting(request, posting_id):
         return HttpResponseRedirect(reverse('market:index', args='')) 
 
 @login_required
+def close_posting(request, posting_id):
+    """
+    Close a posting, updating the transaction count for both the user and the responder
+    """
+    try:
+        posting = Posting.objects.get(pk=posting_id)
+    except Posting.DoesNotExist:
+        raise Http404
+    else:
+        user = request.user
+        if user != posting.author:
+            raise Http404
+        if posting.responder is None:
+            raise Http404
+        if request.method == 'POST':
+            user.transactions = user.transactions + 1
+            posting.responder.transactions = user.transactions + 1
+            posting.delete()
+            if request.is_ajax():
+                return HttpResponse('OK')
+            else:
+                return HttpResponseRedirect(reverse('market:index', args=''))
+        return HttpResponseRedirect(reverse('market:index', args='')) 
+
+@login_required
 def respond_to_posting(request, posting_id):
     """
     This method allows a user to respond to a posting (specified by posting_id)

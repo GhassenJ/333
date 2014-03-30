@@ -32,6 +32,12 @@
                     {% csrf_token %}
                     <input type="submit" value="Delete">
                 </form>
+                {% if posting.responder %}
+                <form action="{% url 'market:close_posting' posting.id %}" method="post"> 
+                    {% csrf_token %}
+                    <input type="submit" value="Close">
+                </form>
+                {% endif %}
             </li>
         {% endfor %}
         </ul>
