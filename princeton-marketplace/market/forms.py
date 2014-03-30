@@ -11,6 +11,12 @@ class PostingForm(forms.ModelForm):
         model = Posting
         fields = ('title', 'is_selling', 'category', 'date_expires', 'price', 'method_of_pay', 'description', 'picture')
 
+# Form for editing a posting
+class PostingEditForm(forms.ModelForm):
+    class Meta:
+        model = Posting
+        fields = ('title', 'is_selling', 'category', 'date_expires', 'price', 'method_of_pay', 'description', 'picture')
+
 # Form for creating a new user
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
