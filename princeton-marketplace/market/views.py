@@ -153,6 +153,49 @@ def edit_profile(request):
     #return render_to_response('market/create_posting.html', {'form': form}, context)
 
 
+@login_required
+def edit_posting(request, posting_id):
+    """
+    """
+
+    try: # validate posting_id
+        posting = Posting.objects.get(pk=posting_id)
+    except Posting.DoesNotExist:
+        raise Http404
+    else:
+        # If we're doing a POST, read in form data and save it
+        if request.method == 'POST': #########################################
+            posting_form = PostingEditForm(data=request.POST)
+
+
+            if posting_form.is_valid():
+                posting_form = PostingEditForm(request.POST, instance=posting)
+                tempposting = posting_form.save(commit=False)
+                tempposting.save()
+                posting_form.save_m2m()
+
+                if request.is_ajax():
+                    return HttpResponse('OK')
+                else:
+                    return HttpResponseRedirect(reverse('market:index', args=''))
+            else:
+                if request.is_ajax():
+                    errors_dict = {}
+                    if posting_form.errors:
+                        for error in posting_form.errors:
+                            e = posting_form.errors[error]
+                            errors_dict[error] = unicode(e)
+                    return HttResponseBadRequest(json.dumps(errors_dict))
+                else:
+                    print posting_form.errors
+
+        # Otherwise, post the empty form for the user to fill in.
+        else:
+            posting_form = PostingEditForm(instance=posting)
+
+        return render(request, 'market/edit_posting.html',  {'posting_form': posting_form})
+
+
 
 ######################################################################################
 ### USER ACCOUNT MANAGEMENT FUNCTIONS (TEMPORARY)

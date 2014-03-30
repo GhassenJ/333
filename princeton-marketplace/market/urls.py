@@ -30,5 +30,6 @@ urlpatterns = patterns('',
 
     url(r'^delete_posting/(?P<posting_id>\d+)/$', views.delete_posting, name='delete_posting'),
     url(r'^edit_profile/$', views.edit_profile, name='edit_profile'),
+    url(r'^edit_posting/$', views.edit_posting, name='edit_posting'),
 )
 
