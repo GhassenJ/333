@@ -12,4 +12,10 @@ app.get('/data.json', function(req, res) {
 app.get('/data2.json', function(req, res) {
     res.sendfile('public/data2.json', {root: __dirname })
 });
+app.get('/data3.json', function(req, res) {
+    res.sendfile('public/posting_detait_1.json', {root: __dirname })
+});
+app.get('/data4.json', function(req, res) {
+    res.sendfile('public/posting_detait_12.json', {root: __dirname })
+});
 app.listen(8000);
