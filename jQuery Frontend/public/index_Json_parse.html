@@ -100,9 +100,11 @@
                         url: "data2.json",
                         dataType: "text",
                         success: function(data) {
-                            console.log(data);
+                            /*console.log(data);*/
                             var json = $.parseJSON(data);
-                            console.log(json);
+                            var count1 = Object.keys(json).length;
+                            console.log(count1);
+                            /*console.log(json);*/
                             $('#results').html('Post 1:  ' + json[0]["category"]["name"]+'   /description: '+json[0]["description"]+'   /author: '+json[0]["author"]['username'] + '  /price: ' + json[0]["price"] + '   /title: ' + json[01]["title"]  + '   /date: '+ json[0]["date_posted"] + "<br> "+ 'Post 2:  ' + json[1]["category"]["name"]+'   /description: '+json[1]["description"]+'   /author: '+json[1]["author"]['username'] + '  /price: ' + json[1]["price"] + '   /title: ' + json[1]["title"]  + '   /date: '+ json[1]["date_posted"] + "<br> "+ 'Post 3: ' + json[2]["category"]["name"]+'   /description: '+json[2]["description"]+'   /author: '+json[2]["author"]['username'] + '  /price: ' + json[2]["price"] + '   /title: ' + json[2]["title"]  + '   /date: '+ json[2]["date_posted"] );
                         }
                     });
