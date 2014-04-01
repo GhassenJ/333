@@ -9,7 +9,7 @@ angular.module('myApp.controllers', [])
       $scope.base = '';
       $scope.dict = {
         "home" : null,
-        "but_posts" : null,
+        "buy_posts" : null,
         "sell_posts" : null,
         "my_open_posts" : null,
         "my closed_posts" : null,
