@@ -1,11 +1,16 @@
 <!doctype html>
 <html>
 <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="/fancybox/jquery.fancybox.pack.js"></script>
     <title>Bla Bla Bla ....</title>
     <style>
             body{
                 text-align: center;
                 font-family: arial;
+                overflow: auto;
+
             }
             #button{
                 margin:20px;
@@ -14,7 +19,7 @@
                 padding:5px 10px;
             }
             #Top_Bar{
-                height: 60px;
+                height: 10%;
                 font-size: 24px;
                 line-height: 60px;
                 text-align: center;
@@ -34,7 +39,6 @@
                 }
 
             #results {
-                margin-top: 10%;
                 position: fixed;
                 margin-left: -30%;
                 font-size: 30px;
@@ -44,18 +48,34 @@
                 padding: 10px 10px 10px 10px;
                 list-style-type: none;
                 }
-                #footer{
-                    height: 30px;
-                    width: 80%;
-                    position: fixed;
-                    bottom: 0;
-                    margin-left: 10%;
-                    font-size: 14px;
-                    line-height: 30px;
-                    text-align: center;
-                    background-color: #40B0C0;
-                    color: #fff;
+            #footer{
+                height: 30px;
+                width: 80%;
+                position: fixed;
+                bottom: 0;
+                margin-left: 10%;
+                font-size: 14px;
+                line-height: 30px;
+                text-align: center;
+                background-color: #40B0C0;
+                color: #fff;
                 }
+            #blocky{
+                background-color: #40B0C0;
+                width: 25%;
+                height: 25%;
+                float: left;
+                margin-right: 5%;
+                margin-top: 10%;
+                display: table;
+                }
+            #bottom {
+                clear:both;
+                margin-left:0.5%;
+                width:85%;
+                padding: 3.5%;
+                background:gold;
+}
         </style>
 </head>
 <body>
@@ -75,7 +95,7 @@
 
     </div>
     <span id="results"></span>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</script>
     <script>
         $(document).ready(function() {
             var category = []; //titles
@@ -105,7 +125,7 @@
                             var count1 = Object.keys(json).length;
                             console.log(count1);
                             /*console.log(json);*/
-                            $('#results').html('Post 1:  ' + json[0]["category"]["name"]+'   /description: '+json[0]["description"]+'   /author: '+json[0]["author"]['username'] + '  /price: ' + json[0]["price"] + '   /title: ' + json[01]["title"]  + '   /date: '+ json[0]["date_posted"] + "<br> "+ 'Post 2:  ' + json[1]["category"]["name"]+'   /description: '+json[1]["description"]+'   /author: '+json[1]["author"]['username'] + '  /price: ' + json[1]["price"] + '   /title: ' + json[1]["title"]  + '   /date: '+ json[1]["date_posted"] + "<br> "+ 'Post 3: ' + json[2]["category"]["name"]+'   /description: '+json[2]["description"]+'   /author: '+json[2]["author"]['username'] + '  /price: ' + json[2]["price"] + '   /title: ' + json[2]["title"]  + '   /date: '+ json[2]["date_posted"] );
+                            $('#results').html('<a href="/data.json" class="fancybox" data-fancybox-type="ajax"><div id="blocky">Post 1:  ' + json[0]["category"]["name"]+'   /description: '+json[0]["description"]+'   /author: '+json[0]["author"]['username'] + '  /price: ' + json[0]["price"] + '   /title: ' + json[0]["title"]  + '   /date: '+ json[0]["date_posted"] + "</div></a> <div id='blocky'> "+ 'Post 2:  ' + json[1]["category"]["name"]+'   /description: '+json[1]["description"]+'   /author: '+json[1]["author"]['username'] + '  /price: ' + json[1]["price"] + '   /title: ' + json[1]["title"]  + '   /date: '+ json[1]["date_posted"] + "</div> <div id='blocky'> "+ 'Post 3: ' + json[2]["category"]["name"]+'   /description: '+json[2]["description"]+'   /author: '+json[2]["author"]['username'] + '  /price: ' + json[2]["price"] + '   /title: ' + json[2]["title"]  + '   /date: '+ json[2]["date_posted"] +"</div> <div id='bottom'>Change the width of window to see the effect</div>");
                         }
                     });
                 }
@@ -123,6 +143,7 @@
                     });
                 }
             });
+        $('.fancybox').fancybox();
     });
     </script>
 </body>
