@@ -3,6 +3,9 @@
 from urllib import urlencode, urlopen
 from urlparse import urljoin
 import urllib2
+import logging
+
+logger = logging.getLogger()
 
 from django.conf import settings
 
@@ -15,13 +18,16 @@ def _verify_cas1(ticket, service):
 
     Returns username on success and None on failure.
     """
-
     params = {'ticket': ticket, 'service': service}
     url = (urljoin(settings.CAS_SERVER_URL, 'validate') + '?' +
            urlencode(params))
     page = urlopen(url)
     try:
         verified = page.readline().strip()
+        logger.info(ticket)
+        logger.info(service)
+        logger.info("Verified:" + verified)
+        logger.info(url)
         if verified == 'yes':
             return page.readline().strip(), None
         else:
@@ -167,6 +173,7 @@ class CASBackend(object):
         username, attributes = _verify(ticket, service)
         if attributes:
             request.session['attributes'] = attributes
+        logger.info("USERNAME:" + username)
         if not username:
             return None
         try:
@@ -175,6 +182,7 @@ class CASBackend(object):
             # user will have an "unusable" password
             user = User.objects.create_user(username, '')
             user.save()
+            logger.info(user.username)
         return user
 
     def get_user(self, user_id):

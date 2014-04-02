@@ -48,16 +48,17 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    #'django_cas.middleware.CASMiddleware',
+    'django_cas.middleware.CASMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.doc.XViewMiddleware',
     #'google.appengine.ext.ndb.django_middleware.NdbDjangoMiddleware',
 )
 
-# AUTHENTICATION_BACKENDS = (
-#    'django.contrib.auth.backends.ModelBackend',
-#    'django_cas.backends.CASBackend',
-# )
+AUTHENTICATION_BACKENDS = (
+   'django.contrib.auth.backends.ModelBackend',
+   'django_cas.backends.CASBackend',
+)
 
 ROOT_URLCONF = 'princeton_marketplace.urls'
 
@@ -117,5 +118,6 @@ STATIC_URL = '/static/'
 #     )
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
-# CAS_SERVER_URL = 'http://princeton.edu/cas/'
-# CAS_REDIRECT_URL = 'market:index'
+CAS_SERVER_URL = 'https://fed.princeton.edu/cas/'
+#CAS_REDIRECT_URL = 'www.princeton-marketplace.appspot.com'
+CAS_VERSION = '1'

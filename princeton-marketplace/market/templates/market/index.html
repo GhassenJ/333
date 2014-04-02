@@ -79,9 +79,8 @@
 
 
 {% if user.is_authenticated %}
-<a href = "logout/">Logout Here!</a>
+<a href = "accounts/logout/">Logout Here!</a>
 <a href = "create_posting/">Add a Posting!</a>
 {% else %}
-<a href = "register/">Register Here!</a><BR>
-<a href = "login/">Login Here!</a><BR>
+<a href = "accounts/login/">Login Here!</a><BR>
 {% endif %}
