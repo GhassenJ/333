@@ -8,8 +8,10 @@ urlpatterns = patterns('',
     url(r'^register/$', views.register, name='register'),
     #url(r'^login/$', views.user_login, name='login'),
     #url(r'^logout/$', views.user_logout, name='logout'),
-    url(r'^login/$', 'django_cas.views.login', name='login'),
-    url(r'^logout/$', 'django_cas.views.logout', name='logout'),
+
+    url(r'^accounts/login/$', 'django_cas.views.login', name='login'),
+    url(r'^accounts/logout/$', 'django_cas.views.logout', name='logout'),
+
 
     url(r'^my_open_posts/$', views.my_open_posts, name='my_open_posts'),
     url(r'^my_closed_posts/$', views.my_closed_posts, name='my_closed_posts'),
