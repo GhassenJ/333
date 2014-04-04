@@ -15,3 +15,7 @@ env_variables:
 
 builtins:
 - django_wsgi: on
+
+handlers:
+- url: /static
+  static_dir: static
