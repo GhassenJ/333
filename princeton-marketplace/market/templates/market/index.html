@@ -1,86 +1,149 @@
-{% if user.is_authenticated %}
-    {% if posting_list %}
-        <h3>Postings from user categories</h3>
-        <ul>
-        {% for category, postinglist in posting_list.iteritems %}
-            <li><h4>{{category}}</h4>
-                <ul>
-                    {%for posting in postinglist %}
-                        <li>
-                            <a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a>
-                            {% if posting.author != user %}
-                            <form action="{% url 'market:respond_to_posting' posting.id %}" method="post">
-                                {% csrf_token %}
-                                <input type="submit" value="Respond and Lock">
-                            </form>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No categorical posts are available.</p>
-    {% endif %}
-    {% if my_author_list %}
-        <h3>My Current Posts</h3>
-        <ul>
-        {% for posting in my_author_list %}
-            <li><a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a> 
-                <form action="{% url 'market:delete_posting' posting.id %}" method="post"> 
-                    {% csrf_token %}
-                    <input type="submit" value="Delete">
-                </form>
-                {% if posting.responder %}
-                <form action="{% url 'market:close_posting' posting.id %}" method="post"> 
-                    {% csrf_token %}
-                    <input type="submit" value="Close">
-                </form>
-                <form action="{% url 'market:remove_responder' posting.id %}" method="post"> 
-                    {% csrf_token %}
-                    <input type="submit" value="Remove Responder">
-                </form>
-                {% endif %}
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No posts from me.</p>
-    {% endif %}
-    {% if my_respond_list %}
-        <h3>Posts I've Responded To</h3>
-        <ul>
-        {% for posting in my_respond_list %}
-            <li><a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No posts responded to.</p>
-    {% endif %}
-{% else %}
-    {% if posting_list %}
-    <h3>Postings from all categories</h3>
-        <ul>
-        {% for category, postinglist in posting_list.iteritems %}
-            <li><h4>{{category}}</h4>
-                <ul>
-                    {%for posting in postinglist %}
-                        <li><a href ="{% url 'market:posting_detail' posting.id %}">{{posting.title}}</a></li>
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No categorical posts are available.</p>
-    {% endif %}
-{% endif %}
+<!doctype html>
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="/static/fancybox/jquery.fancybox.pack.js"></script>
+    <title>The Princeton Marketplace</title>
+    <style>
+            body{
+                text-align: center;
+                font-family: arial;
+                overflow: auto;
 
+            }
+            #button{
+                margin:20px;
+                font-size:16px;
+                font-weight: bold;
+                padding:5px 10px;
+            }
+            #Top_Bar{
+                height: 10%;
+                font-size: 24px;
+                line-height: 60px;
+                text-align: center;
+                margin: auto;
+                background-color: #40B0C0;
+                color: #fff;
+            }
 
-{% if user.is_authenticated %}
-<a href = "accounts/logout/">Logout Here!</a>
-<a href = "create_posting/">Add a Posting!</a>
-{% else %}
-<a href = "accounts/login/">Login Here!</a><BR>
-{% endif %}
+            #leftPane {
+                background-color: #40B0C0;
+                position: fixed;
+                float: left;
+                font-size:20px;
+                width: 15%;
+                height: 95%;
+                color: #fff;
+                }
+
+            #results {
+                position: fixed;
+                margin-left: -30%;
+                font-size: 30px;
+            }
+            li{
+                text-align: left;   
+                padding: 10px 10px 10px 10px;
+                list-style-type: none;
+                }
+            #footer{
+                height: 30px;
+                width: 80%;
+                position: fixed;
+                bottom: 0;
+                margin-left: 10%;
+                font-size: 14px;
+                line-height: 30px;
+                text-align: center;
+                background-color: #40B0C0;
+                color: #fff;
+                }
+            #blocky{
+                background-color: #40B0C0;
+                width: 25%;
+                height: 25%;
+                float: left;
+                margin-right: 5%;
+                margin-top: 10%;
+                display: table;
+                }
+            #bottom {
+                clear:both;
+                margin-left:0.5%;
+                width:85%;
+                padding: 3.5%;
+                background:gold;
+                }
+        </style>
+</head>
+
+<body>
+    <div id="Top_Bar">The Princeton Marketplace</div>
+        <div id="leftPane">
+            <ul>
+                <li>RESET</li>
+                <li>ALL BUYING POSTINGS</li>
+            </ul> 
+            <!-- <input type="button" value="Get and parse JSON" id="button1" />  <br />
+            <input type="button" value="RESET" id="button2" /> <br />
+            <input type="button" value="ME" id="button3" />  <br />
+            <input type="button" value="GIMME ALL" id="button4" />   <br /> 
+            Buttons setup -->
+
+        </div>  
+    <span id="results"></span>
+    <script>
+        $(document).ready(function() {
+            var category = []; //titles
+            var description = []; //authers
+            var author = []; //glats
+            var price = []; //glons
+            var title = []; //ids
+            var date = [];
+            $ ("#leftPane ul li").click(function () {
+                var texti = $(this).text();
+                if (texti ==="ALL BUYING POSTINGS") {
+                    $.ajax({
+                        url: "{% url 'market:all_buying_posts' %}",
+                        dataType: "text",
+                        success: function(data) {
+                            /*console.log(data);*/
+                            var json = $.parseJSON(data);
+                            var count1 = Object.keys(json).length;
+                            console.log(count1);
+                            /*console.log(json);*/
+                            $('#results').html("");
+                            for (var i = 0; i < count1; i++)
+                            {
+                                var post_id = json[i]["id"];
+                                var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
+                                var toturl = "<a href = " + url + ">" + json[i]["title"] + "</a>";
+                                $('<div>', {
+                                    'id' : 'blocky',
+                                    'html' : $('<a>', 
+                                    {
+                                        'href': url,
+                                        'html': json[i]["title"]
+                                    })
+                                }).appendTo('#results');
+                            }
+                        }
+                    });
+                }
+                else if (texti ==="RESET") {
+                    $('#results').html(' GONE BABY GONE <br />');
+                }
+            });
+        $('.fancybox').fancybox();
+    });
+    </script>
+    {% if user.is_authenticated %}
+    <a href = "accounts/logout/">Logout Here!</a>
+    <a href = "create_posting/">Add a Posting!</a>
+    {% else %}
+    <a href = "accounts/login/">Login Here!</a><BR>
+    {% endif %}
+</body>
+</html>

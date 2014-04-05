@@ -52,17 +52,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.doc.XViewMiddleware',
-    #'google.appengine.ext.ndb.django_middleware.NdbDjangoMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
-<<<<<<< HEAD
     'django.contrib.auth.backends.ModelBackend',
     'django_cas.backends.CASBackend',
-=======
-   'django.contrib.auth.backends.ModelBackend',
-   'django_cas.backends.CASBackend',
->>>>>>> 8eeeb9ad395d93714d8068449e2b5ccad01682a7
 )
 
 ROOT_URLCONF = 'princeton_marketplace.urls'
@@ -116,18 +110,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-# #STATIC_ROOT = 'static'
-# STATIC_PATH = os.path.join(PROJECT_PATH,'static')
-# STATICFILES_DIRS = (
-#     STATIC_PATH,
-#     )
+STATIC_ROOT = 'static'
+STATICFILES_DIRS = (
+     os.path.join(BASE_DIR, "market/static"),
+    )
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
-<<<<<<< HEAD
-CAS_SERVER_URL = 'http://princeton.edu/cas/'
-CAS_REDIRECT_URL = 'market:index'
-=======
 CAS_SERVER_URL = 'https://fed.princeton.edu/cas/'
 #CAS_REDIRECT_URL = 'www.princeton-marketplace.appspot.com'
 CAS_VERSION = '1'
->>>>>>> 8eeeb9ad395d93714d8068449e2b5ccad01682a7

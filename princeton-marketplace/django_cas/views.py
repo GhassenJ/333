@@ -8,10 +8,6 @@ from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib import messages
 
-import logging
-
-logger = logging.getLogger()
-
 __all__ = ['login', 'logout']
 
 def _service_url(request, redirect_to=None):
@@ -80,9 +76,7 @@ def login(request, next_page=None, required=False):
     service = _service_url(request, next_page)
     if ticket:
         from django.contrib import auth
-        logger.info("HAVE TICKET! TICKET: " + ticket)
         user = auth.authenticate(ticket=ticket, service=service, request=request)
-        logger.info(user.username)
         if user is not None:
             auth.login(request, user)
             name = user.first_name or user.username
@@ -95,7 +89,6 @@ def login(request, next_page=None, required=False):
             error = "<h1>Forbidden</h1><p>Login failed.</p>"
             return HttpResponseForbidden(error)
     else:
-        logger.info("IN LOGIN: REDIRECT TO: " + _login_url(service))
         return HttpResponseRedirect(_login_url(service))
 
 
