@@ -24,22 +24,17 @@ def display_postings(request):
 
     #If the user is authenticated, then display categories
     if user.is_authenticated():
-        try: 
-            test = user.userprofile
-        except UserProfile.DoesNotExist:
-            return HttpResponseRedirect(reverse('market:register', args=''))
-        else:
-            my_author_list = user.author.all().order_by('date_posted') #List of posts I've authored
-            my_respond_list = user.responder.all().order_by('date_posted') #List of posts I've responded to
-            full_posting_list = Posting.objects.all().filter(is_open=True).order_by('date_posted') #List of all posts
-            posting_list = {} #List of posts in my subscribed categories
+        my_author_list = user.author.all().order_by('date_posted') #List of posts I've authored
+        my_respond_list = user.responder.all().order_by('date_posted') #List of posts I've responded to
+        full_posting_list = Posting.objects.all().filter(is_open=True).order_by('date_posted') #List of all posts
+        posting_list = {} #List of posts in my subscribed categories
 
-            # Build list from subscribed categories
-            for category in user.userprofile.categories.all():
-                posting_list[category.name] = full_posting_list.filter(category = category)
+        # Build list from subscribed categories
+        for category in user.userprofile.categories.all():
+            posting_list[category.name] = full_posting_list.filter(category = category)
 
-            context = {'posting_list': posting_list, 'my_author_list': my_author_list, 'my_respond_list': my_respond_list}
-            return render(request, 'market/index.html', context)
+        context = {'posting_list': posting_list, 'my_author_list': my_author_list, 'my_respond_list': my_respond_list}
+        return render(request, 'market/index.html', context)
 
     # Otherwise, display every post.
     else:
@@ -386,7 +381,7 @@ def edit_posting(request, posting_id):
 ######################################################################################
 ### USER ACCOUNT MANAGEMENT FUNCTIONS (TEMPORARY)
 ######################################################################################
-@login_required
+
 def register(request):
     """
     This view allows a new user to create an account.
@@ -402,8 +397,8 @@ def register(request):
         profile_form = UserProfileForm(data=request.POST)
 
         if user_form.is_valid() and profile_form.is_valid():
-            new_form = UserForm(request.POST, instance=request.user)
-            user = new_form.save()
+            user = user_form.save()
+            user.set_password(user.password)
             user.save()
 
             profile = profile_form.save(commit=False)
@@ -417,7 +412,7 @@ def register(request):
 
     # Otherwise, send up forms for filling
     else:
-        user_form = UserForm(instance=request.user)
+        user_form = UserForm()
         profile_form = UserProfileForm()
 
     return render_to_response('market/register.html',

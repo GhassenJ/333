@@ -21,6 +21,7 @@ import json
 ###     -hashtag_selling_posts(request, hashtag_id)
 ###     -all_categories(request)
 ###     -all_hashtags(request)
+###     -search_posts(request)
 ######################################################################################
 
 def all_buying_posts(request):
@@ -261,3 +262,67 @@ def all_hashtags(request):
         postdata['id'] = hashtag.id
         response_list.append(postdata)
     return HttpResponse(json.dumps(response_list), content_type="application/json")
+
+##################################################################################
+### GETTING RELEVANT POSTS FROM QUERY IN SEARCH     
+##################################################################################
+
+def search_posts(request, query):
+    """
+    This view gets all open posts that are relevant to the given query and returns
+    the posts in a ranking order.
+    Ranking order is determined 
+    1) AND of all the words in the query (how many hit)
+    2) hit importance from most to least (title, hashtags, category)
+    3) date posted from newest to oldest
+    """
+
+    response_list=[]
+    posting_ids=[]
+    post_list = Posting.objects.all().filter(is_open=True).order_by('date_posted').reverse()
+    query_list=query.split(' ')
+    for posting in post_list:
+        """
+
+        """
+        searchstring = posting.title + posting.description + posting.category + posting.hashtags
+        matches = []
+        for q in query_list:
+            matches.append(re.findall(q, searchstring))
+        if (len(matches) > 0 and posting.id not in posting_ids):
+            posting_ids.append(posting.id)
+            postdata = {}
+            postdata['numMatches'] = len(matches)
+            postdata['title'] = posting.title
+            postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+            if (posting.responder is not None):
+                postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
+            else:
+                postdata['responder'] = {}
+            postdata['date_posted'] = posting.date_posted.__str__()
+            postdata['date_expires'] = posting.date_expires.__str__()
+            postdata['method_of_payment'] = posting.method_of_pay
+            postdata['price'] = posting.price
+            postdata['description'] = posting.description
+            postdata['selling'] = posting.is_selling
+            postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+            postdata['id'] = posting.id
+            postdata['image'] = posting.picture
+            hashtags = []
+            for hashtag in posting.hashtags.all():
+                hashtags.append({"name": hashtag.name, "id": hashtag.id})
+            postdata['hashtags'] = hashtags
+            response_list.append(postdata)
+
+    """
+    sort by numMatches
+    """
+    response_list.order_by('numMatches')
+
+    """
+    Remove numMatches from response_list
+    """
+    for response in response_list:
+        del response['numMatches']
+    return HttpResponse(json.dumps(response_list), content_type="application/json")
+
