@@ -137,6 +137,12 @@ def edit_profile(request):
     Allows a user to edit their profile information
     """
 
+    template = ''
+    if (request.is_ajax()):
+        template = 'market/edit_profile_form.html'
+    else:
+        template = 'market/edit_profile.html'
+
     # If we're doing a POST, read in form data and save it
     if request.method == 'POST':
         # Load the User and UserProfile forms
@@ -181,7 +187,7 @@ def edit_profile(request):
         user_form = UserEditForm(instance=request.user)
         user_profile_form = UserProfileEditForm(instance=request.user.userprofile)
 
-    return render(request, 'market/edit_profile.html',  {'user_form': user_form, 'user_profile_form': user_profile_form})
+    return render(request, template,  {'user_form': user_form, 'user_profile_form': user_profile_form})
     #return render_to_response('market/create_posting.html', {'form': form}, context)
 
 def get_reviews(request, user_id):

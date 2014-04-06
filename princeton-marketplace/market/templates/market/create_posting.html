@@ -7,6 +7,81 @@
     <script type="text/javascript"
         src="http://malsup.github.com/min/jquery.form.min.js">
     </script>
+    <link rel="stylesheet" href="/static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="/static/fancybox/jquery.fancybox.pack.js"></script>
+    <title>The Princeton Marketplace</title>
+    <style>
+            body{
+                text-align: center;
+                font-family: arial;
+                overflow: auto;
+
+            }
+            #button{
+                margin:20px;
+                font-size:16px;
+                font-weight: bold;
+                padding:5px 10px;
+            }
+            #Top_Bar{
+                height: 10%;
+                font-size: 24px;
+                line-height: 60px;
+                text-align: center;
+                margin: auto;
+                background-color: #40B0C0;
+                color: #fff;
+            }
+
+            #leftPane {
+                background-color: #40B0C0;
+                position: fixed;
+                float: left;
+                font-size:20px;
+                width: 15%;
+                height: 95%;
+                color: #fff;
+                }
+
+            #results {
+                position: fixed;
+                margin-left: -30%;
+                font-size: 30px;
+            }
+            li{
+                text-align: left;   
+                padding: 10px 10px 10px 10px;
+                list-style-type: none;
+                }
+            #footer{
+                height: 30px;
+                width: 80%;
+                position: fixed;
+                bottom: 0;
+                margin-left: 10%;
+                font-size: 14px;
+                line-height: 30px;
+                text-align: center;
+                background-color: #40B0C0;
+                color: #fff;
+                }
+            #blocky{
+                background-color: #40B0C0;
+                width: 25%;
+                height: 25%;
+                float: left;
+                margin-right: 5%;
+                margin-top: 10%;
+                display: table;
+                }
+            #bottom {
+                clear:both;
+                margin-left:0.5%;
+                width:85%;
+                padding: 3.5%;
+                background:gold;
+                }
+        </style>
     <script type="text/javascript">
         $(document).ready(function() {
             function block_form() {
@@ -29,11 +104,7 @@
                     block_form();
                 },
                 success: function() {
-                    unblock_form();
-                    $("#form_ajax").show();
-                    setTimeout(function() {
-                        $("#form_ajax").hide();
-                    }, 5000);
+                    location.href = "{% url 'market:index' %}"
                 },
                 error:  function(resp) {
                     unblock_form();
@@ -60,8 +131,29 @@
     </style>
 </head>
 <body>
-    <h1>Add A Posting</h1>
-    <form id="ajaxform" action="{% url 'market:create_posting' %}" method="post">
+    <div id="Top_Bar">The Princeton Marketplace<BR>
+        {% if user.is_authenticated %}
+            <a href = "accounts/logout/">Logout Here!</a>
+            <a href = "create_posting/">Add a Posting!</a>
+        {% else %}
+            <a href = "accounts/login/">Login Here!</a><BR>
+        {% endif %}
+    </div>
+        <div id="leftPane">
+            <ul>
+                <li>RESET</li>
+                <li>ALL BUYING POSTINGS</li>
+                <li>CREATE POSTING</li>
+            </ul> 
+            <!-- <input type="button" value="Get and parse JSON" id="button1" />  <br />
+            <input type="button" value="RESET" id="button2" /> <br />
+            <input type="button" value="ME" id="button3" />  <br />
+            <input type="button" value="GIMME ALL" id="button4" />   <br /> 
+            Buttons setup -->
+
+        </div>  
+    <span id="results">
+        <form id="ajaxform" action="{% url 'market:create_posting' %}" method="post">
         {% csrf_token %}
         {{ form.non_field_errors }}
         {{ form.as_p }}
@@ -76,5 +168,54 @@
         </div>
         <p id="sendwrapper"><input type="submit" value="Create Posting" id="sendbutton"/></p>
     </form>
+    </span>
+    <script>
+        $(document).ready(function() {
+            var category = []; //titles
+            var description = []; //authers
+            var author = []; //glats
+            var price = []; //glons
+            var title = []; //ids
+            var date = [];
+            $ ("#leftPane ul li").click(function () {
+                var texti = $(this).text();
+                if (texti === "ALL BUYING POSTINGS") {
+                    $.ajax({
+                        url: "{% url 'market:all_buying_posts' %}",
+                        dataType: "json",
+                        success: function(data) {
+                            /*console.log(data);*/
+                            var json = data;
+                            var count1 = Object.keys(json).length;
+                            /*console.log(json);*/
+                            $('#results').html("");
+                            for (var i = 0; i < count1; i++)
+                            {
+                                var post_id = json[i]["id"];
+                                var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
+                                var toturl = "<a href = " + url + ">" + json[i]["title"] + "</a>";
+                                $('<div>', {
+                                    'id' : 'blocky',
+                                    'html' : $('<a>', 
+                                    {
+                                        'href': url,
+                                        'html': json[i]["title"]
+                                    })
+                                }).appendTo('#results');
+                            }
+                        }
+                    });
+                }
+                else if (texti === "RESET") {
+                    $('#results').html(' GONE BABY GONE <br />');
+                }
+                else if (texti === "CREATE POSTING")
+                {
+                    location.href = "{% url 'market:create_posting' %}";
+                }
+            });
+        $('.fancybox').fancybox();
+    });
+    </script>
 </body>
 </html>
