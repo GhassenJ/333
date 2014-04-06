@@ -27,11 +27,14 @@ def create_posting(request):
     """
     This view allows an authed user to create a new posting.
     """
-
+    template = ''
+    if (request.is_ajax()):
+        template = 'market/create_posting_form.html'
+    else:
+        template = 'market/create_posting.html'
     # If we're doing a POST, read in form data and save it
     if request.method == 'POST':
         form = PostingForm(data=request.POST)
-
         # Process a valid form:
         if form.is_valid():
             # Save information from the PostingForm
@@ -51,7 +54,7 @@ def create_posting(request):
             posting.category.save()
 
             if request.is_ajax():
-                return HttpResponse('OK')
+                return HttpResponse('Form Submitted')
             else:
                 return HttpResponseRedirect(reverse('market:index', args=''))
         # Return Errors
@@ -70,7 +73,7 @@ def create_posting(request):
     else:
         form = PostingForm()
 
-    return render(request, 'market/create_posting.html', {'form': form})
+    return render(request, template, {'form': form})
 
 @login_required
 def delete_posting(request, posting_id):

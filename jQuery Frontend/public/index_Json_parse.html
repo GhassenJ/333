@@ -4,7 +4,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
     <script type="text/javascript" src="/fancybox/jquery.fancybox.pack.js"></script>
-    <title>Bla Bla Bla ....</title>
+    <title>The Marketplace</title>
     <style>
             body{
                 text-align: center;
@@ -24,12 +24,12 @@
                 line-height: 60px;
                 text-align: center;
                 margin: auto;
-                background-color: #40B0C0;
+                background-color: #FFA319;
                 color: #fff;
             }
 
             #leftPane {
-                background-color: #40B0C0;
+                background-color: #FFA319;
                 position: fixed;
                 float: left;
                 font-size:20px;
@@ -57,11 +57,11 @@
                 font-size: 14px;
                 line-height: 30px;
                 text-align: center;
-                background-color: #40B0C0;
+                background-color: #FFA319;
                 color: #fff;
                 }
             #blocky{
-                background-color: #40B0C0;
+                background-color: #FFD685;
                 width: 25%;
                 height: 25%;
                 float: left;
@@ -75,17 +75,28 @@
                 width:85%;
                 padding: 3.5%;
                 background:gold;
+            }
+            #listy {
+               background-color: #FFD685;
+                width: 80%;
+                height: 7%;
+                float: left;
+                margin-right: 5%;
+                margin-top: 1%;
+                display: table;
+               
 }
         </style>
 </head>
 <body>
-    <div id="Top_Bar">Bla, Bla, Bla,</div>
+    <div id="Top_Bar"><a href="/index.html" STYLE="text-decoration:none" color="White">The Marketplace</a></div>
     <div id="leftPane">
     <ul>
     <li>Get and parse sample JSON</li>
     <li>RESET</li>
     <li>SHOW ONE POSTING</li>
-    <li>ALL POSTINGS</li>
+    <li>All Postings</li>
+    <li>SHOW LIST</li>
     </ul> 
     <!-- <input type="button" value="Get and parse JSON" id="button1" />  <br />
     <input type="button" value="RESET" id="button2" /> <br />
@@ -115,7 +126,7 @@
                         }
                     });
                 }
-                else if (texti ==="ALL POSTINGS") {
+                else if (texti ==="All Postings") {
                     $.ajax({
                         url: "data2.json",
                         dataType: "text",
@@ -124,8 +135,15 @@
                             var json = $.parseJSON(data);
                             var count1 = Object.keys(json).length;
                             console.log(count1);
+                            var str = '<a href="/posting_detait_1.json" class="fancybox" data-fancybox-type="ajax">';
+                            for (var i=0;i<count1;i++)
+                            {
+                              str += '<div id="blocky">Post 1:  ' + json[i]["category"]["name"]+'<br><b>'+json[i]["title"]+'</b><br>Author: '+json[i]["author"]['username'] + '<br> ' + json[i]["description"]  + '<br>Valid Until:<br> '+ json[i]["date_expires"] + '</div>';
+                              if (i == 0)
+                                 str += '</a>';
+                            }
                             /*console.log(json);*/
-                            $('#results').html('<a href="/data.json" class="fancybox" data-fancybox-type="ajax"><div id="blocky">Post 1:  ' + json[0]["category"]["name"]+'   /description: '+json[0]["description"]+'   /author: '+json[0]["author"]['username'] + '  /price: ' + json[0]["price"] + '   /title: ' + json[0]["title"]  + '   /date: '+ json[0]["date_posted"] + "</div></a> <div id='blocky'> "+ 'Post 2:  ' + json[1]["category"]["name"]+'   /description: '+json[1]["description"]+'   /author: '+json[1]["author"]['username'] + '  /price: ' + json[1]["price"] + '   /title: ' + json[1]["title"]  + '   /date: '+ json[1]["date_posted"] + "</div> <div id='blocky'> "+ 'Post 3: ' + json[2]["category"]["name"]+'   /description: '+json[2]["description"]+'   /author: '+json[2]["author"]['username'] + '  /price: ' + json[2]["price"] + '   /title: ' + json[2]["title"]  + '   /date: '+ json[2]["date_posted"] +"</div> <div id='bottom'>Change the width of window to see the effect</div>");
+                            $('#results').html(str);
                         }
                     });
                 }
@@ -139,6 +157,27 @@
                         success: function(data) {
                             console.log(data);
                             $('#results').html('Post 1:  ' + data.category.name+'   /description: '+data.description+'   /author: '+data.author.username + '  /price: ' + data.price + '   /title: ' + data.title  + '   /date: '+ data.date_posted + "<br> ");
+                        }
+                    });
+                }
+                else if (texti ==="SHOW LIST") {
+                    $.ajax({
+                        url: "data2.json",
+                        dataType: "text",
+                        success: function(data) {
+                            /*console.log(data);*/
+                            var json = $.parseJSON(data);
+                            var count1 = Object.keys(json).length;
+                            console.log(count1);
+                            var str = '<a href="/posting_detait_1.json" class="fancybox" data-fancybox-type="ajax">';
+                            for (var i=0;i<count1;i++)
+                            {
+                              str += '<div id="listy"><font size="3">Post '+(i+1)+': <b>'+json[i]["title"]+'</b>     Author: '+json[i]["author"]['username'] + '     ' + json[i]["description"]  + '        Valid Until: '+ json[i]["date_expires"] + '</font></div>';
+                              if (i == 0)
+                                 str += '</a>';
+                            }
+                            /*console.log(json);*/
+                            $('#results').html(str);
                         }
                     });
                 }

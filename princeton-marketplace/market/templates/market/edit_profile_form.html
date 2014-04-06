@@ -1,0 +1,20 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+         <h4 class="modal-title">Edit Profile</h4>
+      </div>
+      <!-- form here -->
+      <form class="submit-form" method="post" action="{% url 'market:edit_profile' %}">
+      <div class="modal-body">
+         {% csrf_token %}
+         {{ user_form.as_p }}
+         {{ user_profile_form.as_p }}
+      </div>
+      <div class="modal-footer">
+        <input class="btn btn-primary" id="modal-submit" type="submit" value="Save" />
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+</div>

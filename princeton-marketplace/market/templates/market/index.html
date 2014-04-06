@@ -4,6 +4,8 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <link rel="stylesheet" href="/static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
     <script type="text/javascript" src="/static/fancybox/jquery.fancybox.pack.js"></script>
+    <script type="text/javascript" src="/static/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap-3.1.1-dist/css/bootstrap.css" type="text/css" />
     <title>The Princeton Marketplace</title>
     <style>
             body{
@@ -78,13 +80,26 @@
                 }
         </style>
 </head>
+<!-- THE MODAL FOR POP-UP MENUS -->
+<div class="modal fade" id='PopUpModal' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+</div>
 
 <body>
-    <div id="Top_Bar">The Princeton Marketplace</div>
+    
+    <div id="Top_Bar">The Princeton Marketplace<BR>
+        {% if user.is_authenticated %}
+            <a href = "accounts/logout/">Logout Here!</a>
+            <a href = "create_posting/">Add a Posting!</a>
+        {% else %}
+            <a href = "accounts/login/">Login Here!</a><BR>
+        {% endif %}
+    </div>
         <div id="leftPane">
             <ul>
                 <li>RESET</li>
                 <li>ALL BUYING POSTINGS</li>
+                <li>CREATE POSTING</li>
+                <li>EDIT PROFILE</li>
             </ul> 
             <!-- <input type="button" value="Get and parse JSON" id="button1" />  <br />
             <input type="button" value="RESET" id="button2" /> <br />
@@ -102,17 +117,35 @@
             var price = []; //glons
             var title = []; //ids
             var date = [];
-            $ ("#leftPane ul li").click(function () {
+            $ ('#PopUpModal').on('submit', '.submit-form', function() {
+                $.ajax({
+                    type: $(this).attr('method'), 
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    success: function() { // on success..
+                        $('#PopUpModal').modal('hide')
+                    },
+                    error: function(resp) { // on error..
+                        var errors = JSON.parse(resp.responseText);
+                        for (error in errors)
+                        {
+                            var id = '#id_' + error;
+                            $(id).parent('p').prepend(errors[error]);
+                        }
+                    }
+                });
+                return false;
+            });
+            $ ("#leftPane ul li").click(function (ev) {
                 var texti = $(this).text();
-                if (texti ==="ALL BUYING POSTINGS") {
+                if (texti === "ALL BUYING POSTINGS") {
                     $.ajax({
                         url: "{% url 'market:all_buying_posts' %}",
-                        dataType: "text",
+                        dataType: "json",
                         success: function(data) {
                             /*console.log(data);*/
-                            var json = $.parseJSON(data);
+                            var json = data;
                             var count1 = Object.keys(json).length;
-                            console.log(count1);
                             /*console.log(json);*/
                             $('#results').html("");
                             for (var i = 0; i < count1; i++)
@@ -132,18 +165,29 @@
                         }
                     });
                 }
-                else if (texti ==="RESET") {
+                else if (texti === "RESET") {
                     $('#results').html(' GONE BABY GONE <br />');
                 }
+                else if (texti === "CREATE POSTING")
+                {
+                    ev.preventDefault();
+                    var url = "{% url 'market:create_posting' %}"
+                    $('#PopUpModal').load(url, function() {
+                        $(this).modal('show');
+                    });
+                    return false;
+                }
+                else if (texti === "EDIT PROFILE")
+                {
+                    ev.preventDefault();
+                    var url = "{% url 'market:edit_profile' %}"
+                    $('#PopUpModal').load(url, function() {
+                        $(this).modal('show');
+                    });
+                    return false;
+                }
             });
-        $('.fancybox').fancybox();
     });
     </script>
-    {% if user.is_authenticated %}
-    <a href = "accounts/logout/">Logout Here!</a>
-    <a href = "create_posting/">Add a Posting!</a>
-    {% else %}
-    <a href = "accounts/login/">Login Here!</a><BR>
-    {% endif %}
 </body>
 </html>
