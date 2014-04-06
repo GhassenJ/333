@@ -293,7 +293,7 @@ def search_posts(request, query):
 
     response_list=[]
     #posting_ids=[]
-    post_list = Posting.objects.all().filter(is_open=True).order_by('date_posted').reverse()
+    post_list = Posting.objects.all().filter(is_open=True).order_by('-date_posted')
     
     query_list=query.__str__().split(' ')
     # to make this case insensitive:
