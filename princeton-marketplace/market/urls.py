@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^all_selling_posts/$', views.all_selling_posts, name='all_selling_posts'),
     url(r'^all_categories/$', views.all_categories, name='all_categories'),
     url(r'^all_hashtags/$', views.all_hashtags, name='all_hashtags'),
+    url(r'^search_posts/(?P<query>.*)/$', views.search_posts, name='search_posts'),
 
     url(r'^category_selling_posts/(?P<category_id>\d+)/$', views.category_selling_posts, name='category_selling_posts'),
     url(r'^category_buying_posts/(?P<category_id>\d+)/$', views.category_buying_posts, name='category_buying_posts'),
