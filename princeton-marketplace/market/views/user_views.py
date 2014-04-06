@@ -199,7 +199,7 @@ def get_reviews(request, user_id):
     except User.DoesNotExist:
         raise Http404
     else: 
-        review_list = user.review_reviewee.all().order_by('date_posted') #List of posts I've authored that are closed
+        review_list = user.review_reviewee.all().order_by('-date_posted') #List of posts I've authored that are closed
         response_list = []
         for review in review_list:
             postdata = {}
