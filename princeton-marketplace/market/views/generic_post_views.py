@@ -268,7 +268,7 @@ def all_hashtags(request):
 ##################################################################################
 ### GETTING RELEVANT POSTS FROM QUERY IN SEARCH     
 ##################################################################################
-
+@login_required
 def search_posts(request, query):
     """
     This view gets all open posts that are relevant to the given query and returns
