@@ -10,6 +10,9 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import json
+import logging
+import re
+logger = logging.getLogger(__name__)
 
 ######################################################################################
 ### POSTING MANAGEMENT VIEWS
@@ -32,12 +35,29 @@ def create_posting(request):
         template = 'market/create_posting_form.html'
     else:
         template = 'market/create_posting.html'
+
     # If we're doing a POST, read in form data and save it
     if request.method == 'POST':
         form = PostingForm(data=request.POST)
         # Process a valid form:
         if form.is_valid():
             # Save information from the PostingForm
+            hashtagStr = form.cleaned_data['hashtags']
+            hashtags = re.findall('#\w+', hashtagStr)
+            hashtagsList = []
+            for tag in hashtags:
+                tagname = tag[1:].lower()
+                logger.info(tagname)
+                if (len(Hashtag.objects.all().filter(name=tagname)) != 0):
+                    curtag = Hashtag.objects.get(name=tagname)
+                    hashtagsList.append(curtag)
+                    curtag.frequency = curtag.frequency + 1
+                    curtag.save()
+                else:
+                    h = Hashtag(name = tagname, frequency=1)
+                    h.save()
+                    hashtagsList.append(h)
+
             posting = form.save(commit=False)
 
             # Save additional information (author, is_open, date_posted)
@@ -45,9 +65,16 @@ def create_posting(request):
             posting.is_open = True
             posting.date_posted = timezone.now()
 
+            
             # Save the M2M fields (hashtag and category)
             posting.save()
             form.save_m2m()
+
+            for hashtag in hashtagsList:
+                posting.hashtags.add(hashtag)
+                posting.save()
+                request.user.userprofile.hashtags.add(hashtag)
+                request.user.userprofile.save()
 
             # Update the category counts
             posting.category.num_posts = posting.category.num_posts + 1;
@@ -91,7 +118,10 @@ def delete_posting(request, posting_id):
         if request.method == 'POST':
             # Only delete if the currently-logged user authored the post.
             if user == posting.author:
-                posting.category.num_posts = posting.category.num_posts - 1;
+                posting.category.num_posts = posting.category.num_posts - 1
+                for i in range(len(posting.hashtags.all())):
+                    posting.hashtags.all()[i].frequency = posting.hashtags.all()[i].frequency - 1
+                    posting.hashtags.all()[i].save()
                 posting.category.save()
                 posting.delete()
                 if request.is_ajax():
@@ -150,6 +180,11 @@ def respond_to_posting(request, posting_id):
             posting.save()
             posting.category.num_posts = posting.category.num_posts - 1;
             posting.category.save()
+            hashtags = posting.hashtags.all()
+            for hashtag in hashtags:
+                user.userprofile.hashtags.add(hashtag)
+                user.userprofile.save()
+
             if request.is_ajax():
                 return HttpReponse('OK')
             else:

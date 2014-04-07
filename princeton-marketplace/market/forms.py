@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 # Form for creating a new posting
 class PostingForm(forms.ModelForm):
+    hashtags = forms.CharField(max_length = 200)
     is_selling = forms.BooleanField(label='Selling?', required = False, initial=False)
     class Meta:
         model = Posting

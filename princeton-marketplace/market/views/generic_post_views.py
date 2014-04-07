@@ -31,8 +31,7 @@ def all_buying_posts(request):
     """
     This view returns JSON data for all postings for buying
     """
-    # Get all postings that are for buying
-    postings = Posting.objects.all().filter(is_selling=False).filter(is_open=True).order_by('date_posted') #List of posts that are for buying
+    postings = Posting.objects.all().filter(is_selling=False).filter(is_open=True).order_by('-date_posted') #List of posts that are for buying
 
     # For all postings that are for buying
     response_list = []
@@ -65,7 +64,7 @@ def all_selling_posts(request):
     This view returns JSON data for all postings for selling
     """
     # Get all postings that are for selling
-    postings = Posting.objects.all().filter(is_selling=True).order_by('date_posted') #List of posts that are for selling
+    postings = Posting.objects.all().filter(is_selling=True).filter(is_open=True).order_by('-date_posted') #List of posts that are for selling
 
     #For all postings that are for selling
     response_list = []
@@ -108,7 +107,7 @@ def category_buying_posts(request, category_id):
         raise Http404
     else:
         response_list=[]
-        category_post_list = category.posting_set.all().filter(is_selling=False).order_by('date_posted')
+        category_post_list = category.posting_set.all().filter(is_selling=False).filter(is_open=True).order_by('-date_posted')
         for posting in category_post_list:
             postdata = {}
             postdata['title'] = posting.title
@@ -143,7 +142,7 @@ def category_selling_posts(request, category_id):
         raise Http404
     else:
         response_list=[]
-        category_post_list = category.posting_set.all().filter(is_selling=True).order_by('date_posted')
+        category_post_list = category.posting_set.all().filter(is_selling=True).filter(is_open=True).order_by('-date_posted')
         for posting in category_post_list:
             postdata = {}
             postdata['title'] = posting.title
@@ -178,7 +177,7 @@ def hashtag_buying_posts(request, hashtag_id):
         raise Http404
     else:
         response_list=[]
-        hashtag_post_list = hashtag.posting_set.all().filter(is_selling=False).order_by('date_posted')
+        hashtag_post_list = hashtag.posting_set.all().filter(is_selling=False).filter(is_open=True).order_by('-date_posted')
         for posting in hashtag_post_list:
             postdata = {}
             postdata['title'] = posting.title
@@ -213,7 +212,7 @@ def hashtag_selling_posts(request, hashtag_id):
         raise Http404
     else:
         response_list=[]
-        hashtag_post_list = hashtag.posting_set.all().filter(is_selling=True).order_by('date_posted')
+        hashtag_post_list = hashtag.posting_set.all().filter(is_selling=True).filter(is_open=True).order_by('-date_posted')
         for posting in hashtag_post_list:
             postdata = {}
             postdata['title'] = posting.title
