@@ -26,6 +26,7 @@ from operator import itemgetter
 ###     -search_posts(request)
 ######################################################################################
 
+@login_required
 def all_buying_posts(request):
     """
     This view returns JSON data for all postings for buying
@@ -58,6 +59,7 @@ def all_buying_posts(request):
         response_list.append(postdata)
     return HttpResponse(json.dumps(response_list), content_type="application/json")
 
+@login_required
 def all_selling_posts(request):
     """
     This view returns JSON data for all postings for selling
@@ -95,6 +97,7 @@ def all_selling_posts(request):
 ### POST-GETTING VIEWS FOR CATEGORIES AND HASHTAGS
 ######################################################################################
 
+@login_required
 def category_buying_posts(request, category_id):
     """
     This view gets all buying posts under the category identified by category_id
@@ -129,6 +132,7 @@ def category_buying_posts(request, category_id):
             response_list.append(postdata)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
+@login_required
 def category_selling_posts(request, category_id):
     """
     This view gets all selling posts under the category identified by category_id
@@ -163,6 +167,7 @@ def category_selling_posts(request, category_id):
             response_list.append(postdata)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
+@login_required
 def hashtag_buying_posts(request, hashtag_id):
     """
     This view gets all buying posts under the hashtag identified by hashtag_id
@@ -197,6 +202,7 @@ def hashtag_buying_posts(request, hashtag_id):
             response_list.append(postdata)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
+@login_required
 def hashtag_selling_posts(request, hashtag_id):
     """
     This view gets all selling posts under the hashtag identified by hashtag_id
@@ -235,6 +241,7 @@ def hashtag_selling_posts(request, hashtag_id):
 ### GETTING VIEWS FOR CATEGORIES AND HASHTAGS
 ######################################################################################
 
+@login_required
 def all_categories(request):
     """
     This view returns JSON data for all categories
@@ -250,6 +257,7 @@ def all_categories(request):
         response_list.append(postdata)
     return HttpResponse(json.dumps(response_list), content_type="application/json")
 
+@login_required
 def all_hashtags(request):
     """
     This view returns JSON data for all hashtags
