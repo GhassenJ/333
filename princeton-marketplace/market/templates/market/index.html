@@ -1,6 +1,12 @@
 <!doctype html>
 <html>
 <head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/static/img/favicon.png">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <link rel="stylesheet" href="/static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
     <script type="text/javascript" src="/static/fancybox/jquery.fancybox.pack.js"></script>
@@ -142,13 +148,18 @@
                     $.ajax({
                         url: "{% url 'market:all_buying_posts' %}",
                         dataType: "json",
+                        beforeSend:function(){
+                            // this is where we append a loading image
+                            $('#results').html('<div class="loading"><img src="http://glenmartinmusic.com/mustache/wp-content/themes/glenmartin/images/loader.gif" alt="Loading..." width = "50" height = "50" align="center" /></div>');
+                        }, 
                         success: function(data) {
                             /*console.log(data);*/
                             var json = data;
-                            var count1 = Object.keys(json).length;
+                            var count = Object.keys(json).length;
+                            document.title = "All Buying Postings " + count;
                             /*console.log(json);*/
                             $('#results').html("");
-                            for (var i = 0; i < count1; i++)
+                            for (var i = 0; i < count; i++)
                             {
                                 var post_id = json[i]["id"];
                                 var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
@@ -162,7 +173,10 @@
                                     })
                                 }).appendTo('#results');
                             }
-                        }
+                        },
+                        error:function(){
+					    // failed request; give feedback to user
+					    $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
                     });
                 }
                 else if (texti === "RESET") {
