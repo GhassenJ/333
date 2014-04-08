@@ -1,8 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -18,7 +18,7 @@
                 text-align: center;
                 font-family: arial;
                 overflow: auto;
-
+                text-align: center;
             }
             #button{
                 margin:20px;
@@ -86,11 +86,10 @@
                 }
         </style>
 </head>
+<body>
 <!-- THE MODAL FOR POP-UP MENUS -->
 <div class="modal fade" id='PopUpModal' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 </div>
-
-<body>
     
     <div id="Top_Bar">The Princeton Marketplace<BR>
         {% if user.is_authenticated %}
@@ -177,8 +176,9 @@
                         error:function(){
 					    // failed request; give feedback to user
 					    $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments.</p>');
-                    });
-                }
+						}
+                	});
+				}
                 else if (texti === "RESET") {
                     $('#results').html(' GONE BABY GONE <br />');
                 }
