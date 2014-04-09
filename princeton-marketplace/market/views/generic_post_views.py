@@ -26,7 +26,7 @@ from operator import itemgetter
 ###     -search_posts(request)
 ######################################################################################
 
-@login_required
+###@login_required
 def all_buying_posts(request):
     """
     This view returns JSON data for all postings for buying
@@ -58,7 +58,7 @@ def all_buying_posts(request):
         response_list.append(postdata)
     return HttpResponse(json.dumps(response_list), content_type="application/json")
 
-@login_required
+###@login_required
 def all_selling_posts(request):
     """
     This view returns JSON data for all postings for selling
