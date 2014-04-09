@@ -1,0 +1,18 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Mustache Sample</title>
+</head>
+<body>
+	<h2>Titles</h2>
+	<ul id="talktitles">
+	</ul>
+ 
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.0/mustache.min.js"></script>
+   
+   <script id="speakers-template" type="text/template">
+      {{#speakers}}
+         <li>{{title}}</li>
+      {{/speakers}}
+   </script>
+</body> 

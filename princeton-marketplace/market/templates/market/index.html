@@ -116,8 +116,9 @@
     </div>
         <div id="leftPane">
             <ul>
-                <li>RESET</li>
+                <li>HOME</li>
                 <li>ALL BUYING POSTINGS</li>
+                <li>ALL SELLING POSTINGS</li>
                 <li>CREATE POSTING</li>
                 <li>EDIT PROFILE</li>
             </ul> 
@@ -128,7 +129,9 @@
             Buttons setup -->
 
         </div>  
-    <span id="results"></span>
+    <span id="results">
+<p> Welcome to the Marketplace, the place for you to trade anything you want. </p><br><br> {% if user.is_authenticated %} <font size = "4"> Hi, {{ user.first_name }}. <a href = "accounts/logout">(not {{ user.first_name }} {{ user.last_name }}?)</a> We wish you a happy day.<br> <font size = "4"> My favorite category: {% else %} Please click on "Login" above to sign in via the Central Authentication system.<br> We support many user-friendly features (categories, hashtags, ..) once you log in!{% endif %}
+    </span>
     <script>
         $(document).ready(function() {
             var category = []; //titles
@@ -194,8 +197,45 @@
 						}
                 	});
 				}
-                else if (texti === "RESET") {
-                    $('#results').html(' GONE BABY GONE <br />');
+               else if (texti === "ALL SELLING POSTINGS") {
+                    $.ajax({
+                        url: "{% url 'market:all_selling_posts' %}",
+                        dataType: "json",
+                        beforeSend:function(){
+                            // this is where we append a loading image
+                            $('#results').html('<div class="loading"><img src="http://glenmartinmusic.com/mustache/wp-content/themes/glenmartin/images/loader.gif" alt="Loading..." width = "50" height = "50" align="center" /></div>');
+                        }, 
+                        success: function(data) {
+                            /*console.log(data);*/
+                            var json = data;
+                            var count = Object.keys(json).length;
+                            document.title = "All Selling Postings " + count;
+                            /*console.log(json);*/
+                            $('#results').html("");
+                            for (var i = 0; i < count; i++)
+                            {
+                                var post_id = json[i]["id"];
+                                var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
+                                var toturl = "<a href = " + url + ">" + json[i]["title"] + "</a>";
+                                $('<div>', {
+                                    'id' : 'blocky',
+                                    'html' : $('<a>', 
+                                    {
+                                        'href': url,
+                                        'html': json[i]["title"]
+                                    })
+                                }).appendTo('#results');
+                            }
+                        },
+                        error:function(){
+					    // failed request; give feedback to user
+					    $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
+						}
+             	});
+				}
+            
+                else if (texti === "HOME") {
+                    $('#results').html('<p> Welcome to the Marketplace, the place for you to trade anything you want. </p><br><br> {% if user.is_authenticated %} <font size = "4"> Hi, {{ user.first_name }}. <a href = "accounts/logout">(not {{ user.first_name }} {{ user.last_name }}?)</a> We wish you a happy day.<br> <font size = "4"> My favorite category: {% else %} Please click on "Login" above to sign in via the Central Authentication system.<br> We support many user-friendly features (categories, hashtags, ..) once you log in!{% endif %}');
                 }
                 else if (texti === "CREATE POSTING")
                 {
