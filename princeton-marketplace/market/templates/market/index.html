@@ -85,6 +85,15 @@
                 padding: 3.5%;
                 background:gold;
                 }
+            #smallblock{
+                background-color: #FFD685;
+                width: 30%;
+                height: 4%;
+                float: left;
+                margin-right: 3%;
+                margin-top: 1%;
+                display: table;
+            }
         </style>
 </head>
 <body>
@@ -130,12 +139,107 @@
 
         </div>  
     <span id="results">
-<p> Welcome to the Marketplace, the place for you to trade anything you want. </p><br><br> {% if user.is_authenticated %} <font size = "4"> Hi, {{ user.first_name }}. <a href = "accounts/logout">(not {{ user.first_name }} {{ user.last_name }}?)</a> We wish you a happy day.<br> <font size = "4"> My favorite category: {% else %} Please click on "Login" above to sign in via the Central Authentication system.<br> We support many user-friendly features (categories, hashtags, ..) once you log in!{% endif %}
+{% if user.is_authenticated %} <font size = "4"> Hi, {{ user.first_name }}. <a href = "accounts/logout">(not {{ user.first_name }} {{ user.last_name }}?)</a> We wish you a happy day.<br></font>
+<div id="cat1">
+</div>
+<div id="cat2">
+</div>
+<div id="cat3">
+</div>
+<script>
+function home(){
+var user_id = {{ user.id }};
+$.ajax({
+   url: "{% url 'market:user_detail' 000 %}".replace(000, user_id),
+   dataType: "json",
+   success: function(data) {
+        var cats = data["categories"];
+        var catnum = Object.keys(cats).length;
+        
+        // someone play with the percentages here?
+        $('#cat1').html("You like " + cats[0]["name"] + "! That is cool. Let us fetch you posts from that category:<br><table><tr><td style='border-width:0px' width='20%' id='cat1sell'></td><td width='3%'></td><td style='border-width:0px' width='20%' id='cat1buy'></td></tr></table>");
+        $.ajax({
+          url: "{% url 'market:category_selling_posts' 000 %}".replace(000, cats[0]["id"]),
+          dataType: "json",
+          beforeSend:function(){
+           // this is where we append a loading image
+           $('#cat1sell').html('<div class="loading"><img src="http://glenmartinmusic.com/mustache/wp-content/themes/glenmartin/images/loader.gif" alt="Loading..." width = "50" height = "50" align="center" /></div>');
+          }, 
+          // fetch all posts from first category of user preference.
+          // To be implemented: how to determine this "first"? Based on user preference, past uses?
+          // FOR MODULARITY I THINK THIS FUNCTION SHOULD BE STORED SEPARATELY. And I wasn't sure how to do this.. if someone takes care of this i'll be extremely thankful. -Bumsoo
+          success: function(data) {
+            /*console.log(data);*/
+            var json = data;
+            var count = Object.keys(json).length;
+            /*console.log(json);*/
+            $('#cat1sell').html("Selling:<br>");
+            for (var i = 0; i < 5; i++)
+            {
+              if (i >= count) break;
+              var post_id = json[i]["id"];
+              var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
+              var toturl = "<a href = " + url + ">" + json[i]["title"] + "</a>";
+              $('<div>', {
+               'id' : 'smallblock',
+               'html' : $('<a>', 
+                 {
+                  'href': url,
+                  'html': '<font size="3">' + json[i]["title"] + '</font>'
+                 })
+              }).appendTo('#cat1sell');
+            }
+          },
+          error:function(){
+			   // failed request; give feedback to user
+			   $('#cat1sell').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
+		    }
+        });
+        $.ajax({
+          url: "{% url 'market:category_buying_posts' 000 %}".replace(000, cats[0]["id"]),
+          dataType: "json",
+          beforeSend:function(){
+            // this is where we append a loading image
+            $('#cat1buy').html('<div class="loading"><img src="http://glenmartinmusic.com/mustache/wp-content/themes/glenmartin/images/loader.gif" alt="Loading..." width = "50" height = "50" align="center" /></div>');
+          }, 
+          success: function(data) {
+            /*console.log(data);*/
+            var json = data;
+            var count = Object.keys(json).length;
+            /*console.log(json);*/
+            $('#cat1buy').html("Buying:<br>");
+            for (var i = 0; i < 5; i++)
+            {
+              if (i >= count) break;
+              var post_id = json[i]["id"];
+              var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
+              $('<div>', {
+               'id' : 'smallblock',
+               'html' : $('<a>', 
+               {
+                 'href': url,
+                 'html': '<font size="3">' + json[i]["title"] + '</font>'
+               })
+              }).appendTo('#cat1buy');
+            }
+          },
+          error:function(){
+			   // failed request; give feedback to user
+			   $('#cat1buy').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
+		    }
+        });
+     }
+   });
+}
+home();
+</script>
+
+{% else %} Please click on "Login" above to sign in via the Central Authentication system.<br> We support many user-friendly features (categories, hashtags, ..) once you log in!{% endif %}
     </span>
     <script>
         $(document).ready(function() {
             var category = []; //titles
-            var description = []; //authers
+            var description = []; //authors
             var author = []; //glats
             var price = []; //glons
             var title = []; //ids
