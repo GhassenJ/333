@@ -83,10 +83,10 @@ else:
     # in production.
     DATABASES = {
         'default': {
-            'ENGINE': 'google.appengine.ext.django.backends.rdbms',
-            'INSTANCE': 'princeton-marketplace:market',
+            'ENGINE': 'django.db.backends.mysql',
             'NAME': 'market',
             'USER': 'root',
+            'PASSWORD': 'kbs414'
         }
     }
 
