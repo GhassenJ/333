@@ -86,7 +86,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'market',
             'USER': 'root',
-            'PASSWORD': 'kbs414'
+            'PASSWORD': 'root'
         }
     }
 

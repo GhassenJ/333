@@ -74,12 +74,12 @@
                 }
             #blocky{
                 background-color: #40B0C0;
-                width: 15%;
-                height: 15%;
+                width: 25%;
+                height: 25%;
                 float: left;
                 margin-right: 5%;
                 margin-top: 10%;
-                display: table;
+                overflow:hidden;
                 }
             #bottom {
                 clear:both;
@@ -97,6 +97,12 @@
                 margin-top: 1%;
                 display: table;
             }
+            .fancybox-skin {
+                color: rgba(66, 37, 37, 1);
+                text-shadow: none;
+                font-size: 20px;
+                line-height: 2;
+                }
         </style>
 <script>
 // caching
@@ -105,6 +111,7 @@ $.ajaxSetup({cache: true});
 // for modularity's sake: displays [data] in the form of [block] inside [frame], and display the first [number].
 //BUG: THIS DOESN'T CHECK FOR WHEN THERE IS ONLY ONE POSTING
 function display(data, block, frame, number){
+    var user_id = {{ user.id }};
    /*console.log(data);*/
    var json = data;
    var count = Object.keys(json).length;
@@ -114,10 +121,17 @@ function display(data, block, frame, number){
    for (var i = 0; i < number; i++)
    {
       if (i >= count) break;
+      var author_id = json[i]["author"]['id'];
       var post_id = json[i]["id"];
       var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
       var ct = i+1;
-      $('<a class="fancybox" data-fancybox-type="ajax"><div id="blocky"> Post'+ ct + ': ' + json[i]["title"]+'<div style="display:none" class="contents"> <div class = "des">description: '+json[i]["description"]+' </div> <div class = "aut">author: '+json[i]["author"]['username'] + '  </div> <div class = pri>price: ' + json[i]["price"] +' </div> <div class = "til">Category: ' + json[i]["category"]["name"]  + '</div> <div class = "date">date: '+ json[i]["date_posted"] + '</div> <button type="button">Click Me!</button></div></div></a>').appendTo('#results');.appendTo(frame);
+      if (user_id === author_id) {
+      var buttony = '<button type="button">Delete Post</button>';
+        console.log("SAME: Here is the YOU:"+user_id+"and here is the author:"+author_id);    }
+      else {
+        var buttony = '<button type="button">Accept Post</button>'; 
+        console.log("DIFFERENT: Here is the YOU:"+user_id+"and here is the author:"+author_id);    }
+      $('<a class="fancybox" rel="gallery1" data-fancybox-type="ajax"><div id="blocky"> Post'+ post_id + ': ' + json[i]["title"]+'<div style="display:none" class="contents"> <div class = "des">description: '+json[i]["description"]+' </div> <div class = "aut">author: '+json[i]["author"]['username'] + '  </div> <div class = pri>price: ' + json[i]["price"] +' </div> <div class = "til">Category: ' + json[i]["category"]["name"]  + '</div> <div class = "date">date: '+ json[i]["date_posted"] + '</div>'+buttony+' </div></div></a>').appendTo(frame);
    }
 };
 
@@ -186,7 +200,6 @@ function home(){
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-    
     <div id="Top_Bar">The Princeton Marketplace<BR>
         {% if user.is_authenticated %}
             <a href = "accounts/logout/">Logout Here!</a>
@@ -370,9 +383,10 @@ var allselling = null;
                        error: function(){
                            $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
                        }            
-                	  });
-                 }
-             });
+                    });
+                }
+            });
+    });
     $(document).on('click', '.fancybox', function() {
         var clicked = $(this);
         var element = clicked.html();
@@ -385,7 +399,7 @@ var allselling = null;
         $.fancybox({
             'content': div
         });
-         });
+    });
     </script>
 </body>
 </html>
