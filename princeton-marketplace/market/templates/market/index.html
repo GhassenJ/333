@@ -118,6 +118,7 @@ function display(data, block, frame, number){
    /*console.log(json);*/
    if (number == 0)
       number = count;
+  var buttony;
    for (var i = 0; i < number; i++)
    {
       if (i >= count) break;
@@ -126,10 +127,10 @@ function display(data, block, frame, number){
       var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
       var ct = i+1;
       if (user_id === author_id) {
-      var buttony = '<button type="button">Delete Post</button>';
+      buttony = '<button type="button">Delete Post</button>';
         console.log("SAME: Here is the YOU:"+user_id+"and here is the author:"+author_id);    }
       else {
-        var buttony = '<button type="button">Accept Post</button>'; 
+      buttony = '<button type="button">Accept Post</button>'; 
         console.log("DIFFERENT: Here is the YOU:"+user_id+"and here is the author:"+author_id);    }
       $('<a class="fancybox" rel="gallery1" data-fancybox-type="ajax"><div id="blocky"> Post'+ post_id + ': ' + json[i]["title"]+'<div style="display:none" class="contents"> <div class = "des">description: '+json[i]["description"]+' </div> <div class = "aut">author: '+json[i]["author"]['username'] + '  </div> <div class = pri>price: ' + json[i]["price"] +' </div> <div class = "til">Category: ' + json[i]["category"]["name"]  + '</div> <div class = "date">date: '+ json[i]["date_posted"] + '</div>'+buttony+' </div></div></a>').appendTo(frame);
    }
@@ -391,13 +392,12 @@ var allselling = null;
         var clicked = $(this);
         var element = clicked.html();
         var div = $('.contents').get(0).innerHTML;
-        var content = $(this.inner).html();
-        $(content).show();
+        var content = $(this).find("div[class='contents']").get(0).innerHTML;
         console.log(element);
         console.log(content);
         console.log(div);
         $.fancybox({
-            'content': div
+            'content': content
         });
     });
     </script>
