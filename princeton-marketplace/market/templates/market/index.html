@@ -116,19 +116,8 @@ function display(data, block, frame, number){
       if (i >= count) break;
       var post_id = json[i]["id"];
       var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
-      $('<a>', {
-         'class' : "fancybox",
-         'data-fancybox-type' : "ajax",
-         'html' : $('<div>', 
-         {
-           'id': blocky,
-           'html': json[i]['title'] + $('<div>', {
-                'style' : "display:none",
-                'class' : "contents",
-                'html': json[0]["description"]+'   /author: '+json[0]["author"]['username'] + '  /price: ' + json[0]["price"] + '   /title: ' + json[0]["title"]  + '   /date: '+ json[0]["date_posted"] + '<button type="button">ACCEPT</button>'
-           })//this stuff will need divs for each of the parts in order to style them independently
-         })
-      }).appendTo(frame);
+      var ct = i+1;
+      $('<a class="fancybox" data-fancybox-type="ajax"><div id="blocky"> Post'+ ct + ': ' + json[i]["title"]+'<div style="display:none" class="contents"> <div class = "des">description: '+json[i]["description"]+' </div> <div class = "aut">author: '+json[i]["author"]['username'] + '  </div> <div class = pri>price: ' + json[i]["price"] +' </div> <div class = "til">Category: ' + json[i]["category"]["name"]  + '</div> <div class = "date">date: '+ json[i]["date_posted"] + '</div> <button type="button">Click Me!</button></div></div></a>').appendTo('#results');.appendTo(frame);
    }
 };
 
