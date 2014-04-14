@@ -12,7 +12,7 @@
     <script type="text/javascript" src="/static/fancybox/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="/static/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/static/bootstrap-3.1.1-dist/css/bootstrap.css" type="text/css" />
-    <title>The Princeton Marketplace</title>
+    <title>The Princeton Marketplace 1</title>
     <style>
             body{
                 text-align: center;
@@ -103,6 +103,7 @@
 $.ajaxSetup({cache: true});
 
 // for modularity's sake: displays [data] in the form of [block] inside [frame], and display the first [number].
+//BUG: THIS DOESN'T CHECK FOR WHEN THERE IS ONLY ONE POSTING
 function display(data, block, frame, number){
    /*console.log(data);*/
    var json = data;
@@ -115,12 +116,17 @@ function display(data, block, frame, number){
       if (i >= count) break;
       var post_id = json[i]["id"];
       var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
-      $('<div>', {
-         'id' : block,
-         'html' : $('<a>', 
+      $('<a>', {
+         'class' : "fancybox",
+         'data-fancybox-type' : "ajax",
+         'html' : $('<div>', 
          {
-           'href': url,
-           'html': json[i]["title"]
+           'id': blocky,
+           'html': json[i]['title'] + $('<div>', {
+                'style' : "display:none",
+                'class' : "contents",
+                'html': json[0]["description"]+'   /author: '+json[0]["author"]['username'] + '  /price: ' + json[0]["price"] + '   /title: ' + json[0]["title"]  + '   /date: '+ json[0]["date_posted"] + '<button type="button">ACCEPT</button>'
+           })//this stuff will need divs for each of the parts in order to style them independently
          })
       }).appendTo(frame);
    }
@@ -378,6 +384,18 @@ var allselling = null;
                 	  });
                  }
              });
+    $(document).on('click', '.fancybox', function() {
+        var clicked = $(this);
+        var element = clicked.html();
+        var div = $('.contents').get(0).innerHTML;
+        var content = $(this.inner).html();
+        $(content).show();
+        console.log(element);
+        console.log(content);
+        console.log(div);
+        $.fancybox({
+            'content': div
+        });
          });
     </script>
 </body>
