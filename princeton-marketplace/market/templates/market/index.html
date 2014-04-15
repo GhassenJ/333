@@ -35,13 +35,21 @@ function display(data, block, frame, number){
       if (i >= count) break;
       var author_id = json[i]["author"]['id'];
       var post_id = json[i]["id"];
-      var url = "{% url 'market:posting_detail' 000 %}".replace(000, post_id);
+      var url = "{% url 'market:respond_to_posting' 000 %}".replace(000, post_id);
+      var url1 = "{% url 'market:close_posting' 000 %}".replace(000, post_id);
+      var url2 = "{% url 'market:delete_posting' 000 %}".replace(000, post_id);
       var ct = i+1;
+      var token1 = "{% csrf_token %}";
       if (user_id === author_id) {
-      buttony = '<button type="button">Delete Post</button>';
+      buttony ='<form id="formoid" action ="'+ url2 +'" method="post">'+token1+' <input type="submit" id="submitButton"  name="submitButton" value="DELETE"> </form>';
+      console.log(json[i]["open"]);
+      if (json[i]["open"] == true) { 
+        console.log(json[i]["open"]);
+        buttony= buttony +'<form id="formoid" action ="'+ url1 +'" method="post">'+token1+' <input type="submit" id="submitButton"  name="submitButton" value="CLOSE"> </form>'}
         console.log("SAME: Here is the YOU:"+user_id+"and here is the author:"+author_id);    }
       else {
-      buttony = '<button type="button">Accept Post</button>'; 
+      buttony = '<form id="formoid" action ="'+ url +'" method="post">'+token1+' <input type="submit" id="submitButton"  name="submitButton" value="ACCEOT"> </form>'; 
+      console.log(buttony);
         console.log("DIFFERENT: Here is the YOU:"+user_id+"and here is the author:"+author_id);    }
       $('<a class="fancybox" rel="gallery1" data-fancybox-type="ajax"><div id="blocky"> Post'+ post_id + ': ' + json[i]["title"]+'<div style="display:none" class="contents"> <div class = "des">description: '+json[i]["description"]+' </div> <div class = "aut">author: '+json[i]["author"]['username'] + '  </div> <div class = pri>price: ' + json[i]["price"] +' </div> <div class = "til">Category: ' + json[i]["category"]["name"]  + '</div> <div class = "date">date: '+ json[i]["date_posted"] + '</div>'+buttony+' </div></div></a>').appendTo(frame);
    }
@@ -128,13 +136,17 @@ function home(){
                 <li>CREATE POSTING</li>
                 <li>EDIT PROFILE</li>
                 <li>All Categories</li>
+                <li class="dropdown open">
+          <a class="dropdown-toggle" data-toggle="dropdown"> My Postings </a>
+          <ul class="dropdown-menu">  
+                    <li class="dropdown-header">Pick Which kind of Posting</li>     
+                    <li class="divider"></li>          
+                    <li>My Open Postings</li>
+                    <li>My Closed Postings</li>
+                    <li>My Responded Posts</li>
+                </ul>
+              </li>
             </ul> 
-            <!-- <input type="button" value="Get and parse JSON" id="button1" />  <br />
-            <input type="button" value="RESET" id="button2" /> <br />
-            <input type="button" value="ME" id="button3" />  <br />
-            <input type="button" value="GIMME ALL" id="button4" />   <br /> 
-            Buttons setup -->
-
         </div>  
 <div id="results">
          {% if user.is_authenticated %} <font size = "4"> Hi, {{ user.first_name }}. <a href = "accounts/logout">(not {{ user.first_name }} {{ user.last_name }}?)</a> We wish you a happy day.<br></font>
@@ -150,6 +162,8 @@ home();
 var allbuying = null;
 var allselling = null;
         $(document).ready(function() {
+            $('.dropdown.open .dropdown-toggle').dropdown('toggle');
+            var user_id = {{ user.id }};
             var category = []; //titles
             var description = []; //authors
             var author = []; //glats
@@ -213,6 +227,60 @@ var allselling = null;
 						      }
              	    });
 				    }
+                    else if (texti === "My Open Postings") {
+                    $.ajax({
+                        url: "{% url 'market:my_open_posts'%}",
+                        dataType: "json",
+                        beforeSend:function(){
+                            // this is where we append a loading image
+                            $('#results').html('<div class="loading"><img src="http://glenmartinmusic.com/mustache/wp-content/themes/glenmartin/images/loader.gif" alt="Loading..." width = "50" height = "50" align="center" /></div>');
+                        }, 
+                        success: function(data) {
+                           $('#results').html("");
+                           display(data, 'blocky', '#results', 0);
+                        },
+                        error:function(){
+                                // failed request; give feedback to user
+                                $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
+                              }
+                    });
+                    }
+                    else if (texti === "My Closed Postings") {
+                    $.ajax({
+                        url: "{% url 'market:my_closed_posts'%}",
+                        dataType: "json",
+                        beforeSend:function(){
+                            // this is where we append a loading image
+                            $('#results').html('<div class="loading"><img src="http://glenmartinmusic.com/mustache/wp-content/themes/glenmartin/images/loader.gif" alt="Loading..." width = "50" height = "50" align="center" /></div>');
+                        }, 
+                        success: function(data) {
+                           $('#results').html("");
+                           display(data, 'blocky', '#results', 0);
+                        },
+                        error:function(){
+                                // failed request; give feedback to user
+                                $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
+                              }
+                    });
+                    }
+                    else if (texti === "My Responded Postings") {
+                    $.ajax({
+                        url: "{% url 'market:my_responded_posts'%}",
+                        dataType: "json",
+                        beforeSend:function(){
+                            // this is where we append a loading image
+                            $('#results').html('<div class="loading"><img src="http://glenmartinmusic.com/mustache/wp-content/themes/glenmartin/images/loader.gif" alt="Loading..." width = "50" height = "50" align="center" /></div>');
+                        }, 
+                        success: function(data) {
+                           $('#results').html("");
+                           display(data, 'blocky', '#results', 0);
+                        },
+                        error:function(){
+                                // failed request; give feedback to user
+                                $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
+                              }
+                    });
+                    }
                 else if (texti === "HOME") {
                     $('#results').html('<p> Welcome to the Marketplace, the place for you to trade anything you want. </p><br><br> {% if user.is_authenticated %} <font size = "4"> Hi, {{ user.first_name }}. <a href = "accounts/logout">(not {{ user.first_name }} {{ user.last_name }}?)</a> We wish you a happy day.<br><div id="cat1" height = "15%"></div><div id="cat2"></div><div id="cat3"></div>{% else %} Please click on "Login" above to sign in via the Central Authentication system.<br> We support many user-friendly features (categories, hashtags, ..) once you log in!{% endif %}');
                     home(); 
@@ -308,9 +376,31 @@ var allselling = null;
         console.log(content);
         console.log(div);
         $.fancybox({
+            'autoDimensions': false,
+            'width'         : "200%",
+            'height'        : "200%",
             'content': content
         });
     });
+    $("#formoid").submit(function(event) {;
+      event.preventDefault();
+      var $form = $( this ),
+      url = $form.attr('action');
+      console.log(url);
+      var posting = $.post( url, {} );
+      cosnsole.log(posting);
+      posting.done(function( data ) {
+        alert('success');
+      });
+      posting.fail(function() {
+        alert( "error" );
+        home();
+        console.log("coming from the bottom");
+        })
+    });
+    //$('formoid').find(':submit').bind('click', function (event) {
+    //event.preventDefault();
+    //});
     </script>
 </body>
 </html>
