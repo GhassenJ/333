@@ -1,21 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="/static/img/favicon.png">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="/static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
-    <script type="text/javascript" src="/static/fancybox/jquery.fancybox.pack.js"></script>
-    <script type="text/javascript" src="/static/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/static/bootstrap-3.1.1-dist/css/bootstrap.css" type="text/css" />
-    <link rel="stylesheet" href="/static/style.css" type="text/css" />
-    <title>The Princeton Marketplace 1</title>
-    
-<script>
 // caching
 $.ajaxSetup({cache: true});
 
@@ -92,61 +74,6 @@ function home(){
       }
    });
 }
-</script>
-</head>
-<body>
-<!-- THE MODAL FOR POP-UP MENUS -->
-<div class="modal fade" id='PopUpModal' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <h4 class="modal-title"></h4>
-      </div>
-      <div class="modal-body"></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"></button>
-        <button type="button" class="btn btn-primary"></button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-    <div id="Top_Bar">The Princeton Marketplace<BR>
-        {% if user.is_authenticated %}
-            <a href = "accounts/logout/">Logout Here!</a>
-            <a href = "create_posting/">Add a Posting!</a>
-        {% else %}
-            <a href = "accounts/login/">Login Here!</a><BR>
-        {% endif %}
-    </div>
-        <div id="leftPane">
-            <ul>
-                <li>HOME</li>
-                <li>All Buying Postings</li>
-                <li>All Selling Postings</li>
-                <li>CREATE POSTING</li>
-                <li>EDIT PROFILE</li>
-                <li>All Categories</li>
-            </ul> 
-            <!-- <input type="button" value="Get and parse JSON" id="button1" />  <br />
-            <input type="button" value="RESET" id="button2" /> <br />
-            <input type="button" value="ME" id="button3" />  <br />
-            <input type="button" value="GIMME ALL" id="button4" />   <br /> 
-            Buttons setup -->
-
-        </div>  
-<div id="results">
-         {% if user.is_authenticated %} <font size = "4"> Hi, {{ user.first_name }}. <a href = "accounts/logout">(not {{ user.first_name }} {{ user.last_name }}?)</a> We wish you a happy day.<br></font>
-      <div id="cat1" height = "15%">
-      </div>
-<script>
-home();
-</script>
-{% else %} Please click on "Login" above to sign in via the Central Authentication system.<br> We support many user-friendly features (categories, hashtags, ..) once you log in!{% endif %}
-</div>
-
-<script>
 var allbuying = null;
 var allselling = null;
         $(document).ready(function() {
@@ -190,11 +117,11 @@ var allselling = null;
                            display(data, 'blocky', '#results', 0);
                         },
                         error:function(){
-					            // failed request; give feedback to user
-					            $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
-						      }
-                	});
-				    }
+                      // failed request; give feedback to user
+                      $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
+                  }
+                  });
+            }
                 else if (texti === "All Selling Postings") {
                     $.ajax({
                         url: "{% url 'market:all_selling_posts' %}",
@@ -208,11 +135,11 @@ var allselling = null;
                            display(data, 'blocky', '#results', 0);
                         },
                         error:function(){
-					            // failed request; give feedback to user
-					            $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
-						      }
-             	    });
-				    }
+                      // failed request; give feedback to user
+                      $('#results').html('<p class="error"><strong>Oops!</strong> Try that again in a few moments. Ajax is not working or you are not logged in. </p>');
+                  }
+                  });
+            }
                 else if (texti === "HOME") {
                     $('#results').html('<p> Welcome to the Marketplace, the place for you to trade anything you want. </p><br><br> {% if user.is_authenticated %} <font size = "4"> Hi, {{ user.first_name }}. <a href = "accounts/logout">(not {{ user.first_name }} {{ user.last_name }}?)</a> We wish you a happy day.<br><div id="cat1" height = "15%"></div><div id="cat2"></div><div id="cat3"></div>{% else %} Please click on "Login" above to sign in via the Central Authentication system.<br> We support many user-friendly features (categories, hashtags, ..) once you log in!{% endif %}');
                     home(); 
@@ -311,6 +238,3 @@ var allselling = null;
             'content': content
         });
     });
-    </script>
-</body>
-</html>
