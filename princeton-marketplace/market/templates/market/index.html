@@ -48,7 +48,7 @@ function display(data, block, frame, number){
         buttony= buttony +'<form id="formoid" action ="'+ url1 +'" method="post">'+token1+' <input type="submit" id="submitButton"  name="submitButton" value="CLOSE"> </form>'}
         console.log("SAME: Here is the YOU:"+user_id+"and here is the author:"+author_id);    }
       else {
-      buttony = '<form id="formoid" action ="'+ url +'" method="post">'+token1+' <input type="submit" id="submitButton"  name="submitButton" value="ACCEOT"> </form>'; 
+      buttony = '<form id="formoid" action ="'+ url +'" method="post">'+token1+' <input type="submit" id="submitButton"  name="submitButton" value="ACCEPT"> </form>'; 
       console.log(buttony);
         console.log("DIFFERENT: Here is the YOU:"+user_id+"and here is the author:"+author_id);    }
       $('<a class="fancybox" rel="gallery1" data-fancybox-type="ajax"><div id="blocky"> Post'+ post_id + ': ' + json[i]["title"]+'<div style="display:none" class="contents"> <div class = "des">description: '+json[i]["description"]+' </div> <div class = "aut">author: '+json[i]["author"]['username'] + '  </div> <div class = pri>price: ' + json[i]["price"] +' </div> <div class = "til">Category: ' + json[i]["category"]["name"]  + '</div> <div class = "date">date: '+ json[i]["date_posted"] + '</div>'+buttony+' </div></div></a>').appendTo(frame);
@@ -121,12 +121,18 @@ function home(){
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
     <div id="Top_Bar">The Princeton Marketplace<BR>
+    <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" id="search" class="form-control" placeholder="Search">
+        </div>
+      </form>
         {% if user.is_authenticated %}
             <a href = "accounts/logout/">Logout Here!</a>
             <a href = "create_posting/">Add a Posting!</a>
         {% else %}
             <a href = "accounts/login/">Login Here!</a><BR>
         {% endif %}
+
     </div>
         <div id="leftPane">
             <ul>
@@ -147,6 +153,7 @@ function home(){
                 </ul>
               </li>
             </ul> 
+            <h4 id="res-text">Showing results for: <strong id="search-string">Array</strong></h4>
         </div>  
 <div id="results">
          {% if user.is_authenticated %} <font size = "4"> Hi, {{ user.first_name }}. <a href = "accounts/logout">(not {{ user.first_name }} {{ user.last_name }}?)</a> We wish you a happy day.<br></font>
@@ -401,6 +408,42 @@ var allselling = null;
     //$('formoid').find(':submit').bind('click', function (event) {
     //event.preventDefault();
     //});
+function search() {
+    var query_value = $('input#search').val();
+    $('b#search-string').html(query_value);
+    console.log(query_value);
+    if(query_value !== ''){
+        $.ajax({
+            type: "GET",
+            url: "{% url 'market:search_posts' 000 %}".replace(000, query_value),
+            dataType: "json",
+            cache: true,
+                success: function(data) {
+                $('#results').html("");
+                display(data, 'blocky', '#results', 0)
+                console.log("success");
+                console.log(data);
+            }
+        });
+    }return false;
+}
+$(document).on('keyup', 'input#search', function(e){
+    // Set Timeout
+    console.log("HELLO HELLO");
+    clearTimeout($.data(this, 'timer'));
+
+    // Set Search String
+    var search_string = $(this).val();
+
+    // Do Search
+    if (search_string == '') {
+        console.log("empty");
+    }else{
+       // $("ul#res").fadeIn();
+        //$('h4#res-text').fadeIn();
+        $(this).data('timer', setTimeout(search, 100));
+    };
+});
     </script>
 </body>
 </html>
