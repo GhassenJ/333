@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<!-- Title here -->		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+		<!-- jQuery UI -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    	<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> 
+		<!-- jQuery Gritter -->
+		<link rel="stylesheet" href="jquery.gritter.css">
+		<!-- Font awesome CSS -->
+		<link href="font-awesome.min.css" rel="stylesheet">		
+		<!-- Custom CSS -->
+		<link href="style.css" rel="stylesheet"> 
+		    <link href="dashboard.css" rel="stylesheet">
+    <style>
+    .blocky {
+    max-width: 100%;
+    }
+    .footer{
+	height: 5%;
+	position: fixed;
+    bottom: 0;
+    margin-left: 35%;
+	font-size: 14px;
+	line-height: 30px;
+	text-align: center;
+	color: #F80032;
+		}
+    </style>
+		<link rel="shortcut icon" href="#">
+	</head>
+	
+	<body>
+
+		<div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+			<div class="container">
+				<!-- Menu button for smallar screens -->
+				<div class="navbar-header">
+					<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+						<span class="sr-only">Toggle navigation</span>
+
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a href="index.html" class="navbar-brand">The <span class="bold">MarketPlace</span></a>
+				</div>
+				<!-- Site name for smallar screens -->
+				<!-- Navigation starts -->
+				<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">     
+					<!-- Links -->
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">            
+							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+								<i class="fa fa-user"></i> Ghassen Jerfel <b class="caret"></b>  
+							</a>
+							<!-- Dropdown menu -->
+							<ul class="dropdown-menu">
+							<li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+							<li><a href="#"><i class="fa fa-plus"></i> Create Listing</a></li>
+							<li><a href="login.html"><i class="fa fa-power-off"></i> Logout</a></li>
+							</ul>
+						</li>
+					</ul>
+					<!-- Notifications -->
+					<ul class="nav navbar-nav navbar-right">
+						<!-- Comment button with number of latest comments count -->
+						<li class="dropdown dropdown-big">
+							<a class="dropdown-toggle" href="#" data-toggle="dropdown">
+								<i class="fa fa-comments"></i> Notifications <span   class="badge badge-info">6</span> 
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<!-- Heading - h5 -->
+									<h5><i class="fa fa-comments"></i> Notifications </h5>
+									<!-- Use hr tag to add border -->
+									<hr />
+								</li>        
+								<li>
+									<div class="drop-foot">
+										<a href="#">View All</a>
+									</div>
+								</li>                                    
+							</ul>
+						</li>
+					</ul>
+			<form class="navbar-form navbar-right">
+            <input class="form-control" placeholder="Search..." type="text" >
+          </form>
+				</nav>
+			</div>
+		</div>
+
+		<!-- Main content starts -->
+		<div class="content">
+			<!-- Sidebar -->
+			<div class="sidebar">
+				<div class="sidebar-dropdown"><a href="#">Navigation <i class="fa fa-caret-square-o-down"></i></a></div>
+				<div class="sidebar-inner">
+					<!-- Search form -->
+					<div class="sidebar-widget">
+						<form >
+							<input type="text" class="form-control" placeholder="Search">
+						</form>
+					</div>
+					<!--- Sidebar navigation -->
+					<!-- If the main navigation has sub navigation, then add the class "has_submenu" to "li" of main navigation. -->
+					<ul class="navi">
+						<!-- Use the class nred, ngreen, nblue, nlightblue, nviolet or norange to add background color. You need to use this in <li> tag. -->
+						<li class="nred current"><a href="#"><i class="fa fa-home"></i> Home </a></li>
+						<!-- Menu with sub menu -->
+						<li class="ngreen"><a href="#"><i class="fa fa-bar-chart-o"></i> All Buying Posts</a></li>
+						<li class="norange"><a href="#"><i class="fa fa-sitemap"></i> All Selling Posts</a></li>
+						<li class="has_submenu nviolet">
+							<a href="#">
+								<i class="fa fa-file-o"></i> My Listings
+								<span class="pull-right"><i class="fa fa-angle-right"></i></span>
+							</a>
+							<ul id="dropout">
+								<li><a href="#">Open Posts</a></li>
+								<li><a href="#">Posts responded to</a></li>
+								<li><a href="#">Closed Posts</a></li>
+							</ul>
+						</li> 
+					</ul>
+					<!--/ Sidebar navigation -->
+
+					<!-- Date -->
+					<div class="sidebar-widget">
+						<div id="todaydate"></div>
+					</div>
+				</div>
+			</div>
+			<!-- Sidebar ends -->
+
+			<!-- Main bar -->
+			<div class="mainbar">
+      
+				<!-- Page heading -->
+				<div class="page-head">
+				<!-- Page heading -->
+					<h2 class="pull-left">Home 
+					  <!-- page meta -->
+					  <span class="page-meta">Well, hello hello. Look who we have here?</span>
+					</h2>
+					<!-- Breadcrumb -->
+					<div class="bread-crumb pull-right">
+					  <a href="#"><i class="fa fa-home"></i> Home</a> 
+					  <!-- Divider -->
+					  <span class="divider">/</span> 
+					  <a href="#" class="bread-current">The MarketPlace</a>
+					</div>
+					<div class="clearfix"></div>
+				</div><!--/ Page heading ends -->
+				<!-- Matter -->
+				<div class="matter">
+					<div class="container">
+          <div class="row placeholders">
+            <div class="col-xs-6 col-sm-4 placeholder">
+              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-4 placeholder">
+              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-4 placeholder">
+              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-4 placeholder">
+              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+            <div class="col-xs-6 col-sm-4 placeholder">
+              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+             <div class="col-xs-6 col-sm-4 placeholder">
+              <img data-src="holder.js/200x200/auto/vine" class="blocky" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+                         <div class="col-xs-6 col-sm-4 placeholder">
+              <img data-src="holder.js/200x200/auto/sky" class="blocky" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+                         <div class="col-xs-6 col-sm-4 placeholder">
+              <img data-src="holder.js/200x200/auto/vine" class="blocky" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+                         <div class="col-xs-6 col-sm-4 placeholder">
+              <img data-src="holder.js/200x200/auto/sky" class="blocky" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Something else</span>
+            </div>
+          </div>
+
+
+                <div class="footer">
+                  About - Contact Us - FAQ
+                </div>
+				</div><!--/ Matter ends -->
+			</div><!--/ Mainbar ends -->	    	
+			<div class="clearfix"></div>
+		</div><!--/ Content ends -->
+		<!-- Notification box ends -->  
+
+		<!-- Scroll to top -->
+		<span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
+		<!-- Custom JS -->
+		<script src="script.js"></script>
+		    <script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
+		
+	</body>
+</html>
