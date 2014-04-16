@@ -2,11 +2,13 @@ body {
   margin: 0px 0px 0px 0px;
 }
 
+/*
 .static {
   background-color: #00ffff;
   position: fixed;
   z-index: 100;
 }
+*/
 
 .dynamic {
   visibility: hidden;
@@ -15,9 +17,11 @@ body {
   left: 180px;
 }
 
+/*
 #logo {
   width: 12%;
 }
+*/
 
 #topBar {
   float: right;
@@ -25,7 +29,7 @@ body {
 }
 
 #leftPane {
-visibility: hidden;
+
   top: 60px;
   float: left;
   width: 180px;
