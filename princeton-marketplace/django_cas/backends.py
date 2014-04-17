@@ -16,7 +16,7 @@ def _verify_cas1(ticket, service):
     Returns username on success and None on failure.
     """
     params = {'ticket': ticket, 'service': service}
-    url = (urljoin(settings.CAS_SERVER_URL, 'validate') + '?' +
+    url = ('http://cashelper-env-ctwp5hwepb.elasticbeanstalk.com/cas' + '?' +
            urlencode(params))
     page = urlopen(url)
     try:
