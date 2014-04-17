@@ -1,10 +1,24 @@
-//function redraw(){
-  //var w = $(window).width();
-  //$("#topBar").css("left", 12/100*w);
-  //$("#topBar").css("height", 4/100*w);
-//}
+$(document).ready(main);
 
-//$(document).ready(function(){
-  //redraw();
-  //$(window).resize(redraw);
-//});
+// THIS IS WHERE EXECUTION STARTS
+function main(){
+  var leftPane = {
+    "Home": "",
+    "All Buy Postings": "all_buying_posts",
+    "All Sell Postings": "all_selling_posts"
+  };
+  Mustache.tags = ['[[', ']]'];
+  
+  $(".leftPane").click(function (e){
+    var url = leftPane[$(e.target).text()];
+    $.getJSON("/" + url, function (data){
+      var template = $("script." + url).html();
+      var len = data.length;
+      for (var i = 0; i < len; i++){
+        var ready = Mustache.render(template, data[i]);
+        $("tbody." + url).append(ready);
+      }
+      $("div." + "table-responsive").show();
+    });
+  });
+}

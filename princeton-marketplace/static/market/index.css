@@ -1,68 +1,97 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  margin: 0px 0px 0px 0px;
+  padding-top: 50px;
 }
+
 
 /*
-.static {
-  background-color: #00ffff;
-  position: fixed;
-  z-index: 100;
-}
-*/
+ * Global add-ons
+ */
 
-.dynamic {
-  visibility: hidden;
-  position: absolute;
-  top: 60px;
-  left: 180px;
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
 }
+
 
 /*
-#logo {
-  width: 12%;
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+  display: none;
 }
-*/
-
-#topBar {
-  float: right;
-  width: 100%;
-}
-
-#leftPane {
-
-  top: 60px;
-  float: left;
-  width: 180px;
-  height: 100%;
-}
-
-button {
-  background-color: transparent;
-  border-width: 0px;
-  padding: 0px;
-  margin-left: 15px;
-  margin-top: 25px;
-  font-family: sans-serif;
-  font-size: 20px;
-  font-weight: bolder;
+@media (min-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #f5f5f5;
+    border-right: 1px solid #eee;
+  }
 }
 
-#searchBox {
-  margin: 10px 10px 10px 10px;
-  padding: 0px;
-  border-width: 0px;
-  width: 720px;
-  height: 40px;
-  font-size: 20px;
-  font-style: italic;
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.nav-sidebar > .active > a {
+  color: #fff;
+  background-color: #428bca;
 }
 
-#user {
-  margin: 10px 10px 10px 10px;
-  width: 360px;
-  height: 40px;
-  font-size: 15px;
-  position: fixed;
-  top: 0px;
-  left: 920px;
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 20px;
 }
+@media (min-width: 768px) {
+  .main {
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
+}
+
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.placeholders h4 {
+  margin-bottom: 0;
+}
+.placeholder {
+  margin-bottom: 20px;
+}
+.placeholder img {
+  display: inline-block;
+  border-radius: 50%;
+}
+
