@@ -47,6 +47,7 @@ function openPostHandler(e){
 
 // handles clicks on the "back" button in the topBar
 // this button is displayed only sometimes, so you might not see it on the home screen
+// IMPORTANT: the implementation right now is VERY bad, it has to be improved using some tricky code and a stack
 function backHandler(e){
   $("div." + current_url).hide();
   $("div." + last_url).show();
