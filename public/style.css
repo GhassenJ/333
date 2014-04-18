@@ -539,7 +539,7 @@ form{
 	display: block;
 	background:#111;
 	color: #eee;
-	position: relative;
+	position: fixed;
 }
 
 .sidebar hr{
@@ -1549,6 +1549,12 @@ border:1px solid #eee;
 	}
 	.sidebar .sidebar-widget{
 	}
+   
+   .sidebar .sidebar-posting{
+      display: block;
+		max-width:300px;
+	}
+   
 	.mainbar{
 		margin: 0px;
 		float: none;

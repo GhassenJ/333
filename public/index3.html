@@ -21,15 +21,59 @@
     max-width: 100%;
     }
     .footer{
-	height: 5%;
-	position: fixed;
-    bottom: 0;
-    margin-left: 35%;
+	height: 3%;
+	position: relative;
+   bottom: 0;
 	font-size: 14px;
-	line-height: 30px;
 	text-align: center;
 	color: #F80032;
+   max-width: 100%;
 		}
+   .postingbutton {
+	-moz-box-shadow:inset 0px 1px 0px 0px #23c2db;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #23c2db;
+	box-shadow:inset 0px 1px 0px 0px #23c2db;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #4043e6), color-stop(1, #25a1fa) );
+	background:-moz-linear-gradient( center top, #4043e6 5%, #25a1fa 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4043e6', endColorstr='#25a1fa');
+	background-color:#4043e6;
+	-webkit-border-top-left-radius:20px;
+	-moz-border-radius-topleft:20px;
+   border-radius:15px;
+   border-top-left-radius:20px;
+	-webkit-border-top-right-radius:20px;
+	-moz-border-radius-topright:20px;
+	border-top-right-radius:20px;
+	-webkit-border-bottom-right-radius:20px;
+	-moz-border-radius-bottomright:20px;
+	border-bottom-right-radius:20px;
+	-webkit-border-bottom-left-radius:20px;
+	-moz-border-radius-bottomleft:20px;
+	border-bottom-left-radius:20px;
+	text-indent:0px;
+	border:3px solid #5351ed;
+	display:inline-block;
+	color:#ffffff;
+	font-size:15px;
+	font-weight:bold;
+	font-style:normal;
+	height:40px;
+	line-height:40px;
+	width:200px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px #cc9f52;
+}
+.postingbutton:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #25a1fa), color-stop(1, #4043e6) );
+	background:-moz-linear-gradient( center top, #25a1fa 5%, #4043e6 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#25a1fa', endColorstr='#4043e6');
+	background-color:#25a1fa;
+}.postingbutton:active {
+	position:relative;
+	top:1px;
+}
+/* This button was generated using CSSButtonGenerator.com */
     </style>
 		<link rel="shortcut icon" href="#">
 	</head>
@@ -101,12 +145,12 @@
 			<div class="sidebar">
 				<div class="sidebar-dropdown"><a href="#">Navigation <i class="fa fa-caret-square-o-down"></i></a></div>
 				<div class="sidebar-inner">
-					<!-- Search form -->
-					<div class="sidebar-widget">
-						<form >
-							<input type="text" class="form-control" placeholder="Search">
-						</form>
+					<!-- Create Posting Form -->
+               <div class="sidebar-widget">
+					<div class="postingbutton" align="center">
+                  <a href="#"><i class="fa fa-plus"></i> Create Posting</a>
 					</div>
+               </div>
 					<!--- Sidebar navigation -->
 					<!-- If the main navigation has sub navigation, then add the class "has_submenu" to "li" of main navigation. -->
 					<ul class="navi">
@@ -145,7 +189,7 @@
 				<!-- Page heading -->
 					<h2 class="pull-left">Home 
 					  <!-- page meta -->
-					  <span class="page-meta">Well, hello hello. Look who we have here?</span>
+					  <span class="page-meta">Hello, { Insert Name Here }</span>
 					</h2>
 					<!-- Breadcrumb -->
 					<div class="bread-crumb pull-right">
@@ -205,15 +249,20 @@
               <h4>Label</h4>
               <span class="text-muted">Something else</span>
             </div>
+
           </div>
 
 
-                <div class="footer">
-                  About - Contact Us - FAQ
-                </div>
+
 				</div><!--/ Matter ends -->
+
 			</div><!--/ Mainbar ends -->	    	
 			<div class="clearfix"></div>
+                     <!--/ footer -->
+            <div class="footer">
+               About - Contact Us - FAQ
+            </div><!--/ footer ends -->
+            
 		</div><!--/ Content ends -->
 		<!-- Notification box ends -->  
 
