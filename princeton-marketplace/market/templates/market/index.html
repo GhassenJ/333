@@ -97,6 +97,15 @@
 							</ul>
 						</li>
 					</ul>
+          <!-- Guidelines -->
+					<ul class="nav navbar-nav navbar-right">
+						<!-- Message button with number of latest messages count-->
+						<li>
+							<a href="#">
+								<i class="fa fa-info-circle"></i> Guidelines 
+							</a>
+						</li>
+					</ul>
           <div class="navbar-widget navbar-right">
             <form>
               <input class="form-control" placeholder="Search" type="text" >
@@ -110,6 +119,11 @@
 		<div class="content">
 			<!-- Sidebar -->
 			<div class="sidebar">
+        <div class="sidebar-widget" align="center">
+          <form>
+            <button class="btn btn-lg btn-danger">Create New Posting</button>
+          </form>
+        </div>
 				<div class="sidebar-dropdown"><a href="#">Navigation</a></div>
 				<div class="sidebar-inner">
 					<!--- Sidebar navigation -->
@@ -117,7 +131,7 @@
 					<ul class="navi">
 						<!-- Use the class nred, ngreen, nblue, nlightblue, nviolet or norange to add background color. You need to use this in <li> tag. -->
 
-						<li class="nred current"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+						<li class="nblue current"><a href="#"><i class="fa fa-home"></i> Home</a></li>
             <li class="nblue"><a href="#" class="leftPane all_selling_posts"><i class="fa fa-th"></i> All Sell Postings</a></li>
 						<li class="nblue"><a href="#" class="leftPane all_buying_posts"><i class="fa fa-list"></i> All Buy Postings</a></li>
 						<li class="has_submenu nblue">
@@ -144,6 +158,7 @@
 						</li> 
 					</ul>
 					<!--/ Sidebar navigation -->
+        </div>
 				</div>
 			</div>
 			<!-- Sidebar ends -->
@@ -152,7 +167,6 @@
 			<div class="mainbar">
 				<!-- Page heading -->
 				<div class="page-head" style="display:none">
-					<!-- Page heading -->
 					<h5 class="pull-left">Search Results: 
 					</h5>
 					<div class="clearfix"></div>
@@ -355,6 +369,13 @@
 						</div>
 					</div>
 				</div><!--/ Matter ends -->
+        <!-- Page footing -->
+				<div class="page-foot" style="display:initial" align="center">
+					<p>
+            About | Contact | FAQ
+					</p>
+					<div class="clearfix"></div>
+				</div><!--/ Page footing ends -->
 			</div><!--/ Mainbar ends -->	    	
 			<div class="clearfix"></div>
 		</div><!--/ Content ends -->

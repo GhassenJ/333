@@ -1,3 +1,7 @@
 th {
   font-weight: bold;
 }
+
+.sidebar{
+	position: fixed;
+}
