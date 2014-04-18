@@ -57,7 +57,7 @@ def my_open_posts(request):
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 @login_required
-def my_closed_posts(request):
+def my_locked_posts(request):
     """
     This view returns JSON data for all postings created by the current user 
     that was responded to. Ordered by date.
@@ -67,7 +67,7 @@ def my_closed_posts(request):
 
     #If the user is authenticated, then display categories
     if user.is_authenticated():
-        my_author_list = user.author.all().filter(is_open=False).order_by('-date_posted') #List of posts I've authored that are closed
+        my_author_list = user.author.all().filter(is_open=False).order_by('-date_posted') #List of posts I've authored that have been responded to
         response_list = []
         for posting in my_author_list:
             postdata = {}
@@ -80,6 +80,7 @@ def my_closed_posts(request):
             postdata['price'] = posting.price
             postdata['description'] = posting.description
             postdata['is_selling'] = posting.is_selling
+            postdata['open'] = posting.is_open # should all be false
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
             postdata['image'] = posting.picture
@@ -102,7 +103,7 @@ def my_responded_posts(request):
 
     #If the user is authenticated, then display categories
     if user.is_authenticated():
-        my_responded_list = user.responder.all().order_by('-date_posted') #List of posts I've authored
+        my_responded_list = user.responder.all().order_by('-date_posted') #List of posts I've responded to
         response_list = []
         for posting in my_responded_list:
             postdata = {}
@@ -115,6 +116,7 @@ def my_responded_posts(request):
             postdata['price'] = posting.price
             postdata['description'] = posting.description
             postdata['is_selling'] = posting.is_selling
+            postdata['open'] = posting.is_open # should all be false
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
             postdata['image'] = posting.picture

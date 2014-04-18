@@ -152,8 +152,8 @@ function home(){
                     <li class="dropdown-header">Pick Which kind of Posting</li>     
                     <li class="divider"></li>          
                     <li>My Open Postings</li>
-                    <li>My Closed Postings</li>
-                    <li>My Responded Posts</li>
+                    <li>My Locked Postings</li>
+                    <li>Posts I've Responded To</li>
                 </ul>
               </li>
             </ul> 
@@ -266,10 +266,10 @@ var allselling = null;
                               }
                     });
                     }
-                    else if (texti === "My Closed Postings") {
+                    else if (texti === "My Locked Postings") {
                     $.ajax({
                       cache: true,
-                        url: "{% url 'market:my_closed_posts'%}",
+                        url: "{% url 'market:my_locked_posts'%}",
                         dataType: "json",
                         beforeSend:function(){
                             // this is where we append a loading image
@@ -286,7 +286,7 @@ var allselling = null;
                               }
                     });
                     }
-                    else if (texti === "My Responded Posts") {
+                    else if (texti === "Posts I've Responded To") {
                       console.log("My Responded Postings");
                     $.ajax({
                       cache: true,
