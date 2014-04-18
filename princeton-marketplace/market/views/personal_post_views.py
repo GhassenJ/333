@@ -35,12 +35,17 @@ def my_open_posts(request):
             postdata = {}
             postdata['title'] = posting.title
             postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+            if (posting.responder is not None):
+                postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
+            else:
+                postdata['responder'] = {}
             postdata['date_posted'] = posting.date_posted.__str__()
             postdata['date_expires'] = posting.date_expires.__str__()
             postdata['method_of_payment'] = posting.method_of_pay
             postdata['price'] = posting.price
             postdata['description'] = posting.description
-            postdata['is_selling'] = posting.is_selling
+            postdata['selling'] = posting.is_selling
+            postdata['open'] = posting.is_open # should all be true
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
             postdata['image'] = posting.picture

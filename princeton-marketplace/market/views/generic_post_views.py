@@ -48,6 +48,8 @@ def all_buying_posts(request):
         postdata['method_of_payment'] = posting.method_of_pay
         postdata['price'] = posting.price
         postdata['description'] = posting.description
+        postdata['selling'] = posting.is_selling # should all be false
+        postdata['open'] = posting.is_open # should all be true
         postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
         postdata['id'] = posting.id
         postdata['image'] = posting.picture
@@ -56,6 +58,7 @@ def all_buying_posts(request):
             hashtags.append({"name": hashtag.name, "id": hashtag.id})
         postdata['hashtags'] = hashtags
         response_list.append(postdata)
+
     return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 ###@login_required
@@ -81,6 +84,8 @@ def all_selling_posts(request):
         postdata['method_of_payment'] = posting.method_of_pay
         postdata['price'] = posting.price
         postdata['description'] = posting.description
+        postdata['selling'] = posting.is_selling # should all be true
+        postdata['open'] = posting.is_open # should all be true
         postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
         postdata['id'] = posting.id
         postdata['image'] = posting.picture
@@ -121,6 +126,8 @@ def category_buying_posts(request, category_id):
             postdata['method_of_payment'] = posting.method_of_pay
             postdata['price'] = posting.price
             postdata['description'] = posting.description
+            postdata['selling'] = posting.is_selling # should all be false
+            postdata['open'] = posting.is_open # should all be true
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
             postdata['image'] = posting.picture
@@ -156,6 +163,8 @@ def category_selling_posts(request, category_id):
             postdata['method_of_payment'] = posting.method_of_pay
             postdata['price'] = posting.price
             postdata['description'] = posting.description
+            postdata['selling'] = posting.is_selling # should all be true
+            postdata['open'] = posting.is_open # should all be true
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
             postdata['image'] = posting.picture
@@ -191,6 +200,8 @@ def hashtag_buying_posts(request, hashtag_id):
             postdata['method_of_payment'] = posting.method_of_pay
             postdata['price'] = posting.price
             postdata['description'] = posting.description
+            postdata['selling'] = posting.is_selling # should all be false
+            postdata['open'] = posting.is_open # should all be true
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
             postdata['image'] = posting.picture
@@ -226,6 +237,8 @@ def hashtag_selling_posts(request, hashtag_id):
             postdata['method_of_payment'] = posting.method_of_pay
             postdata['price'] = posting.price
             postdata['description'] = posting.description
+            postdata['selling'] = posting.is_selling # should all be true
+            postdata['open'] = posting.is_open # should all be false
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
             postdata['image'] = posting.picture
@@ -385,6 +398,7 @@ def search_posts(request, query):
             postdata['price'] = posting.price
             postdata['description'] = posting.description
             postdata['selling'] = posting.is_selling
+            postdata['open'] = posting.is_open
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
             postdata['image'] = posting.picture
