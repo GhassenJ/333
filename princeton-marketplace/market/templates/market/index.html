@@ -74,7 +74,7 @@
 						<!-- Message button with number of latest messages count-->
 						<li class="dropdown dropdown-big">
 							<a class="dropdown-toggle" href="#" data-toggle="dropdown">
-								<i class="fa fa-bell"></i> Notifications <span class="badge badge-info">7</span> 
+								<i class="fa fa-bell"></i> Notifications <span class="badge badge-important">7</span> 
 							</a>
 							<ul class="dropdown-menu">
 								<li>
@@ -99,7 +99,6 @@
 					</ul>
           <!-- Guidelines -->
 					<ul class="nav navbar-nav navbar-right">
-						<!-- Message button with number of latest messages count-->
 						<li>
 							<a href="#">
 								<i class="fa fa-info-circle"></i> Guidelines 
@@ -111,6 +110,13 @@
               <input class="form-control" placeholder="Search" type="text" >
             </form>
           </div>
+          <ul class="nav navbar-nav navbar-left">
+            <li>
+              <a href="#" id="back" style="display:none">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-arrow-left"></i> Back
+							</a>
+            </li>
+          </ul>
 				</nav>
 			</div>
 		</div>
@@ -119,7 +125,7 @@
 		<div class="content">
 			<!-- Sidebar -->
 			<div class="sidebar">
-        <div class="sidebar-widget" align="center">
+        <div class="sidebar-widget" style="text-align:center">
           <form>
             <button class="btn btn-lg btn-danger">Create New Posting</button>
           </form>
@@ -131,7 +137,7 @@
 					<ul class="navi">
 						<!-- Use the class nred, ngreen, nblue, nlightblue, nviolet or norange to add background color. You need to use this in <li> tag. -->
 
-						<li class="nblue current"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+						<li class="nblue current"><a href="#" class="leftPane home_feed"><i class="fa fa-home"></i> Home</a></li>
             <li class="nblue"><a href="#" class="leftPane all_selling_posts"><i class="fa fa-th"></i> All Sell Postings</a></li>
 						<li class="nblue"><a href="#" class="leftPane all_buying_posts"><i class="fa fa-list"></i> All Buy Postings</a></li>
 						<li class="has_submenu nblue">
@@ -167,8 +173,8 @@
 			<div class="mainbar">
 				<!-- Page heading -->
 				<div class="page-head" style="display:none">
-					<h5 class="pull-left">Search Results: 
-					</h5>
+					<h6 class="pull-left">Search Results: 
+					</h6>
 					<div class="clearfix"></div>
 				</div><!--/ Page heading ends -->
 
@@ -180,6 +186,38 @@
                 
                 <!-- Home -->
                 <div class="home_feed" style="display:none">
+                  <div class="widget">
+                  <div class="widget-head">
+										<div class="clearfix"></div>
+									</div>
+									<div class="widget-content">
+										<table class="table table-bordered ">
+											<thead>
+												<tr>
+												  <th>Title</th>
+												  <th>Description</th>
+												  <th>Price</th>
+												  <th>From</th>
+												  <th>Expires</th>
+                          <th></th>
+												</tr>
+											</thead>
+											<tbody class="home_feed">
+											</tbody>
+										</table>
+									</div>
+									<div class="widget-foot">
+										<ul class="pagination pull-right">
+										  <li><a href="#">Prev</a></li>
+										  <li><a href="#">1</a></li>
+										  <li><a href="#">2</a></li>
+										  <li><a href="#">3</a></li>
+										  <li><a href="#">4</a></li>
+										  <li><a href="#">Next</a></li>
+										</ul>
+										<div class="clearfix"></div> 
+									</div>
+								</div>
                 </div>
                 <!-- All Buy Postings -->
                 <div class="all_buying_posts" style="display:none">
@@ -322,11 +360,16 @@
 								</div>
                 </div>
                 
-                <div class="posting_detail" style="display:initial">
+                <!-- Detailed Posting -->
+                <div class="posting_detail" style="display:none">
                 <div class="widget">
                   <!-- Widget head -->
                   <div class="widget-head">
-                    <div class="pull-left">Title</div>
+                    <div class="pull-left">
+                      <span>big noisy HP laptop</span>
+                      <span> - </span>
+                      <span class="label label-success"><i class="fa fa-dollar"></i> 449</span>
+                    </div>
                     <div class="pull-right">
                       <button class="btn btn-sm btn-info"><i class="fa fa-pencil"></i>&nbsp;&nbsp;Edit</button>
                       <button class="btn btn-sm btn-warning"><i class="fa fa-archive"></i>&nbsp;&nbsp;Archive</button>
@@ -334,33 +377,54 @@
                     </div>
                     <div class="clearfix"></div>
                   </div>
-
                   <!-- Widget content -->
                   <div class="widget-content">
                     <!-- Type Your Widget Content Here... -->
                     <div class="padd">
-                    <div class="row">
-                    <div class="col-md-4">
-                    <ul class="list-unstyled">
-                      <li>From: Parth Mehta</li>
-                      <li>Date Posted: today</li>
-                      <li>Date Expires: tomorrow</li>
-                      <li>Description: please buy this i need some money i am willing to negotiate the price</li>
-                    </ul>
-                    </div>
-                    <div class="col-md-8">
-                    <ul class="list-unstyled">
-                      <li>From: Parth Mehta</li>
-                      <li>Date Posted: today</li>
-                      <li>Date Expires: tomorrow</li>
-                      <li>Description: please buy this i need some money i am willing to negotiate the price</li>
-                    </ul>
-                    </div>
-                    </div>
+                      <div class="row">
+                        <div class="col-md-8">
+                          <span><b>Description</b></span>
+                          <p>please buy this i want some money i am willing to negotiate the price. it is in excellent condition, has a classy silver color (as you can see in the pictures), and a very comfortable keyboard. touchpad isn't working too good, but i can also give you my USB mouse for an extra 5 bucks. :)</p>
+                        </div>
+                        <div class="col-md-4">
+                          <table class="table table-bordered">
+                            <tr>
+                              <td><b>Seller</b></td>
+                              <td>Matthew Matl</td>
+                            </tr> 
+                            <tr>
+                              <td><b>Date Posted</b></td>
+                              <td>today</td>
+                            </tr> 
+                            <tr>
+                              <td><b>Date Expires</b></td>
+                              <td>tomorrow</td>
+                            </tr> 
+                          </table>
+                        </div>
+                      </div>
+                      <div class="gallery">
+                        <!-- Full size image link in anchor tag. Thumbnail link in image tag. -->
+                        <a href="static/img/photos/s1.jpg" class="prettyPhoto[pp_gal]"><img src="static/img/photos/t1.jpg" alt=""></a>
+                        <a href="static/img/photos/s2.jpg" class="prettyPhoto[pp_gal]"><img src="static/img/photos/t2.jpg" alt=""></a>
+                        <a href="static/img/photos/s3.jpg" class="prettyPhoto[pp_gal]"><img src="static/img/photos/t3.jpg" alt=""></a>
+                        <a href="static/img/photos/s4.jpg" class="prettyPhoto[pp_gal]"><img src="static/img/photos/t4.jpg" alt=""></a>
+                        <a href="static/img/photos/s5.jpg" class="prettyPhoto[pp_gal]"><img src="static/img/photos/t5.jpg" alt=""></a>
+                        <a href="static/img/photos/s6.jpg" class="prettyPhoto[pp_gal]"><img src="static/img/photos/t6.jpg" alt=""></a>
+                        <a href="static/img/photos/s7.jpg" class="prettyPhoto[pp_gal]"><img src="static/img/photos/t7.jpg" alt=""></a>
+                      </div>
                     </div>
                   </div>
+                  <!-- Widget foot -->
                   <div class="widget-foot">
-                    <!-- Footer Content Here -->
+                    <div class="row">
+                    <div class="col-md-8">
+                    <textarea class="form-control" rows="3" cols="50" placeholder="Enter your response here, things such as how much you're willing to pay, when and where are you available for the exchange, etc."></textarea>
+                    </div>
+                    <div class="col-md-4">
+                    <button type="submit" class="btn btn-sm btn-success">Respond</button>
+                    </div>
+                    </div>
                   </div>
                 </div> 
                 </div>
@@ -370,7 +434,7 @@
 					</div>
 				</div><!--/ Matter ends -->
         <!-- Page footing -->
-				<div class="page-foot" style="display:initial" align="center">
+				<div class="page-foot" style="display:none; text-align:center">
 					<p>
             About | Contact | FAQ
 					</p>
@@ -380,10 +444,24 @@
 			<div class="clearfix"></div>
 		</div><!--/ Content ends -->
 
-		<!-- Scroll to top -->
-		<span class="totop"><a href="#"><i class="fa fa-chevron-up"></i></a></span> 
-
     <!-- Templates -->
+    <!-- to capture user_id -->
+    <script type="text/template" id="user_id">
+      {% if user.is_authenticated %}
+      {{ user.id }}
+      {% endif %}
+    </script>
+    <!-- Home -->
+    <script class="home_feed" type="text/template">
+      <tr>
+        <td>[[title]]</td>
+        <td>[[description]]</td>
+        <td>[[price]]</td>
+        <td>[[author.username]]</td>
+        <td>[[date_posted]]</td>
+        <td><button class="btn btn-xs btn-info"><i class="fa fa-eye"></i> </button></td>
+      </tr>
+    </script>
     <!-- All Buy Postings -->
     <script class="all_buying_posts" type="text/template">
       <tr>
@@ -403,7 +481,7 @@
         <td>[[price]]</td>
         <td>[[author.username]]</td>
         <td>[[date_posted]]</td>
-        <td><button class="btn btn-xs btn-info"><i class="fa fa-eye"></i> </button></td>
+        <td><button class="btn btn-xs btn-info" id="post-[[id]]"><i class="fa fa-eye"></i> </button></td>
       </tr>
     </script>
     <!-- Active Postings -->

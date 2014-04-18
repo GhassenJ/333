@@ -1,0 +1,6 @@
+- fix footer
+- wider search bar
+- sidebar highlighting
+- finish single post; mine
+- finish single post; not mine
+- forms; buttons in forms; button vs anchor
