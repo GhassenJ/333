@@ -27,12 +27,23 @@ from operator import itemgetter
 ######################################################################################
 
 ###@login_required
-def all_buying_posts(request):
+def all_buying_posts(request, num_items):
     """
     This view returns JSON data for all postings for buying
     """
     postings = Posting.objects.all().filter(is_selling=False).filter(is_open=True).order_by('-date_posted') #List of posts that are for buying
+    length = 0
+    i = 0
+    try:
+        i=int(num_items)
+    except ValueError:
+        i = 0
+    if (i == 0):
+        length = len(postings)
+    else:
+        length = i
 
+    i = 0
     # For all postings that are for buying
     response_list = []
     for posting in postings:
@@ -58,17 +69,31 @@ def all_buying_posts(request):
             hashtags.append({"name": hashtag.name, "id": hashtag.id})
         postdata['hashtags'] = hashtags
         response_list.append(postdata)
+        i=i+1
+        if (i >= length):
+            break
 
     return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 ###@login_required
-def all_selling_posts(request):
+def all_selling_posts(request, num_items):
     """
     This view returns JSON data for all postings for selling
     """
     # Get all postings that are for selling
     postings = Posting.objects.all().filter(is_selling=True).filter(is_open=True).order_by('-date_posted') #List of posts that are for selling
+    length = 0
+    i = 0
+    try:
+        i=int(num_items)
+    except ValueError:
+        i = 0
+    if (i == 0):
+        length = len(postings)
+    else:
+        length = i
 
+    i = 0
     #For all postings that are for selling
     response_list = []
     for posting in postings:
@@ -94,6 +119,9 @@ def all_selling_posts(request):
             hashtags.append({"name": hashtag.name, "id": hashtag.id})
         postdata['hashtags'] = hashtags
         response_list.append(postdata)
+        i=i+1
+        if (i >= length):
+            break
     return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 
@@ -102,7 +130,7 @@ def all_selling_posts(request):
 ######################################################################################
 
 @login_required
-def category_buying_posts(request, category_id):
+def category_buying_posts(request, category_id, num_items):
     """
     This view gets all buying posts under the category identified by category_id
     """
@@ -113,6 +141,18 @@ def category_buying_posts(request, category_id):
     else:
         response_list=[]
         category_post_list = category.posting_set.all().filter(is_selling=False).filter(is_open=True).order_by('-date_posted')
+        length = 0
+        i = 0
+        try:
+            i=int(num_items)
+        except ValueError:
+            i = 0
+        if (i == 0):
+            length = len(category_post_list)
+        else:
+            length = i
+
+        i = 0
         for posting in category_post_list:
             postdata = {}
             postdata['title'] = posting.title
@@ -136,10 +176,13 @@ def category_buying_posts(request, category_id):
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
             postdata['hashtags'] = hashtags
             response_list.append(postdata)
+            i=i+1
+            if (i >= length):
+                break
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 @login_required
-def category_selling_posts(request, category_id):
+def category_selling_posts(request, category_id, num_items):
     """
     This view gets all selling posts under the category identified by category_id
     """
@@ -150,6 +193,18 @@ def category_selling_posts(request, category_id):
     else:
         response_list=[]
         category_post_list = category.posting_set.all().filter(is_selling=True).filter(is_open=True).order_by('-date_posted')
+        length = 0
+        i = 0
+        try:
+            i=int(num_items)
+        except ValueError:
+            i = 0
+        if (i == 0):
+            length = len(category_post_list)
+        else:
+            length = i
+
+        i = 0
         for posting in category_post_list:
             postdata = {}
             postdata['title'] = posting.title
@@ -173,10 +228,13 @@ def category_selling_posts(request, category_id):
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
             postdata['hashtags'] = hashtags
             response_list.append(postdata)
+            i=i+1
+            if (i >= length):
+                break
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 @login_required
-def hashtag_buying_posts(request, hashtag_id):
+def hashtag_buying_posts(request, hashtag_id, num_items):
     """
     This view gets all buying posts under the hashtag identified by hashtag_id
     """
@@ -187,6 +245,18 @@ def hashtag_buying_posts(request, hashtag_id):
     else:
         response_list=[]
         hashtag_post_list = hashtag.posting_set.all().filter(is_selling=False).filter(is_open=True).order_by('-date_posted')
+        length = 0
+        i = 0
+        try:
+            i=int(num_items)
+        except ValueError:
+            i = 0
+        if (i == 0):
+            length = len(hashtag_post_list)
+        else:
+            length = i
+
+        i = 0
         for posting in hashtag_post_list:
             postdata = {}
             postdata['title'] = posting.title
@@ -210,10 +280,13 @@ def hashtag_buying_posts(request, hashtag_id):
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
             postdata['hashtags'] = hashtags
             response_list.append(postdata)
+            i=i+1
+            if (i >= length):
+                break
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 @login_required
-def hashtag_selling_posts(request, hashtag_id):
+def hashtag_selling_posts(request, hashtag_id, num_items):
     """
     This view gets all selling posts under the hashtag identified by hashtag_id
     """
@@ -224,6 +297,18 @@ def hashtag_selling_posts(request, hashtag_id):
     else:
         response_list=[]
         hashtag_post_list = hashtag.posting_set.all().filter(is_selling=True).filter(is_open=True).order_by('-date_posted')
+        length = 0
+        i = 0
+        try:
+            i=int(num_items)
+        except ValueError:
+            i = 0
+        if (i == 0):
+            length = len(hashtag_post_list)
+        else:
+            length = i
+
+        i = 0
         for posting in hashtag_post_list:
             postdata = {}
             postdata['title'] = posting.title
@@ -247,6 +332,9 @@ def hashtag_selling_posts(request, hashtag_id):
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
             postdata['hashtags'] = hashtags
             response_list.append(postdata)
+            i=i+1
+            if (i >= length):
+                break
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 ######################################################################################

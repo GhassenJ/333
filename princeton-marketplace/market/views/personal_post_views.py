@@ -19,7 +19,7 @@ import json
 ######################################################################################
 
 @login_required
-def my_open_posts(request):
+def my_open_posts(request, num_items):
     """
     This view returns JSON data for all postings created by the current user
     that are open. Ordered by date.
@@ -30,6 +30,19 @@ def my_open_posts(request):
     #If the user is authenticated, then display categories
     if user.is_authenticated():
         my_author_list = user.author.all().filter(is_open=True).order_by('-date_posted') #List of posts I've authored
+        
+        length = 0
+        i = 0
+        try:
+            i=int(num_items)
+        except ValueError:
+            i = 0
+        if (i == 0):
+            length = len(my_author_list)
+        else:
+            length = i
+        i = 0
+
         response_list = []
         for posting in my_author_list:
             postdata = {}
@@ -54,10 +67,13 @@ def my_open_posts(request):
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
             postdata['hashtags'] = hashtags
             response_list.append(postdata)
+            i=i+1
+            if (i >= length):
+                break
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 @login_required
-def my_locked_posts(request):
+def my_locked_posts(request, num_items):
     """
     This view returns JSON data for all postings created by the current user 
     that was responded to. Ordered by date.
@@ -68,6 +84,19 @@ def my_locked_posts(request):
     #If the user is authenticated, then display categories
     if user.is_authenticated():
         my_author_list = user.author.all().filter(is_open=False).order_by('-date_posted') #List of posts I've authored that have been responded to
+        
+        length = 0
+        i = 0
+        try:
+            i=int(num_items)
+        except ValueError:
+            i = 0
+        if (i == 0):
+            length = len(my_author_list)
+        else:
+            length = i
+        i = 0
+
         response_list = []
         for posting in my_author_list:
             postdata = {}
@@ -89,11 +118,14 @@ def my_locked_posts(request):
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
             postdata['hashtags'] = hashtags
             response_list.append(postdata)
+            i=i+1
+            if (i >= length):
+                break
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 
 @login_required
-def my_responded_posts(request):
+def my_responded_posts(request, num_items):
     """
     This view returns JSON data for all postings that the logged user 
     has responded to.
@@ -104,6 +136,19 @@ def my_responded_posts(request):
     #If the user is authenticated, then display categories
     if user.is_authenticated():
         my_responded_list = user.responder.all().order_by('-date_posted') #List of posts I've responded to
+        
+        length = 0
+        i = 0
+        try:
+            i=int(num_items)
+        except ValueError:
+            i = 0
+        if (i == 0):
+            length = len(my_responded_list)
+        else:
+            length = i
+        i = 0
+
         response_list = []
         for posting in my_responded_list:
             postdata = {}
@@ -125,4 +170,7 @@ def my_responded_posts(request):
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
             postdata['hashtags'] = hashtags
             response_list.append(postdata)
+            i=i+1
+            if (i >= length):
+                break
         return HttpResponse(json.dumps(response_list), content_type="application/json")
