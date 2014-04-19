@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 import json
 import logging
 import re
+from post_helper import return_posts
 logger = logging.getLogger(__name__)
 
 ######################################################################################

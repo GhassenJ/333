@@ -10,6 +10,7 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import json
+from post_helper import return_posts
 
 ######################################################################################
 ### PERSONAL POSTING-BASED VIEWS:
@@ -31,45 +32,46 @@ def my_open_posts(request, num_items):
     if user.is_authenticated():
         my_author_list = user.author.all().filter(is_open=True).order_by('-date_posted') #List of posts I've authored
         
-        length = 0
-        i = 0
-        try:
-            i=int(num_items)
-        except ValueError:
-            i = 0
-        if (i == 0):
-            length = len(my_author_list)
-        else:
-            length = i
-        i = 0
+        # length = 0
+        # i = 0
+        # try:
+        #     i=int(num_items)
+        # except ValueError:
+        #     i = 0
+        # if (i == 0):
+        #     length = len(my_author_list)
+        # else:
+        #     length = i
+        # i = 0
 
-        response_list = []
-        for posting in my_author_list:
-            postdata = {}
-            postdata['title'] = posting.title
-            postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
-            if (posting.responder is not None):
-                postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
-            else:
-                postdata['responder'] = {}
-            postdata['date_posted'] = posting.date_posted.__str__()
-            postdata['date_expires'] = posting.date_expires.__str__()
-            postdata['method_of_payment'] = posting.method_of_pay
-            postdata['price'] = posting.price
-            postdata['description'] = posting.description
-            postdata['selling'] = posting.is_selling
-            postdata['open'] = posting.is_open # should all be true
-            postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
-            postdata['id'] = posting.id
-            postdata['image'] = posting.picture
-            hashtags = []
-            for hashtag in posting.hashtags.all():
-                hashtags.append({"name": hashtag.name, "id": hashtag.id})
-            postdata['hashtags'] = hashtags
-            response_list.append(postdata)
-            i=i+1
-            if (i >= length):
-                break
+        # response_list = []
+        # for posting in my_author_list:
+        #     postdata = {}
+        #     postdata['title'] = posting.title
+        #     postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+        #     if (posting.responder is not None):
+        #         postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
+        #     else:
+        #         postdata['responder'] = {}
+        #     postdata['date_posted'] = posting.date_posted.__str__()
+        #     postdata['date_expires'] = posting.date_expires.__str__()
+        #     postdata['method_of_payment'] = posting.method_of_pay
+        #     postdata['price'] = posting.price
+        #     postdata['description'] = posting.description
+        #     postdata['selling'] = posting.is_selling
+        #     postdata['open'] = posting.is_open # should all be true
+        #     postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+        #     postdata['id'] = posting.id
+        #     postdata['image'] = posting.picture
+        #     hashtags = []
+        #     for hashtag in posting.hashtags.all():
+        #         hashtags.append({"name": hashtag.name, "id": hashtag.id})
+        #     postdata['hashtags'] = hashtags
+        #     response_list.append(postdata)
+        #     i=i+1
+        #     if (i >= length):
+        #         break
+        response_list = return_posts(request, num_items, my_author_list)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 @login_required
@@ -85,42 +87,43 @@ def my_locked_posts(request, num_items):
     if user.is_authenticated():
         my_author_list = user.author.all().filter(is_open=False).order_by('-date_posted') #List of posts I've authored that have been responded to
         
-        length = 0
-        i = 0
-        try:
-            i=int(num_items)
-        except ValueError:
-            i = 0
-        if (i == 0):
-            length = len(my_author_list)
-        else:
-            length = i
-        i = 0
+        # length = 0
+        # i = 0
+        # try:
+        #     i=int(num_items)
+        # except ValueError:
+        #     i = 0
+        # if (i == 0):
+        #     length = len(my_author_list)
+        # else:
+        #     length = i
+        # i = 0
 
-        response_list = []
-        for posting in my_author_list:
-            postdata = {}
-            postdata['title'] = posting.title
-            postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
-            postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
-            postdata['date_posted'] = posting.date_posted.__str__()
-            postdata['date_expires'] = posting.date_expires.__str__()
-            postdata['method_of_payment'] = posting.method_of_pay
-            postdata['price'] = posting.price
-            postdata['description'] = posting.description
-            postdata['is_selling'] = posting.is_selling
-            postdata['open'] = posting.is_open # should all be false
-            postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
-            postdata['id'] = posting.id
-            postdata['image'] = posting.picture
-            hashtags = []
-            for hashtag in posting.hashtags.all():
-                hashtags.append({"name": hashtag.name, "id": hashtag.id})
-            postdata['hashtags'] = hashtags
-            response_list.append(postdata)
-            i=i+1
-            if (i >= length):
-                break
+        # response_list = []
+        # for posting in my_author_list:
+        #     postdata = {}
+        #     postdata['title'] = posting.title
+        #     postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+        #     postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
+        #     postdata['date_posted'] = posting.date_posted.__str__()
+        #     postdata['date_expires'] = posting.date_expires.__str__()
+        #     postdata['method_of_payment'] = posting.method_of_pay
+        #     postdata['price'] = posting.price
+        #     postdata['description'] = posting.description
+        #     postdata['is_selling'] = posting.is_selling
+        #     postdata['open'] = posting.is_open # should all be false
+        #     postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+        #     postdata['id'] = posting.id
+        #     postdata['image'] = posting.picture
+        #     hashtags = []
+        #     for hashtag in posting.hashtags.all():
+        #         hashtags.append({"name": hashtag.name, "id": hashtag.id})
+        #     postdata['hashtags'] = hashtags
+        #     response_list.append(postdata)
+        #     i=i+1
+        #     if (i >= length):
+        #         break
+        response_list = return_posts(request, num_items, my_author_list)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 
@@ -137,40 +140,41 @@ def my_responded_posts(request, num_items):
     if user.is_authenticated():
         my_responded_list = user.responder.all().order_by('-date_posted') #List of posts I've responded to
         
-        length = 0
-        i = 0
-        try:
-            i=int(num_items)
-        except ValueError:
-            i = 0
-        if (i == 0):
-            length = len(my_responded_list)
-        else:
-            length = i
-        i = 0
+        # length = 0
+        # i = 0
+        # try:
+        #     i=int(num_items)
+        # except ValueError:
+        #     i = 0
+        # if (i == 0):
+        #     length = len(my_responded_list)
+        # else:
+        #     length = i
+        # i = 0
 
-        response_list = []
-        for posting in my_responded_list:
-            postdata = {}
-            postdata['title'] = posting.title
-            postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
-            postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
-            postdata['date_posted'] = posting.date_posted.__str__()
-            postdata['date_expires'] = posting.date_expires.__str__()
-            postdata['method_of_payment'] = posting.method_of_pay
-            postdata['price'] = posting.price
-            postdata['description'] = posting.description
-            postdata['is_selling'] = posting.is_selling
-            postdata['open'] = posting.is_open # should all be false
-            postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
-            postdata['id'] = posting.id
-            postdata['image'] = posting.picture
-            hashtags = []
-            for hashtag in posting.hashtags.all():
-                hashtags.append({"name": hashtag.name, "id": hashtag.id})
-            postdata['hashtags'] = hashtags
-            response_list.append(postdata)
-            i=i+1
-            if (i >= length):
-                break
+        # response_list = []
+        # for posting in my_responded_list:
+        #     postdata = {}
+        #     postdata['title'] = posting.title
+        #     postdata['author'] = {"username":posting.author.username, "id":posting.author.id}
+        #     postdata['responder'] = {"username":posting.responder.username, "id":posting.responder.id}
+        #     postdata['date_posted'] = posting.date_posted.__str__()
+        #     postdata['date_expires'] = posting.date_expires.__str__()
+        #     postdata['method_of_payment'] = posting.method_of_pay
+        #     postdata['price'] = posting.price
+        #     postdata['description'] = posting.description
+        #     postdata['is_selling'] = posting.is_selling
+        #     postdata['open'] = posting.is_open # should all be false
+        #     postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
+        #     postdata['id'] = posting.id
+        #     postdata['image'] = posting.picture
+        #     hashtags = []
+        #     for hashtag in posting.hashtags.all():
+        #         hashtags.append({"name": hashtag.name, "id": hashtag.id})
+        #     postdata['hashtags'] = hashtags
+        #     response_list.append(postdata)
+        #     i=i+1
+        #     if (i >= length):
+        #         break
+        response_list = return_posts(request, num_items, my_responded_list)
         return HttpResponse(json.dumps(response_list), content_type="application/json")
