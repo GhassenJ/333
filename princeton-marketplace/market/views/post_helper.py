@@ -1,3 +1,4 @@
+from market.models import *
 ### FOR MODULARIZATION!! :D :D :D
 def return_posts(request, num_items, postings):
     length = 0
@@ -41,3 +42,16 @@ def return_posts(request, num_items, postings):
         if (i >= length):
             break
     return response_list
+
+### FOR MODULARIZATION TOO!! :D :D :D Sorts the posts based on string "sorting"
+def sort_posts(request, sorting, postings):
+    sorted_postings = postings
+    if (sorting=="" or sorting=="date"):
+        sorted_postings = sorted_postings.order_by('-date_posted')
+    if (sorting=="category"):
+        sorted_postings = sorted_postings.order_by('category__name')
+    if (sorting=="price"):
+        sorted_postings = sorted_postings.order_by('price')
+    if (sorting=="expiration"):
+        sorted_postings = sorted_postings.order_by('date_expires')
+    return sorted_postings

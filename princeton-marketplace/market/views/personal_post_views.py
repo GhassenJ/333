@@ -10,7 +10,7 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import json
-from post_helper import return_posts
+from post_helper import return_posts, sort_posts
 
 ######################################################################################
 ### PERSONAL POSTING-BASED VIEWS:
@@ -20,7 +20,7 @@ from post_helper import return_posts
 ######################################################################################
 
 @login_required
-def my_open_posts(request, num_items):
+def my_open_posts(request, num_items, sorting):
     """
     This view returns JSON data for all postings created by the current user
     that are open. Ordered by date.
@@ -30,8 +30,8 @@ def my_open_posts(request, num_items):
 
     #If the user is authenticated, then display categories
     if user.is_authenticated():
-        my_author_list = user.author.all().filter(is_open=True).order_by('-date_posted') #List of posts I've authored
-        
+        my_author_list = user.author.all().filter(is_open=True) #List of posts I've authored
+        my_author_list = sort_posts(request, sorting, my_author_list)
         # length = 0
         # i = 0
         # try:
@@ -75,7 +75,7 @@ def my_open_posts(request, num_items):
         return HttpResponse(json.dumps(response_list), content_type="application/json")
 
 @login_required
-def my_locked_posts(request, num_items):
+def my_locked_posts(request, num_items, sorting):
     """
     This view returns JSON data for all postings created by the current user 
     that was responded to. Ordered by date.
@@ -85,8 +85,8 @@ def my_locked_posts(request, num_items):
 
     #If the user is authenticated, then display categories
     if user.is_authenticated():
-        my_author_list = user.author.all().filter(is_open=False).order_by('-date_posted') #List of posts I've authored that have been responded to
-        
+        my_author_list = user.author.all().filter(is_open=False) #List of posts I've authored that have been responded to
+        my_author_list = sort_posts(request, sorting, my_author_list)
         # length = 0
         # i = 0
         # try:
@@ -128,7 +128,7 @@ def my_locked_posts(request, num_items):
 
 
 @login_required
-def my_responded_posts(request, num_items):
+def my_responded_posts(request, num_items, sorting):
     """
     This view returns JSON data for all postings that the logged user 
     has responded to.
@@ -139,7 +139,7 @@ def my_responded_posts(request, num_items):
     #If the user is authenticated, then display categories
     if user.is_authenticated():
         my_responded_list = user.responder.all().order_by('-date_posted') #List of posts I've responded to
-        
+        my_responded_list = sort_posts(request, sorting, my_responded_list)
         # length = 0
         # i = 0
         # try:
