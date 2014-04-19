@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 import json
 import logging
 import re
+from post_helper import return_posts, sort_posts
 logger = logging.getLogger(__name__)
 #from filetransfers.api import prepare_upload, serve_file
 from market.storage import prepare_upload

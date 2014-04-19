@@ -69,7 +69,7 @@ function home(){
           $('#cat1').html("You like " + cats[0]["name"] + "! That is cool. Let us fetch you posts from that category:<br><table><tr><td style='border-width:0px' id='cat1sell'></td><td width='3%'></td><td style='border-width:0px' id='cat1buy'></td></tr></table>");
           $.ajax({
             cache: true,
-             url: "{% url 'market:category_selling_posts' 000 %}".replace(000, cats[0]["id"]),
+             url: "{% url 'market:category_selling_posts' 000 111 222 %}".replace(000, cats[0]["id"]).replace(111, 0).replace(222,"date"),
              dataType: "json",
              beforeSend:function(){
                 // this is where we append a loading image
@@ -86,7 +86,7 @@ function home(){
           });
           $.ajax({
             cache: true,
-             url: "{% url 'market:category_buying_posts' 000 %}".replace(000, cats[0]["id"]),
+             url: "{% url 'market:category_buying_posts' 000 111 222 %}".replace(000, cats[0]["id"]).replace(111, 0).replace(222,"date"),
              dataType: "json",
              beforeSend:function(){
                 // this is where we append a loading image
@@ -152,8 +152,8 @@ function home(){
                     <li class="dropdown-header">Pick Which kind of Posting</li>     
                     <li class="divider"></li>          
                     <li>My Open Postings</li>
-                    <li>My Closed Postings</li>
-                    <li>My Responded Posts</li>
+                    <li>My Locked Postings</li>
+                    <li>Posts I've Responded To</li>
                 </ul>
               </li>
             </ul> 
@@ -207,7 +207,7 @@ var allselling = null;
                 if (texti === "All Buying Postings") {
                     $.ajax({
                       cache: true,
-                        url: "{% url 'market:all_buying_posts' %}",
+                        url: "{% url 'market:all_buying_posts' 000 111 %}".replace(000, 0).replace(111,"date"),
                         dataType: "json",
                         beforeSend:function(){
                             // this is where we append a loading image
@@ -228,7 +228,7 @@ var allselling = null;
                 else if (texti === "All Selling Postings") {
                     $.ajax({
                       cache: true,
-                        url: "{% url 'market:all_selling_posts' %}",
+                        url: "{% url 'market:all_selling_posts' 000 111 %}".replace(000, 0).replace(111,"date"),
                         dataType: "json",
                         beforeSend:function(){
                             // this is where we append a loading image
@@ -249,7 +249,7 @@ var allselling = null;
                     else if (texti === "My Open Postings") {
                     $.ajax({
                       cache: true,
-                        url: "{% url 'market:my_open_posts'%}",
+                        url: "{% url 'market:my_open_posts' 000 111 %}".replace(000, 0).replace(111,"date"),
                         dataType: "json",
                         beforeSend:function(){
                             // this is where we append a loading image
@@ -267,10 +267,10 @@ var allselling = null;
                               }
                     });
                     }
-                    else if (texti === "My Closed Postings") {
+                    else if (texti === "My Locked Postings") {
                     $.ajax({
                       cache: true,
-                        url: "{% url 'market:my_closed_posts'%}",
+                        url: "{% url 'market:my_locked_posts' 000 111 %}".replace(000, 0).replace(111,"date"),
                         dataType: "json",
                         beforeSend:function(){
                             // this is where we append a loading image
@@ -287,11 +287,11 @@ var allselling = null;
                               }
                     });
                     }
-                    else if (texti === "My Responded Posts") {
+                    else if (texti === "Posts I've Responded To") {
                       console.log("My Responded Postings");
                     $.ajax({
                       cache: true,
-                        url: "{% url 'market:my_responded_posts'%}",
+                        url: "{% url 'market:my_responded_posts' 000 111 %}".replace(000, 0).replace(111,"date"),
                         dataType: "json",
                         beforeSend:function(){
                             // this is where we append a loading image
@@ -358,7 +358,7 @@ var allselling = null;
                                 if (texti === cats[i]["name"]){
                                    $.ajax({
                                     cache: true,
-                                      url: "{% url 'market:category_selling_posts' 000 %}".replace(000, cats[i]["id"]),
+                                      url: "{% url 'market:category_selling_posts' 000 111 222 %}".replace(000, cats[i]["id"]).replace(111, 0).replace(222,"date"),
                                       dataType: "json",
                                       beforeSend:function(){
                                          // this is where we append a loading image
@@ -374,7 +374,7 @@ var allselling = null;
                                    });
                                    $.ajax({
                                     cache: true,
-                                      url: "{% url 'market:category_buying_posts' 000 %}".replace(000, cats[i]["id"]),
+                                      url: "{% url 'market:category_buying_posts' 000 111 222 %}".replace(000, cats[i]["id"]).replace(111, 0).replace(222,"date"),
                                       dataType: "json",
                                       beforeSend:function(){
                                       },
