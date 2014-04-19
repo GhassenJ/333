@@ -32,7 +32,7 @@ def return_posts(request, num_items, postings):
         postdata['open'] = posting.is_open # should all be true
         postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
         postdata['id'] = posting.id
-        postdata['image'] = posting.picture
+        #postdata['image'] = posting.picture
         hashtags = []
         for hashtag in posting.hashtags.all():
             hashtags.append({"name": hashtag.name, "id": hashtag.id})
