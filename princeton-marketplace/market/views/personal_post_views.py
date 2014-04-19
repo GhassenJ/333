@@ -48,7 +48,7 @@ def my_open_posts(request):
             postdata['open'] = posting.is_open # should all be true
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
-            postdata['image'] = posting.picture
+            #postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -82,7 +82,7 @@ def my_closed_posts(request):
             postdata['is_selling'] = posting.is_selling
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
-            postdata['image'] = posting.picture
+            #postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -117,7 +117,7 @@ def my_responded_posts(request):
             postdata['is_selling'] = posting.is_selling
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
-            postdata['image'] = posting.picture
+            #postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})

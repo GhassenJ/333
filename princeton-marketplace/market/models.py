@@ -61,7 +61,8 @@ class Posting(models.Model):
     category = models.ForeignKey(Category) # Link to relevant category
     hashtags = models.ManyToManyField(Hashtag, blank=True, null=True)
 
-    picture = models.URLField(blank=True, null=True)
-
+    picture = models.FileField(blank=True, null=True, upload_to='uploads/')
+    blobstore_key = models.TextField(max_length = 1000, blank=True, null=True)
+    
     def __unicode__(self):
         return self.title

@@ -16,8 +16,11 @@ def _verify_cas1(ticket, service):
     Returns username on success and None on failure.
     """
     params = {'ticket': ticket, 'service': service}
+
+    # Redirect Request for CAS Login through an AWS server
     url = ('http://cashelper-env-ctwp5hwepb.elasticbeanstalk.com/cas' + '?' +
            urlencode(params))
+    
     page = urlopen(url)
     try:
         verified = page.readline().strip()

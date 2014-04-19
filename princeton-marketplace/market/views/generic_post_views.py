@@ -52,7 +52,7 @@ def all_buying_posts(request):
         postdata['open'] = posting.is_open # should all be true
         postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
         postdata['id'] = posting.id
-        postdata['image'] = posting.picture
+        #postdata['image'] = posting.picture
         hashtags = []
         for hashtag in posting.hashtags.all():
             hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -88,7 +88,7 @@ def all_selling_posts(request):
         postdata['open'] = posting.is_open # should all be true
         postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
         postdata['id'] = posting.id
-        postdata['image'] = posting.picture
+        #postdata['image'] = posting.picture
         hashtags = []
         for hashtag in posting.hashtags.all():
             hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -130,7 +130,7 @@ def category_buying_posts(request, category_id):
             postdata['open'] = posting.is_open # should all be true
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
-            postdata['image'] = posting.picture
+            #postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -167,7 +167,7 @@ def category_selling_posts(request, category_id):
             postdata['open'] = posting.is_open # should all be true
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
-            postdata['image'] = posting.picture
+            #postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -204,7 +204,7 @@ def hashtag_buying_posts(request, hashtag_id):
             postdata['open'] = posting.is_open # should all be true
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
-            postdata['image'] = posting.picture
+            #postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -241,7 +241,7 @@ def hashtag_selling_posts(request, hashtag_id):
             postdata['open'] = posting.is_open # should all be false
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
-            postdata['image'] = posting.picture
+            #postdata['image'] = posting.picture
             hashtags = []
             for hashtag in posting.hashtags.all():
                 hashtags.append({"name": hashtag.name, "id": hashtag.id})
@@ -401,7 +401,7 @@ def search_posts(request, query):
             postdata['open'] = posting.is_open
             postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
             postdata['id'] = posting.id
-            postdata['image'] = posting.picture
+            #postdata['image'] = posting.picture
             hashtags2 = []
             for hashtag in posting.hashtags.all():
                 hashtags2.append({"name": hashtag.name, "id": hashtag.id})

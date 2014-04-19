@@ -181,12 +181,11 @@ var allselling = null;
             var title = []; //ids
             var date = [];
             $ ('#PopUpModal').on('submit', '.submit-form', function() {
-                var formData = new FormData($(this)[0]);
                 $.ajax({
                   cache: true,
                     type: $(this).attr('method'), 
                     url: $(this).attr('action'),
-                    data: formData,
+                    data: $(this).serialize(),
                     success: function() { // on success..
                         $('#PopUpModal').modal('hide')
                     },

@@ -6,9 +6,6 @@ urlpatterns = patterns('',
     url(r'^$', views.display_postings, name='index'),
     url(r'^create_posting/$', views.create_posting, name='create_posting'),
     url(r'^register/$', views.register, name='register'),
-    #url(r'^login/$', views.user_login, name='login'),
-    #url(r'^logout/$', views.user_logout, name='logout'),
-
     url(r'^accounts/login/$', 'django_cas.views.login', name='login'),
     url(r'^accounts/logout/$', 'django_cas.views.logout', name='logout'),
 
@@ -38,5 +35,7 @@ urlpatterns = patterns('',
     url(r'^edit_posting/(?P<posting_id>\d+)/$', views.edit_posting, name='edit_posting'),
     url(r'^close_posting/(?P<posting_id>\d+)/$', views.close_posting, name='close_posting'),
     url(r'^write_review/(?P<user_id>\d+)/$', views.write_review, name='write_review'),
+
+    url(r'^download_handler/(?P<pk>\d+)/$', views.download_handler, name='download_handler'),
 )
 

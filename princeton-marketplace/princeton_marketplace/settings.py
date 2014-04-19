@@ -81,6 +81,14 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine'):
 else:
     # Running in development, but want to access the Google Cloud SQL instance
     # in production.
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'google.appengine.ext.django.backends.rdbms',
+    #         'INSTANCE': 'princeton-marketplace:market',
+    #         'NAME': 'market',
+    #         'USER': 'root',
+    #     }
+    # }
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -92,8 +100,8 @@ else:
 
     SOUTH_DATABASE_ADAPTERS = {'default': 'south.db.mysql'}
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
+# Upload Handler for Files to Blobstore
+FILE_UPLOAD_HANDLERS = ('market.storagewrapper.BlobstoreFileUploadHandler',)
 
 LANGUAGE_CODE = 'en-us'
 
@@ -114,8 +122,9 @@ STATIC_ROOT = 'static'
 STATICFILES_DIRS = (
      os.path.join(BASE_DIR, "market/static"),
     )
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
+
+# CAS login information
 CAS_SERVER_URL = 'https://fed.princeton.edu/cas/'
-#CAS_REDIRECT_URL = 'www.princeton-marketplace.appspot.com'
 CAS_VERSION = '1'
