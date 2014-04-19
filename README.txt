@@ -1,3 +1,11 @@
+guys, none of us have used git before, and so everything has gotten a little
+messed up, but i promise to clean it all up and have the new frontend and
+the new backend both working properly in the same branch (and no merge issues
+and shit) before our meeting with raghav on monday. if i get done with 340
+homework early, then i might be able to solve this by sunday evening. :)
+
+--- SKETCHY INSTRUCTIONS, MOSTLY WONT WORK WITHOUT A COUPLE MODIFICATIONS ---
+
 guys, this is a new branch and it has diverged from the original "master". 
 that is because i didn't want to break our old very-ugly frontend. you don't have to
 do anything special to have a look at this. instructions: 
