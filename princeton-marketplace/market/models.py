@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime
 from django.utils import timezone
-
+import datetime
 # Create your models here.
 
 # Control-defined categories for goods and services
@@ -26,7 +26,7 @@ class UserProfile(models.Model):
     class_year = models.IntegerField(default = 2000)
     categories = models.ManyToManyField(Category) # Link to desired categories
     hashtags = models.ManyToManyField(Hashtag, blank=True, null=True) # Link to hashtags used
-    rating = models.IntegerField(default = 0)
+    rating = models.FloatField(default = 0)
     transactions = models.IntegerField(default = 0)
     def __unicode__(self):
         return self.user.username
@@ -48,7 +48,7 @@ class Posting(models.Model):
     responder = models.ForeignKey(User, related_name='responder', blank=True, null=True) # Link to user responder
     
     date_posted = models.DateTimeField('Date Posted', default = timezone.now())
-    date_expires = models.DateTimeField('Expiration Date', default = timezone.now())
+    date_expires = models.DateTimeField('Expiration Date', default = (timezone.now() + datetime.timedelta(days=14)))
     
     method_of_pay = models.CharField(max_length = 200)
     price = models.CharField(max_length = 50)

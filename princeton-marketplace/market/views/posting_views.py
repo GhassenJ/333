@@ -46,10 +46,10 @@ def create_posting(request):
     This view allows an authed user to create a new posting.
     """
     template = ''
-    if (request.is_ajax()):
-        template = 'market/create_posting_form.html'
-    else:
-        template = 'market/create_posting.html'
+    #if (request.is_ajax()):
+    template = 'market/create_posting_form.html'
+    #else:
+    #    template = 'market/create_posting.html'
     # If we're doing a POST, read in form data and save it
     if request.method == 'POST':
         form = PostingForm(request.POST)
@@ -106,7 +106,8 @@ def create_posting(request):
                 #return HttpResponseRedirect('/create_posting')
                 return HttpResponse('OK')
             else:
-                return HttpResponseRedirect(reverse('market:index', args=''))
+                #return HttpResponse(Redirect(reverse('market:index', args='')))
+                return HttpResponse('OK')
         # Return Errors
         else:
             if request.is_ajax():
@@ -117,7 +118,13 @@ def create_posting(request):
                         errors_dict[error] = unicode(e)
                 return HttpResponseBadRequest(json.dumps(errors_dict))
             else:
-                print form.errors
+                #print form.errors
+                errors_dict = {}
+                if form.errors:
+                    for error in form.errors:
+                        e = form.errors[error]
+                        errors_dict[error] = unicode(e)
+                return HttpResponseBadRequest(json.dumps(errors_dict))
 
     # Otherwise, post the empty form for the user to fill in.
     else:

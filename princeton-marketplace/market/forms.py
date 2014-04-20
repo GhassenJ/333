@@ -1,10 +1,11 @@
 from django import forms
 from market.models import *
 from django.contrib.auth.models import User
-
+from parsley.decorators import parsleyfy
 # Forms for postings
 
 # Form for creating a new posting
+@parsleyfy
 class PostingForm(forms.ModelForm):
     hashtags = forms.CharField(max_length = 200)
     is_selling = forms.BooleanField(label='Selling?', required = False, initial=False)

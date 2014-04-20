@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'market',
     'south',
+    'parsley',
 )
 
 MIDDLEWARE_CLASSES = (

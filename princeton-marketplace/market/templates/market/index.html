@@ -8,11 +8,13 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="/static/img/favicon.png">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="/static/parsley.min.js"></script>
     <link rel="stylesheet" href="/static/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
     <script type="text/javascript" src="/static/fancybox/jquery.fancybox.pack.js"></script>
     <script type="text/javascript" src="/static/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/static/bootstrap-3.1.1-dist/css/bootstrap.css" type="text/css" />
     <link rel="stylesheet" href="/static/style.css" type="text/css" />
+    <link rel="stylesheet" href="/static/parsley.css" type="text/css" />
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 
     <title>The Princeton Marketplace 1</title>
@@ -171,6 +173,33 @@ home();
 <script>
 var allbuying = null;
 var allselling = null;
+$(function()
+{
+  $ ('#PopUpModal').on('submit', '.submit-form', function(e) {
+      e.preventDefault();
+      var formData = new FormData($(this)[0]);
+      var cont = $('#submit-form').parsley('validate');
+      console.log(cont);
+      if (cont) {
+        console.log("HERE");
+        $.ajax({
+          cache: true,
+            type: $(this).attr('method'), 
+            url: $(this).attr('action'),
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function() { // on success..
+                $('#PopUpModal').modal('hide')
+            },
+            error: function(resp) { // on error..
+            }
+        });
+        return false;
+      }
+      return false;
+  });
+});
         $(document).ready(function() {
             $('.dropdown.open .dropdown-toggle').dropdown('toggle');
             var user_id = {{ user.id }};
@@ -180,27 +209,6 @@ var allselling = null;
             var price = []; //glons
             var title = []; //ids
             var date = [];
-            $ ('#PopUpModal').on('submit', '.submit-form', function() {
-                var formData = new FormData($(this)[0]);
-                $.ajax({
-                  cache: true,
-                    type: $(this).attr('method'), 
-                    url: $(this).attr('action'),
-                    data: formData,
-                    success: function() { // on success..
-                        $('#PopUpModal').modal('hide')
-                    },
-                    error: function(resp) { // on error..
-                        var errors = JSON.parse(resp.responseText);
-                        for (error in errors)
-                        {
-                            var id = '#id_' + error;
-                            $(id).parent('p').prepend(errors[error]);
-                        }
-                    }
-                });
-                return false;
-            });
             $ ("#leftPane ul li").click(function (ev) {
                 var texti = $(this).text();
                 $(this).css('background-position', '0 0');
@@ -319,6 +327,7 @@ var allselling = null;
                     var url = "{% url 'market:create_posting' %}"
                     $('#PopUpModal').load(url, function() {
                         $(this).modal('show');
+                        $('#submit-form').parsley();
                     });
                     return false;
                 }
