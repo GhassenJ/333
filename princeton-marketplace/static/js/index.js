@@ -11,6 +11,20 @@ var user_id;
 function leftPaneHandler(e){
   var url = this.className.split(/\s+/)[1];
   var template = $("script." + url).html();
+  // Color feature to be added here
+
+  // Add header to home_feed
+  if (url == "home_feed") {
+    homeHandler();
+    $("div." + current_url).hide();
+    $("div." + url).show();
+    last_url = current_url;
+    current_url = url;
+    return;
+  }
+  else {
+    $("div.page-head").hide();
+  }
   $.getJSON("/" + url, function (data){
     $("tbody." + url).empty();
     var len = data.length;
@@ -26,6 +40,74 @@ function leftPaneHandler(e){
   });
 }
 
+// handles the home case. Hopelessly not modular, I'll try to make it more friendly by tmrw - bumsoo
+function homeHandler(){
+   $("div.page-head").show(); // show header
+   // recent sell postings
+   $.getJSON("/all_selling_posts", function (data){
+      $("tbody.home_recent_sell").empty();
+      var len = data.length;
+      for (var i = 0; i < 5; i++){
+         if (i >= len) break;
+         var template = $("script.home_feed").html();
+         var ready = Mustache.render(template, data[i]);
+         $("tbody.home_recent_sell").append(ready);
+         $("button#post-" + data[i]["id"]).click(openPostHandler);
+      }
+   });
+   // recent buy postings
+   $.getJSON("/all_buying_posts", function (data){
+      $("tbody.home_recent_buy").empty();
+      var len = data.length;
+      for (var i = 0; i < 5; i++){
+         if (i >= len) break;
+         var template = $("script.home_feed").html();
+         var ready = Mustache.render(template, data[i]);
+         $("tbody.home_recent_buy").append(ready);
+         $("button#post-" + data[i]["id"]).click(openPostHandler);
+      }
+   });
+   
+   var url = "home_feed";
+   var userdata;
+   $("div.home_feed_categories").html("");
+   // get user data
+   $.getJSON("/user_detail/" + user_id, function(data){
+      var cats = data["categories"]; // user categories
+      var catnum = Object.keys(cats).length;
+      for (var i = 0; i < catnum; i++)
+      {
+         var catid = cats[i]["id"];
+         var catname = cats[i]["name"];
+         var sellframe = 'home_' + catid + '_sell';
+         var buyframe = 'home_' + catid + '_buy';
+         $("div.home_feed_categories").append('<div class="col-md-6"><div class="widget wgreen"><div class="widget-head"><div class="pull-left">'+catname+' Sell Postings</div><div class="widget-icons pull-right"><a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a><a href="#" class="wclose"><i class="fa fa-times"></i></a></div><div class="clearfix"></div></div><!-- Widget content --><div class="widget-content"><table class="table table-bordered "><thead><tr><th>Title</th><th>Price</th><th>From</th><th>Expires</th><th></th></tr></thead><tbody class='+sellframe+'></tbody></table></div></div></div>'); // this looks very complicated, but this essentially adds a widget. THere is a correctly tabbed/indented version for those of you interested.
+         $.getJSON("/category_selling_posts/" + catid, function(data){
+            $("tbody." + sellframe).empty();
+            var len = data.length;
+            for (var i = 0; i < 5; i++){
+               if (i >= len) break;
+               var template = $("script.home_feed").html();
+               var ready = Mustache.render(template, data[i]);
+               $("tbody." + sellframe).append(ready);
+               $("button#post-" + data[i]["id"]).click(openPostHandler);
+            }
+         });
+         $("div.home_feed_categories").append('<div class="col-md-6"><div class="widget wviolet"><div class="widget-head"><div class="pull-left">'+catname+' Buy Postings</div><div class="widget-icons pull-right"><a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a><a href="#" class="wclose"><i class="fa fa-times"></i></a></div><div class="clearfix"></div></div><!-- Widget content --><div class="widget-content"><table class="table table-bordered "><thead><tr><th>Title</th><th>Price</th><th>From</th><th>Expires</th><th></th></tr></thead><tbody class='+buyframe+'></tbody></table></div></div></div>'); // this looks very complicated, but this essentially adds a widget. If someone wants to know he can ask me..
+         $.getJSON("/category_buying_posts/" + catid, function(data){
+            $("tbody." + buyframe).empty();
+            var len = data.length;
+            for (var i = 0; i < 5; i++){
+               if (i >= len) break;
+               var template = $("script.home_feed").html();
+               var ready = Mustache.render(template, data[i]);
+               $("tbody." + buyframe).append(ready);
+               $("button#post-" + data[i]["id"]).click(openPostHandler);
+            }
+         });
+      }
+   });
+}
 // handles opening of any post for viewing (not editing)
 // this post can be originated by the current user or some other user
 function openPostHandler(e){
@@ -58,7 +140,7 @@ function backHandler(e){
 
 // THIS IS WHERE EXECUTION STARTS
 function main(){
-  var user_id = parseInt($("script#user_id").html());
+  user_id = (parseInt($("script#user_id").html())).toString();
   Mustache.tags = ['[[', ']]'];
   var leftPane = $("a").filter(function (){
     return this.className.match(/leftPane/);
@@ -66,4 +148,5 @@ function main(){
   leftPane.click(leftPaneHandler);
   $("a#back").click(backHandler);
   console.log("done");
+  homeHandler();
 }

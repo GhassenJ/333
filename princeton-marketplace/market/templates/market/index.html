@@ -33,6 +33,7 @@
 	
 	<body>
 
+   <!-- top bar -->
 		<div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
 			<div class="container">
 				<!-- Menu button for smallar screens -->
@@ -130,28 +131,25 @@
             <button class="btn btn-lg btn-danger">Create New Posting</button>
           </form>
         </div>
-				<div class="sidebar-dropdown"><a href="#">Navigation</a></div>
-				<div class="sidebar-inner">
-					<!--- Sidebar navigation -->
-					<!-- If the main navigation has sub navigation, then add the class "has_submenu" to "li" of main navigation. -->
-					<ul class="navi">
-						<!-- Use the class nred, ngreen, nblue, nlightblue, nviolet or norange to add background color. You need to use this in <li> tag. -->
+            <div class="sidebar-dropdown"><a href="#">Navigation</a></div>
+            <div class="sidebar-inner">
+               <!--- Sidebar navigation -->
+               <!-- If the main navigation has sub navigation, then add the class "has_submenu" to "li" of main navigation. -->
+               <ul class="navi">
+                  <!-- Use the class nred, ngreen, nblue, nlightblue, nviolet or norange to add background color. You need to use this in <li> tag. -->
 
-						<li class="nblue current"><a href="#" class="leftPane home_feed"><i class="fa fa-home"></i> Home</a></li>
-            <li class="nblue"><a href="#" class="leftPane all_selling_posts"><i class="fa fa-th"></i> All Sell Postings</a></li>
-						<li class="nblue"><a href="#" class="leftPane all_buying_posts"><i class="fa fa-list"></i> All Buy Postings</a></li>
-						<li class="has_submenu nblue">
-							<a href="#">
-								<i class="fa fa-file-o"></i> My Postings
-								<span class="pull-right"><i class="fa fa-angle-right"></i></span>
-							</a>
+                  <li class="nred"><a href="#" class="leftPane home_feed"><i class="fa fa-home"></i> Home</a></li>
+                  <li class="nblue"><a href="#" class="leftPane all_selling_posts"><i class="fa fa-th"></i> All Sell Postings</a></li>
+                  <li class="ngreen"><a href="#" class="leftPane all_buying_posts"><i class="fa fa-list"></i> All Buy Postings</a></li>
+						<li class="has_submenu nlightblue">
+							<a href="#"><i class="fa fa-file-o"></i> My Postings<span class="pull-right"><i class="fa fa-angle-right"></i></span></a>
 							<ul>
 								<li><a href="#" class="leftPane my_open_posts">Active</a></li>
 								<li><a href="#" class="leftPane my_closed_posts">Archived</a></li>
 							</ul>
 						</li> 
-            <li class="nblue"><a href="#" class="leftPane my_responded_posts"><i class="fa fa-file-o"></i> My Responses</a></li>
-						<li class="has_submenu nblue">
+                  <li class="nviolet"><a href="#" class="leftPane my_responded_posts"><i class="fa fa-file-o"></i> My Responses</a></li>
+						<li class="has_submenu norange">
 							<a href="#">
 								<i class="fa fa-file-o"></i> My Categories
 								<span class="pull-right"><i class="fa fa-angle-right"></i></span>
@@ -164,61 +162,108 @@
 						</li> 
 					</ul>
 					<!--/ Sidebar navigation -->
-        </div>
-				</div>
-			</div>
-			<!-- Sidebar ends -->
+           </div>
+         </div> <!-- Sidebar ends -->
 
 			<!-- Main bar -->
 			<div class="mainbar">
 				<!-- Page heading -->
-				<div class="page-head" style="display:none">
-					<h6 class="pull-left">Search Results: 
-					</h6>
-					<div class="clearfix"></div>
+				<div class="page-head" style="display:init">
+               <h2 class="pull-left">Home
+                  <span class="page-meta">Hello, {{ user.first_name }} {{ user.last_name }}. <a href = "accounts/logout"> (not {{ user.first_name }} {{ user.last_name }}?)</a>
+                  </span>
+               </h2>
+               <div class="bread-crumb pull-right">
+                  <i class="fa fa-home">
+                  </i>
+                  Home
+                  <span class="divider">/</span>
+                  The MarketPlace
+               </div>
+               <div class="clearfix"></div>
 				</div><!--/ Page heading ends -->
 
 				<!-- Matter -->
 				<div class="matter">
 					<div class="container">
 						<div class="row">
-							<div class="col-md-12">
                 
                 <!-- Home -->
-                <div class="home_feed" style="display:none">
-                  <div class="widget">
+                <div class="home_feed" style="display:init">
+                
+                <!-- Most recent sell posts widget -->
+                <div class="col-md-6">
+                <div class="widget wred">
+                  <!-- Widget title -->
                   <div class="widget-head">
-										<div class="clearfix"></div>
-									</div>
-									<div class="widget-content">
-										<table class="table table-bordered ">
-											<thead>
-												<tr>
-												  <th>Title</th>
-												  <th>Description</th>
-												  <th>Price</th>
-												  <th>From</th>
-												  <th>Expires</th>
-                          <th></th>
-												</tr>
-											</thead>
-											<tbody class="home_feed">
-											</tbody>
-										</table>
-									</div>
-									<div class="widget-foot">
-										<ul class="pagination pull-right">
-										  <li><a href="#">Prev</a></li>
-										  <li><a href="#">1</a></li>
-										  <li><a href="#">2</a></li>
-										  <li><a href="#">3</a></li>
-										  <li><a href="#">4</a></li>
-										  <li><a href="#">Next</a></li>
-										</ul>
-										<div class="clearfix"></div> 
-									</div>
-								</div>
-                </div>
+                     <div class="pull-left">Recent Sell Postings</div>
+                     <div class="widget-icons pull-right">
+                        <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
+                        <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                     </div>
+                     <div class="clearfix"></div>
+                  </div>
+                  
+                  <!-- Widget content -->
+                  <div class="widget-content">
+							<table class="table table-bordered ">
+								<thead>
+									<tr>
+										<th>Title</th>
+										<th>Price</th>
+										<th>From</th>
+										<th>Expires</th>
+                              <th></th>
+									</tr>
+								</thead>
+								<tbody class="home_recent_sell">
+								</tbody>
+							</table>
+						</div>
+               </div>
+               </div>
+               
+               <!-- Most recent buy posts widget -->
+               <div class="col-md-6">
+               <div class="widget wblue">
+                  <!-- Widget title -->
+                  <div class="widget-head">
+                     <div class="pull-left">Recent Buy Postings</div>
+                     <div class="widget-icons pull-right">
+                        <a href="#" class="wminimize"><i class="fa fa-chevron-up"></i></a>
+                        <a href="#" class="wclose"><i class="fa fa-times"></i></a>
+                     </div>
+                     <div class="clearfix"></div>
+                  </div>
+                  <!-- Widget content -->
+                  <div class="widget-content">
+							<table class="table table-bordered ">
+								<thead>
+									<tr>
+										<th>Title</th>
+										<th>Price</th>
+										<th>From</th>
+										<th>Expires</th>
+                              <th></th>
+									</tr>
+								</thead>
+								<tbody class="home_recent_buy">
+								</tbody>
+							</table>
+						</div>
+               </div>
+               </div>
+               
+               <!-- All other home widgets -- will be brought up by JS. -->
+               <div class="home_feed_categories">
+               
+               </div>
+               
+               <!--home feed ends here -->
+               </div>
+               
+                <!-- div class = "col-md-12" for everything EXCEPT HOME. -->
+                <div class="col-md-12">
                 <!-- All Buy Postings -->
                 <div class="all_buying_posts" style="display:none">
 								<div class="widget">
@@ -442,7 +487,8 @@
 				</div><!--/ Page footing ends -->
 			</div><!--/ Mainbar ends -->	    	
 			<div class="clearfix"></div>
-		</div><!--/ Content ends -->
+		</div> <!--/ Content ends -->
+
 
     <!-- Templates -->
     <!-- to capture user_id -->
@@ -455,7 +501,6 @@
     <script class="home_feed" type="text/template">
       <tr>
         <td>[[title]]</td>
-        <td>[[description]]</td>
         <td>[[price]]</td>
         <td>[[author.username]]</td>
         <td>[[date_posted]]</td>
@@ -532,6 +577,5 @@
 		<script src="static/js/mustache.js"></script>
     <!-- Our JS -->
 		<script src="static/js/index.js"></script>
-    
 	</body>	
 </html>
