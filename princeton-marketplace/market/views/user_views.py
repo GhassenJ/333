@@ -59,44 +59,6 @@ def register(request):
             {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
             context)
 
-def user_login(request):
-    """
-    This view allows a user to login.
-    """
-    context = RequestContext(request)
-
-    # If a POST, fill in required user data and authenticate
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            # Login good, proceed back to home page
-            login(request, user)
-            return HttpResponseRedirect(reverse('market:index', args=''))
-        else:
-            # Bad login details were provided. So we can't log the user in.
-            print "Invalid login details: {0}, {1}".format(username, password)
-            return HttpResponse("Invalid login details supplied.")
-
-    # Display the form (note: this form is stuck in the template)
-    else:
-        return render_to_response('market/login.html', {}, context)
-
-@login_required
-def user_logout(request):
-    """
-    Logs the current user out.
-    """
-    # Logout the user
-    logout(request)
-
-    # Take the user back to the homepage.
-    return HttpResponseRedirect(reverse('market:index', args=''))
-
-
-
 def user_detail(request, user_id):
     """
     This view gets the details of a user whose id is user_id.

@@ -337,6 +337,7 @@ $(function()
                     var url = "{% url 'market:edit_profile' %}"
                     $('#PopUpModal').load(url, function() {
                         $(this).modal('show');
+                        $('#submit-form').parsley();
                     });
                     return false;
                 }

@@ -66,6 +66,7 @@ def create_posting(request):
             hashtags = re.findall('#\w+', hashtagStr)
             hashtagsList = []
             for tag in hashtags:
+                logger.info(tag)
                 tagname = tag[1:].lower()
                 logger.info(tagname)
                 if (len(Hashtag.objects.all().filter(name=tagname)) != 0):
@@ -344,7 +345,10 @@ def posting_detail(request, posting_id):
         postdata['open'] = posting.is_open
         postdata['category'] = {"name": posting.category.name, "id": posting.category.id}
         postdata['id'] = posting.id
-        #postdata['image'] = posting.picture
+        if (posting.blobstore_key != '' and posting.blobstore_key is not None):
+            postdata['image'] = get_serving_url(posting.blobstore_key)
+        else:
+            postdata['image'] = ''
         hashtags = []
         for hashtag in posting.hashtags.all():
             hashtags.append({"name": hashtag.name, "id": hashtag.id})

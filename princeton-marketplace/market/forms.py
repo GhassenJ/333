@@ -35,11 +35,13 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('phone_no', 'class_year', 'categories')
 
+@parsleyfy
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email')
+        fields = ('email',)
 
+@parsleyfy
 class UserProfileEditForm(forms.ModelForm):
     class Meta:
         model = UserProfile

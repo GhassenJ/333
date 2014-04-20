@@ -78,7 +78,7 @@ def write_review(request, user_id):
 
                 newscore = tempreview.rating
                 if (len(reviewee.review_reviewee.all()) > 1):
-                    newscore = int(((len(reviewee.review_reviewee.all())-1)*reviewee.userprofile.rating + tempreview.rating + 0.0) / (len(reviewee.review_reviewee.all())) + 0.5)
+                    newscore = ((len(reviewee.review_reviewee.all()) - 1.0)*reviewee.userprofile.rating + tempreview.rating + 0.0) / (len(reviewee.review_reviewee.all()))
                 reviewee.userprofile.rating = newscore
                 reviewee.userprofile.save()
 

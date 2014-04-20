@@ -5,7 +5,7 @@
          <h4 class="modal-title">Edit Profile</h4>
       </div>
       <!-- form here -->
-      <form class="submit-form" method="post" action="{% url 'market:edit_profile' %}">
+      <form class="submit-form" id="submit-form" method="post" action="{% url 'market:edit_profile' %}">
       <div class="modal-body">
          {% csrf_token %}
          {{ user_form.as_p }}
