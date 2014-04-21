@@ -95,7 +95,7 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'market',
             'USER': 'root',
-            'PASSWORD': 'root'
+            'PASSWORD': 'midwicket'
         }
     }
 
