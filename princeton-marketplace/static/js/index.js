@@ -11,11 +11,25 @@ var user_id;
 function leftPaneHandler(e){
   var url = this.className.split(/\s+/)[1];
   var template = $("script." + url).html();
-  // Color feature to be added here
-
-  // Add header to home_feed
+  
+  // Coloring the side pane. It's intuitive..but could be buggy. Can someone confirm? - bumsoo
+  var color = colorHandler(url);
+  var oldcolor = colorHandler(current_url);
+  if (oldcolor == color) {
+    $("."+oldcolor + " current").removeClass("current");
+  }
+  else {
+   $("."+oldcolor).removeClass("current");
+  }
+  $("."+color).addClass("current");
+  
+  // Add header to home_feed when we come back to home.
+  // I'm not entirely sure if this home pane is necessary, but it will be if we implement search.
   if (url == "home_feed") {
-    homeHandler();
+    if (user_id)
+    {
+      homeHandler();
+    }
     $("div." + current_url).hide();
     $("div." + url).show();
     last_url = current_url;
@@ -38,6 +52,23 @@ function leftPaneHandler(e){
     last_url = current_url;
     current_url = url;
   });
+}
+
+// Receives a pane and returns its assigned color. We need the class name of the color
+// to determine which one should be "shown" at a specific moment.
+// pane here refers to one of the following:
+// home_feed, all_selling_posts, all_buying_posts, my_open_posts, my_closed_posts, my_responded_posts.
+// MY CATEGORY HAS NOT BEEN IMPLEMENTED YET
+function colorHandler(pane){
+   switch (pane) {
+      case "home_feed": return "nred";
+      case "all_selling_posts": return "nblue";
+      case "all_buying_posts": return "ngreen";
+      case "my_open_posts": return "nlightblue";
+      case "my_closed_posts": return "nlightblue";
+      case "my_responded_posts": return "nviolet";
+      default: return "norange";
+   }
 }
 
 // handles the home case. Hopelessly not modular, I'll try to make it more friendly by tmrw - bumsoo
@@ -108,6 +139,7 @@ function homeHandler(){
       }
    });
 }
+
 // handles opening of any post for viewing (not editing)
 // this post can be originated by the current user or some other user
 function openPostHandler(e){
@@ -148,5 +180,8 @@ function main(){
   leftPane.click(leftPaneHandler);
   $("a#back").click(backHandler);
   console.log("done");
-  homeHandler();
+  if (user_id)
+  {
+   homeHandler();
+  }
 }

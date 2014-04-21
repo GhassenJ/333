@@ -1,0 +1,21 @@
+140420 Update by Bumsoo Kim
+
+* Added HOME pane. (Modified file: index.html, index.js)
+   home-feed consists of the following
+   * a page head
+      this is directly copied off our previous version and the code is in index.html. Check yourself! The code is very ez.
+      The only job done in index.js is turning the home pane on/off according to whether you go to home or other places.
+   * 5 most recent selling/buying posts
+      I used widgets for this (I think parth has documentations for widgets. It's essentially anything here. http://ashobiz.asia/metroking301/widgets1.html)
+      I used the frame col-md-6 (so that there are two widgets horizontally.) See if the size makes sense!
+   * 5 most recent selling/buying posts from each category of the user's preference.
+      Widgets for this too.
+   index.js became a LOT more complicated, but it essentially handles the case where HOME is clicked in a separate function. Nothing there is too difficult I think.
+   
+* Added coloring sidebar feature. (modified file: index.html, index.js)
+   It keeps track of the current and future color using the url tracker (in index.js).
+
+* Placed footer in appropriate position. (modified file: index.html, style.css)
+   I removed the min-height: 1200 px in the "mainbar" section of style.css. This was what was creating the huge space in the bottom.
+   What's needed: fancyboxes for About, Contact, FAQ. Probably conact will just be emailing us. Would ABOUT be a fancybox or on the main frame? What about FAQ?
+   ICE takes us to a NEW PAGE (so click back to go back) here. I think it's not the BEST way, but it's reasonable and super easy to implement.

@@ -138,7 +138,7 @@
                <ul class="navi">
                   <!-- Use the class nred, ngreen, nblue, nlightblue, nviolet or norange to add background color. You need to use this in <li> tag. -->
 
-                  <li class="nred"><a href="#" class="leftPane home_feed"><i class="fa fa-home"></i> Home</a></li>
+                  <li class="nred current"><a href="#" class="leftPane home_feed"><i class="fa fa-home"></i> Home</a></li>
                   <li class="nblue"><a href="#" class="leftPane all_selling_posts"><i class="fa fa-th"></i> All Sell Postings</a></li>
                   <li class="ngreen"><a href="#" class="leftPane all_buying_posts"><i class="fa fa-list"></i> All Buy Postings</a></li>
 						<li class="has_submenu nlightblue">
@@ -170,7 +170,7 @@
 				<!-- Page heading -->
 				<div class="page-head" style="display:init">
                <h2 class="pull-left">Home
-                  <span class="page-meta">Hello, {{ user.first_name }} {{ user.last_name }}. <a href = "accounts/logout"> (not {{ user.first_name }} {{ user.last_name }}?)</a>
+                  <span class="page-meta">{% if user.is_authenticated %}Hello, {{ user.first_name }} {{ user.last_name }}. <a href = "accounts/logout"> (not {{ user.first_name }} {{ user.last_name }}?)</a> {% else %} Please log in via link above. {% endif %}
                   </span>
                </h2>
                <div class="bread-crumb pull-right">
@@ -262,7 +262,7 @@
                <!--home feed ends here -->
                </div>
                
-                <!-- div class = "col-md-12" for everything EXCEPT HOME. -->
+                <!-- div class = "col-md-12" for everything except home, at least in current implementation -->
                 <div class="col-md-12">
                 <!-- All Buy Postings -->
                 <div class="all_buying_posts" style="display:none">
@@ -479,7 +479,7 @@
 					</div>
 				</div><!--/ Matter ends -->
         <!-- Page footing -->
-				<div class="page-foot" style="display:none; text-align:center">
+				<div class="page-foot" style="text-align:center">
 					<p>
             About | Contact | FAQ
 					</p>
@@ -497,6 +497,7 @@
       {{ user.id }}
       {% endif %}
     </script>
+    
     <!-- Home -->
     <script class="home_feed" type="text/template">
       <tr>
