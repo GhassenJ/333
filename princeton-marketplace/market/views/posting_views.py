@@ -157,7 +157,7 @@ def delete_posting(request, posting_id):
                 posting.category.save()
 
                 # Delete any pics associated w/ this posting
-                if posting.blobstore_key != "":
+                if posting.blobstore_key != "" and posting.blobstore_key is not None:
                     key = BlobKey(posting.blobstore_key)
                     info = BlobInfo.get(key)
                     info.delete()
@@ -191,7 +191,7 @@ def close_posting(request, posting_id):
             user.userprofile.save()
             posting.responder.userprofile.transactions = posting.responder.userprofile.transactions + 1
             posting.responder.userprofile.save()
-            if posting.blobstore_key != "":
+            if posting.blobstore_key != "" and posting.blobstore_key is not None:
                     key = BlobKey(posting.blobstore_key)
                     info = BlobInfo.get(key)
                     info.delete()
