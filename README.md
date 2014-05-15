@@ -26,7 +26,7 @@ MarketPlace. It’s the most convenient way to buy, sell and exchange�
 anyone in Princeton. <br>
 This project will be using Google App Engine with Python and Django and CloudSQL. <br>
 
-TESTING TESTING TESTING
+Check this Repository for the most up-to-date project : https://github.com/pcmehta257/mktplc . 
 
 
 
